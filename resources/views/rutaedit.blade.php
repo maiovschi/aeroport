@@ -40,11 +40,11 @@
         @csrf
             
             <div class="form-group">
-                <label class='title'>Aeroport decolare*</label>
+                <label class='title'>aeroport decolare*</label>
                 <input type="text" id="decolare" class="form-control" name='aeroportdecolare' placeholder="{{$ruta->aeroport_plecare}}" >
             </div>
             <div class="form-group">
-                <label class='title'>Aeroport aterizare*</label>
+                <label class='title'>aeroport aterizare*</label>
                 <input type="text" id="aterizare" class="form-control" name='aeroportaterizare' placeholder="{{$ruta->aeroport_sosire}}" >
             </div>
          

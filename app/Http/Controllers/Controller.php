@@ -24,25 +24,25 @@ class Controller extends BaseController
         $edit_scs = $request->editscs == '1'?"true":"false";
         $add_scs = $request->addscs == '1'?"true":"false";
      //   $delete_scs = (isset($_GET['deletescs']) && $_GET['deletescs'])== '1'?"true":"false";
-        $rute = DB::table('Rute')->get();
+        $rute = DB::table('rute')->get();
         // $ruta= Ruta::all();
         return  view('ruta')->with(['ruta'=>$rute,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); //view ('ruta', compact('ruta'));
         
     }
     public function rutaForm() {
-        $rute = DB::table('Rute');
+        $rute = DB::table('rute');
     //    if($rute::all()->isEmpty()) $nr_ruta = 1;
-    //    else $nr_ruta = $rute::all()->last()->idRute + 1;
+    //    else $nr_ruta = $rute::all()->last()->idrute + 1;
         return view('rutaadd');
     }
 
     public function addruta(Request $request) {
         $aero_plecare =  $request->input('aeroport_plecare');
         $aero_sosire = $request->input('aeroport_sosire');
-        $result = DB::table('Rute')->insert(['aeroport_plecare'=>$aero_plecare,
+        $result = DB::table('rute')->insert(['aeroport_plecare'=>$aero_plecare,
                                             'aeroport_sosire'=>$aero_sosire
                                             ]);
-        /*$ruta = new Rute();
+        /*$ruta = new rute();
         $ruta->plecare = $request->input('aeroport_plecare');
         $ruta->sosire = $request->input('aeroport_sosire');
      
@@ -89,15 +89,15 @@ class Controller extends BaseController
         $edit_scs = $request->editscs == '1'?"true":"false";
         $add_scs = $request->addscs == '1'?"true":"false";
      //   $delete_scs = (isset($_GET['deletescs']) && $_GET['deletescs'])== '1'?"true":"false";
-        $avioane = DB::table('Avioane')->get();
+        $avioane = DB::table('avioane')->get();
         // $ruta= Ruta::all();
         return  view('avioane')->with(['avioane'=>$avioane,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); //view ('ruta', compact('ruta'));
        }
 
     public function avioaneForm() {
-        $rute = DB::table('Avioane');
+        $rute = DB::table('avioane');
         //    if($rute::all()->isEmpty()) $nr_ruta = 1;
-        //    else $nr_ruta = $rute::all()->last()->idRute + 1;
+        //    else $nr_ruta = $rute::all()->last()->idrute + 1;
             return view('avioaneadd');
     }
 
@@ -105,11 +105,11 @@ class Controller extends BaseController
         $model =  $request->input('model');
         $marca = $request->input('marca');
         $nume = $request->input('nume');
-        $result = DB::table('Avioane')->insert(['model'=>$model,
+        $result = DB::table('avioane')->insert(['model'=>$model,
                                             'marca'=>$marca,
                                             'nume'=>$nume
                                             ]);
-        /*$ruta = new Rute();
+        /*$ruta = new rute();
         $ruta->plecare = $request->input('aeroport_plecare');
         $ruta->sosire = $request->input('aeroport_sosire');
      
@@ -120,7 +120,7 @@ class Controller extends BaseController
     }
    
     public function editavioaneForm($idavion) {
-        $avioane = DB::table('Avioane')->where('idAvion',$idavion)->first();
+        $avioane = DB::table('avioane')->where('idAvion',$idavion)->first();
         return view ('avioaneedit', compact('avioane'));
     }
     public function editavioane(Request $request, $idavion)
@@ -128,12 +128,12 @@ class Controller extends BaseController
         $model = $request->model;
         $marca = $request->marca;
         $nume = $request->nume;
-       $avion_de_editat =  DB::table('Avioane')->where('idAvion',$idavion)->first();
+       $avion_de_editat =  DB::table('avioane')->where('idAvion',$idavion)->first();
        $result = 0;
       if($avion_de_editat->model != $model &&
          $avion_de_editat->marca != $marca&&
          $avion_de_editat->nume != $nume){ 
-            $result = DB::table('Avioane')->where('idAvion',$idavion)
+            $result = DB::table('avioane')->where('idAvion',$idavion)
                                 ->update(['model'=>$model,
                                             'marca'=>$marca,
                                             'nume'=>$nume]);
@@ -147,7 +147,7 @@ class Controller extends BaseController
     public function deleteavioane( Request $request)
     {    $idAvion = $request->id;
          
-        DB::table('Avioane')->where('idAvion',$idAvion)->delete();
+        DB::table('avioane')->where('idAvion',$idAvion)->delete();
         // Ruta::find($idRuta)->delete();
         
         return  redirect()->intended('/avioane');//redirect()->route('ruta')->with('success','Ruta a fost stearsa');
@@ -161,15 +161,15 @@ class Controller extends BaseController
         $edit_scs = $request->editscs == '1'?"true":"false";
         $add_scs = $request->addscs == '1'?"true":"false";
      //   $delete_scs = (isset($_GET['deletescs']) && $_GET['deletescs'])== '1'?"true":"false";
-        $angajati = DB::table('Angajati')->get();
+        $angajati = DB::table('angajati')->get();
         // $ruta= Ruta::all();
         return  view('angajati')->with(['angajati'=>$angajati,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); //view ('ruta', compact('ruta'));
        }
 
     public function angajatiForm() {
-        $angajati = DB::table('Angajati');
+        $angajati = DB::table('angajati');
         //    if($rute::all()->isEmpty()) $nr_ruta = 1;
-        //    else $nr_ruta = $rute::all()->last()->idRute + 1;
+        //    else $nr_ruta = $rute::all()->last()->idrute + 1;
             return view('angajatiadd');
     }
 
@@ -182,7 +182,7 @@ class Controller extends BaseController
         $salariu =  $request->input('salariu');
         $tip_angajat =  $request->input('tip_angajat');
         $calificari =  $request->input('calificari');
-        $result = DB::table('Angajati')->insert(['nume'=>$nume,
+        $result = DB::table('angajati')->insert(['nume'=>$nume,
                                             'prenume'=>$prenume,
                                             'email'=>$email,
                                             'cnp'=>$cnp,
@@ -197,7 +197,7 @@ class Controller extends BaseController
     }
    
     public function editangajatiForm($idangajat) {
-        $angajati = DB::table('Angajati')->where('idAngajat',$idangajat)->first();
+        $angajati = DB::table('angajati')->where('idAngajat',$idangajat)->first();
         return view ('angajatiedit', compact('angajati'));   
     }
 
@@ -212,7 +212,7 @@ class Controller extends BaseController
         $tip_angajat = $request->tip_angajat;
         $calificari = $request->calificari;
 error_log($nume.'!!!');
-       $angajat_de_editat =  DB::table('Angajati')->where('idAngajat',$idangajat)->first();
+       $angajat_de_editat =  DB::table('angajati')->where('idAngajat',$idangajat)->first();
        $result = 0;
       /* if($angajat_de_editat->nume != $nume &&
          $angajat_de_editat->prenume != $prenume&&
@@ -223,7 +223,7 @@ error_log($nume.'!!!');
          $angajat_de_editat->tip_angajat != $tip_angajat &&
          $angajat_de_editat->calificari != $calificari 
          ){ 
-           */  $result = DB::table('Angajati')->where('idAngajat',$idangajat)
+           */  $result = DB::table('angajati')->where('idAngajat',$idangajat)
                                 ->update(['nume'=>$nume,
                                             'prenume'=>$prenume,
                                             'cnp'=>$cnp,
@@ -239,9 +239,9 @@ error_log($nume.'!!!');
     }
   
     public function deleteangajati( Request $request)
-    {    $idAngajati = $request->id;
+    {    $idangajati = $request->id;
          
-        DB::table('Angajati')->where('idAngajat',$idAngajati)->delete();
+        DB::table('angajati')->where('idAngajat',$idangajati)->delete();
        
         
         return  redirect()->intended('/angajati');
@@ -312,9 +312,11 @@ error_log($nume.'!!!');
     //  adauga form 
     public function echipajeForm(){
            
-        $echipaj = DB::table('echipaje');
+      //  $echipaj = DB::table('echipaje')->get();
 
-        return view('echipajeadd');
+      error_log(">> trecee ");
+      $angajati = DB::table('angajati')->get();
+        return view('echipajeadd')->with(['angajati'=>$angajati]);
       }
     public function addechipaje(Request $request){
         
@@ -325,11 +327,13 @@ error_log($nume.'!!!');
         $result =  DB::table('echipaje')->insert(['idPilot'=>$idPilot,
         'idCopilot'=> $idCopilot,
         'idSteward1'=>$idSt1,
-        'idSteward2'=>$idSt2]);
-        return redirect()->intended('/echipaje/addscs='.$result);  
+        'idSteward2'=>$idSt2,
+        'nume'=> $request->input('nume')
+        ]);
+        return redirect()->intended('/echipaje?addscs='.$result);  
          }
 
-     //ZBORURI
+     //zboruri
      public function editzboruriForm($idzbor){
            
         $zbr = DB::table('zboruri')->where('idZbor',$idzbor)->first();
@@ -391,5 +395,41 @@ error_log($nume.'!!!');
 
        return  redirect()->intended('/zboruri?editscs='.$result); 
     }
+
+
+    public function zboruriForm(){
+
+        $rute = DB::table('rute')->get();
+        $echipaje = DB::table('echipaje')->get();
+        foreach($echipaje as $ecp){
+            $ecp->pilot = DB::table('angajati')->where('idAngajat',$ecp->idPilot)->first();
+        }
+        $avioane = DB::table('avioane')->get();
+
+
+        return view('zboruriadd')->with(['rute'=>$rute,'echipaje'=>$echipaje,'avioane'=>$avioane]);
+    }
+
+    public function addzboruri(Request $request){
+        $idRuta = $request->ruta;
+        $idAvion = $request->avion;
+        $idEchipaj = $request->echipaj;
+        $ora_plecare = $request->data_plecare.' '.$request->ora_plecare;
+        $ora_sosire = $request->data_sosire.' '.$request->ora_sosire;
+        $Observatii=$request->Observatii;
+
+      $result =  DB::table('zboruri')->insert(['idRuta'=>$idRuta,
+        'idAvion'=> $idAvion,
+        'idEchipaj'=>$idEchipaj,
+        'ora_plecare'=>$ora_plecare,
+        'ora_sosire'=>$ora_sosire,
+        'Observatii'=>$Observatii]);
+
+       return  redirect()->intended('/zboruri?editscs='.$result); 
+
+    }
+
+
+    
 
 }

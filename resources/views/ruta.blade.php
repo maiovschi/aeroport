@@ -77,8 +77,8 @@
           <thead>
               <tr>
                   <th scope="col" class='px-1'>Nr. ruta</th>
-                  <th scope="col">Aeroport plecare</th>
-                  <th scope="col">Aeroport sosire</th>
+                  <th scope="col">aeroport plecare</th>
+                  <th scope="col">aeroport sosire</th>
                   <th scope='col'>Optiuni</th>
                 
               </tr>

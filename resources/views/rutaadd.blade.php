@@ -40,11 +40,11 @@
         @csrf
             
             <div class="form-group">
-                <label class='title'>Aeroport plecare*</label>
+                <label class='title'>aeroport plecare*</label>
                 <input type="text" class="form-control" name='aeroport_plecare' >
             </div>
             <div class="form-group">
-                <label class='title'>Aeroport sosire*</label>
+                <label class='title'>aeroport sosire*</label>
                 <input type="text" class="form-control" name='aeroport_sosire' >
             </div>
           

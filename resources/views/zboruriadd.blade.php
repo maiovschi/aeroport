@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Echipaj nou</title>
+    <title>Avion nou</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
@@ -32,84 +32,103 @@
        
         
       <div class='d-flex flex-row'>
-        <div class='px-5 title'>Adauga echipaj</div>
+        <div class='px-5 title'>Editeaza zbor</div>
       </div>
       
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
-        <form class='text-left' id="edit-form" action="{{route('echipajeadd')}}" method='post' enctype="multipart/form-data">
+        <form class='text-left' id="edit-form" action="{{route('zboruriadd')}}" method='post' enctype="multipart/form-data">
         @csrf
             <div class="group">
             <div class="form-group">
-                <label class='title'>Pilot</label>
-                   <select class="pilot" name="pilot">
-                    <option ang="{{$idPilot->pilot->idAngajat}}" selected value="{{$idPilot->pilot->idAngajat}}" calificari="{{$idPilot->pilot->calificari}}">
-                        {{$idPilot->pilot->nume.' '.$idPilot->pilot->prenume}}
+                <label class='title'>Ruta</label>
+                   <select class="ruta" name="ruta">
+                   <option  selected  value="-1">
+                       Selectati
                     </option>
-                    @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "pilot" && $ang->idAngajat != $idPilot->pilot->idAngajat)
-                            <option ang="{{$ang->idAngajat}}" value="{{$ang->idAngajat}}" class="{{ $ang->idAngajat ==$idCopilot->copilot->idAngajat?"hidden":"" }}" calificari="{{$ang->calificari}}">
-                                {{$ang->nume.' '.$ang->prenume}}
+                    @foreach($rute as $ruta)
+                       
+                            <option  value="{{$ruta->idRuta}}" class="">
+                            {{$ruta->aeroport_plecare.' '.$ruta->aeroport_sosire}}
                             </option>
-                         @endif
+                         
                     @endforeach
                 </select>
             </div>
             <div class="form-group">
-                <label class='title'>Copilot</label>
-               <select class="copilot" name="copilot">  
-                    <option ang="{{$idCopilot->copilot->idAngajat}}" selected  value="{{$idCopilot->copilot->idAngajat}}" calificari="{{$idPilot->pilot->calificari}}">
-                         {{$idCOpilot->copilot->nume.' '.$idCopilot->copilot->prenume}}
+                <label class='title'>Avion</label>
+               <select class="avion" name="avion">  
+                    <option  selected  value="-1">
+                       Selectati
                     </option>
-                    @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "pilot"  && $ang->idAngajat != $idCopilot->copilot->idAngajat)
-                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}" class="{{ $ang->idAngajat ==$idPilot->pilot->idAngajat?"hidden":"" }}"  calificari="{{$ang->calificari}}">
-                                {{$ang->nume.' '.$ang->prenume}}
+                    @foreach($avioane as $avion)
+                       
+                            <option ang="{{$avion->idAvion}}" value="{{$avion->idAvion}}" class="" calificare = "{{$avion->model}}">
+                            {{$avion->nume.' '.$avion->model}}
                             </option>
-                         @endif
+                         
                     @endforeach
+                </select>
+            </div>
+            </div>
+            <div class="form-group">
+                <label class='title'>Echipaj</label>
+               <select class="echipaj" name="echipaj">  
+               <option  selected  value="-1">
+                       Selectati
+                    </option>
+               @foreach($echipaje as $echipaj)
+                       
+                       <option ang="" value="{{$echipaj->idEchipaj}}" class="" calificare = "{{$echipaj->pilot->calificari}}">
+                       {{$echipaj->nume}}
+                       </option>
+                    
+               @endforeach
+                  
                 </select>
             </div>
             </div>
 
             <div class="group">
             <div class="form-group">
-                <label class='title'>Steward1</label>
-                 <select class="steward1" name="steward1">
-                    <option ang="{{$echipaj->steward1->idAngajat}}" selected  value="{{$echipaj->steward1->idAngajat}}">
-                         {{$echipaj->steward1->nume.' '.$echipaj->steward1->prenume}}
-                    </option>
-                    @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "steward"  && $ang->idAngajat != $echipaj->steward1->idAngajat)
-                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="{{ $ang->idAngajat ==$echipaj->steward2->idAngajat?"hidden":"" }}" >
-                                {{$ang->nume.' '.$ang->prenume}}
-                            </option>
-                         @endif
-                    @endforeach
-                </select>
+                <label class='title'>Informatii plecare*</label>
+                <input type="date" id="data_plecare" class="form-control" name='data_plecare' >
+             
+             
             </div>
+
             <div class="form-group">
-                <label class='title'>Steward2</label>
-                <select class="steward2" name="steward2">
-                    <option ang="{{$echipaj->steward2->idAngajat}}" selected  value="{{$echipaj->steward2->idAngajat}}">
-                         {{$echipaj->steward2->nume.' '.$echipaj->steward2->prenume}}
-                    </option>
-                    @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "steward"  && $ang->idAngajat != $echipaj->steward2->idAngajat)
-                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="{{ $ang->idAngajat ==$echipaj->steward1->idAngajat?"hidden":"" }}" >
-                                {{$ang->nume.' '.$ang->prenume}}
-                            </option>
-                         @endif
-                    @endforeach
-                </select>
+                <label class='title'>Informatii plecare*</label>
+                <input type="text" id="ora_plecare" name="ora_plecare" class=" form-control hidden">
+                <input type="text" class="clock">
+             
             </div>
+
+          
             </div>
+      
             <div class="form-group">
-                <label class='title'>Nume Echipaj</label>
-                <input type="text"  class="form-control nume" name='nume' placeholder="{{$echipaj->pilot->nume.' '.$echipaj->pilot->prenume}}" >
+                <label class='title'>Informatii sosire*</label>
+                <input type="date" id="data_sosire" class="form-control" name='data_sosire' >
+              
+            </div>
+
+            <div class="form-group">
+                <label class='title'>Informatii sosire*</label>
+                <input type="text" id="ora_sosire" name='ora_sosire' class="form-control hidden" >
+                <input type="text" class="clock">
+            </div>
+
+
+         
+           
+            
+            <div class="form-group">
+                <label class='title'>Observatii</label>
+                <input type="text"  class="form-control nume" name='Observatii' >
             </div>
 
                 <div class='d-flex justify-content-end'>
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica zbor</button>
             </div>
 
             
@@ -120,11 +139,17 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/jquery-clock-timepicker.min.js"></script>
     
-     <script>
+      <script>
       $('#submit_button').on('click',function(ev){
             ev.preventDefault();
-       
+
+            $('.clock').toArray().forEach(clock=>{
+              var value =   $(clock).val();
+              $(clock).closest('.form-group').find('.form-control').val(value);
+            })
+
             if($('.wrong').length == 0){
               var form = document.getElementById('edit-form');
               form.submit();
@@ -134,45 +159,41 @@
             
       })
 
+      $(document).ready(function(ev){
+            $('.clock').clockTimePicker();
+      })
+
       $('select').on('change',function(){
              var selected_option = this.options[this.options.selectedIndex];
-             var id_angajat = $(selected_option).attr('ang');
-            $(this).closest('.group').find('option').each(function(index,element){
-                    if($(element).attr('ang') == id_angajat && element != selected_option){
-                        $(element).addClass('hidden');
-                    }else{
-                        $(element).removeClass('hidden');
-                    }
-            });
+        
 
-            var calificare = $(selected_option).attr("calificari");
-            if($(this).hasClass('pilot')){
-                var selected_option_copilot = $('.copilot')[0].options[$('.copilot')[0].options.selectedIndex];
-                    if($(selected_option_copilot).attr("calificari") != calificare){
-                        $(selected_option_copilot).parent().addClass("wrong");
+            var calificare = $(selected_option).attr("calificare");
+            if($(this).hasClass('avion')){
+                var selected_option_echipaj = $('.echipaj')[0].options[$('.echipaj')[0].options.selectedIndex];
+                    if($(selected_option_echipaj).attr("calificare") != calificare){
+                        $(selected_option_echipaj).parent().addClass("wrong");
                     }else{
-                        $(selected_option_copilot).parent().removeClass("wrong");
+                        $(selected_option_echipaj).parent().removeClass("wrong");
                     }
             }
 
-            if($(this).hasClass('copilot')){
-                var selected_option_pilot = $('.pilot')[0].options[$('.pilot')[0].options.selectedIndex];
-                console.log(selected_option_pilot);
-                console.log($(selected_option_pilot).attr("calificari"), calificare,this.attributes)
-                if($(selected_option_pilot).attr("calificari") != calificare){
-                        $(selected_option_pilot).parent().addClass("wrong");
+            if($(this).hasClass('echipaj')){
+                var selected_option_avion = $('.avion')[0].options[$('.avion')[0].options.selectedIndex];
+            
+                if($(selected_option_avion).attr("calificare") != calificare){
+                        $(selected_option_avion).parent().addClass("wrong");
                     }else{
-                        $(selected_option_pilot).parent().removeClass("wrong");
+                        $(selected_option_avion).parent().removeClass("wrong");
                     }
             }
 
-            if($(this).hasClass('copilot') || $(this).hasClass('pilot'))
+            if($(this).hasClass('avion') || $(this).hasClass('echipaj'))
                     $(this).removeClass('wrong');
 
 
       })
    
-    </script>
+    </script> 
 
     <style>
       .wrong{

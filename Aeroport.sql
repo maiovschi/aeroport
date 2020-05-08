@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema Aeroport
+-- Schema aeroport
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema Aeroport
+-- Schema aeroport
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Aeroport` DEFAULT CHARACTER SET utf8 ;
-USE `Aeroport` ;
+CREATE SCHEMA IF NOT EXISTS `aeroport` DEFAULT CHARACTER SET utf8 ;
+USE `aeroport` ;
 
 -- -----------------------------------------------------
--- Table `Aeroport`.`Rute`
+-- Table `aeroport`.`rute`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Aeroport`.`Rute` (
+CREATE TABLE IF NOT EXISTS `aeroport`.`rute` (
   `idRuta` INT NOT NULL AUTO_INCREMENT,
   `aeroport_plecare` VARCHAR(45) NULL,
   `aeroport_sosire` VARCHAR(45) NULL,
@@ -29,9 +29,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Aeroport`.`Avioane`
+-- Table `aeroport`.`avioane`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Aeroport`.`Avioane` (
+CREATE TABLE IF NOT EXISTS `aeroport`.`avioane` (
   `idAvion` INT NOT NULL AUTO_INCREMENT,
   `model` VARCHAR(45) NULL,
   `marca` VARCHAR(45) NULL,
@@ -41,9 +41,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Aeroport`.`Angajati`
+-- Table `aeroport`.`angajati`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Aeroport`.`Angajati` (
+CREATE TABLE IF NOT EXISTS `aeroport`.`angajati` (
   `idAngajat` INT NOT NULL AUTO_INCREMENT,
   `nume` VARCHAR(45) NULL,
   `prenume` VARCHAR(45) NULL,
@@ -58,9 +58,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Aeroport`.`Echipaje`
+-- Table `aeroport`.`echipaje`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Aeroport`.`Echipaje` (
+CREATE TABLE IF NOT EXISTS `aeroport`.`echipaje` (
   `idEchipaj` INT NOT NULL AUTO_INCREMENT,
   `idPilot` INT NULL,
   `idCopilot` INT NULL,
@@ -69,31 +69,31 @@ CREATE TABLE IF NOT EXISTS `Aeroport`.`Echipaje` (
   PRIMARY KEY (`idEchipaj`),
   CONSTRAINT `pilot_fk`
     FOREIGN KEY (`idPilot`)
-    REFERENCES `Aeroport`.`Angajati` (`idAngajat`)
+    REFERENCES `aeroport`.`angajati` (`idAngajat`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `copilot_fk`
     FOREIGN KEY (`idCopilot`)
-    REFERENCES `Aeroport`.`Angajati` (`idAngajat`)
+    REFERENCES `aeroport`.`angajati` (`idAngajat`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `s1_fk`
     FOREIGN KEY (`idSteward1`)
-    REFERENCES `Aeroport`.`Angajati` (`idAngajat`)
+    REFERENCES `aeroport`.`angajati` (`idAngajat`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `s2_fk`
     FOREIGN KEY (`idSteward2`)
-    REFERENCES `Aeroport`.`Angajati` (`idAngajat`)
+    REFERENCES `aeroport`.`angajati` (`idAngajat`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Aeroport`.`Zboruri`
+-- Table `aeroport`.`zboruri`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Aeroport`.`Zboruri` (
+CREATE TABLE IF NOT EXISTS `aeroport`.`zboruri` (
   `idZbor` INT NOT NULL AUTO_INCREMENT,
   `idRuta` INT NOT NULL,
   `idAvion` INT NOT NULL,
@@ -105,17 +105,17 @@ CREATE TABLE IF NOT EXISTS `Aeroport`.`Zboruri` (
 
   CONSTRAINT `echipaj_fk`
     FOREIGN KEY (`idEchipaj`)
-    REFERENCES `Aeroport`.`Echipaje` (`idEchipaj`)
+    REFERENCES `aeroport`.`echipaje` (`idEchipaj`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `avion_fk`
     FOREIGN KEY (`idAvion`)
-    REFERENCES `Aeroport`.`Avioane` (`idAvion`)
+    REFERENCES `aeroport`.`avioane` (`idAvion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `ruta_fk`
     FOREIGN KEY (`idRuta`)
-    REFERENCES `Aeroport`.`Rute` (`idRuta`)
+    REFERENCES `aeroport`.`rute` (`idRuta`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

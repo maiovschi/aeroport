@@ -105,7 +105,7 @@
             </div>
             <div class="form-group">
                 <label class='title'>Nume Echipaj</label>
-                <input type="text"  class="form-control nume" name='nume' placeholder="{{$echipaj->pilot->nume.' '.$echipaj->pilot->prenume}}" >
+                <input type="text"  class="form-control nume" name='nume' placeholder="{{$echipaj->nume}}" >
             </div>
 
                 <div class='d-flex justify-content-end'>
