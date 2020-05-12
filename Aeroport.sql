@@ -1,10 +1,8 @@
 
-CREATE SCHEMA IF NOT EXISTS `aeroport` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `aeroport`;
 USE `aeroport` ;
 
--- -----------------------------------------------------
--- Table `aeroport`.`rute`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aeroport`.`rute` (
   `idRuta` INT NOT NULL AUTO_INCREMENT,
   `aeroport_plecare` VARCHAR(45) NULL,
@@ -13,9 +11,7 @@ CREATE TABLE IF NOT EXISTS `aeroport`.`rute` (
 
 
 
--- -----------------------------------------------------
--- Table `aeroport`.`avioane`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aeroport`.`avioane` (
   `idAvion` INT NOT NULL AUTO_INCREMENT,
   `model` VARCHAR(45) NULL,
@@ -27,9 +23,7 @@ CREATE TABLE IF NOT EXISTS `aeroport`.`avioane` (
 
 
 
--- -----------------------------------------------------
--- Table `aeroport`.`angajati`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aeroport`.`angajati` (
   `idAngajat` INT NOT NULL AUTO_INCREMENT,
   `nume` VARCHAR(45) NULL,
@@ -45,9 +39,6 @@ CREATE TABLE IF NOT EXISTS `aeroport`.`angajati` (
   PRIMARY KEY (`idAngajat`));
 
 
--- -----------------------------------------------------
--- Table `aeroport`.`zboruri`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `aeroport`.`zboruri` (
   `idZbor` INT NOT NULL AUTO_INCREMENT,
   `idRuta` INT NULL,
@@ -74,9 +65,7 @@ CREATE TABLE IF NOT EXISTS `aeroport`.`zboruri` (
 
 
 
--- -----------------------------------------------------
--- Table `aeroport`.`program`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aeroport`.`program` (
   `idProgram` INT NOT NULL AUTO_INCREMENT,
   `tip_activitate` VARCHAR(64) NOT NULL,
