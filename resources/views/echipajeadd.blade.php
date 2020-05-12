@@ -67,7 +67,7 @@
                    </option>
                   <?php error_log("asdasfa") ?>
                     @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "pilot" && $ang->idAngajat )
+                        @if($ang->tip_angajat == "Pilot" && $ang->idAngajat )
                             <option ang="{{$ang->idAngajat}}" value="{{$ang->idAngajat}}" class="" calificari="{{$ang->calificari}}">
                                 {{$ang->nume.' '.$ang->prenume}}
                             </option>
@@ -82,7 +82,7 @@
                     Selectati
                    </option>
                     @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "pilot" )
+                        @if($ang->tip_angajat == "Pilot" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}" class=""  calificari="{{$ang->calificari}}">
                                 {{$ang->nume.' '.$ang->prenume}}
                             </option>
@@ -100,7 +100,7 @@
                     Selectati
                    </option>
                     @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "steward" )
+                        @if($ang->tip_angajat == "Steward" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
                                 {{$ang->nume.' '.$ang->prenume}}
                             </option>
@@ -115,7 +115,7 @@
                     Selectati
                    </option>
                     @foreach($angajati as $ang)
-                        @if($ang->tip_angajat == "steward" )
+                        @if($ang->tip_angajat == "Steward" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
                                 {{$ang->nume.' '.$ang->prenume}}
                             </option>
@@ -130,7 +130,7 @@
             </div>
 
                 <div class='d-flex justify-content-end'>
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica Echipaj</button>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
             </div>
 
             
@@ -195,6 +195,12 @@
 
             if($(this).hasClass('copilot') || $(this).hasClass('pilot'))
                     $(this).removeClass('wrong');
+
+
+
+
+
+
 
 
       })

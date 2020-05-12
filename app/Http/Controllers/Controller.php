@@ -298,12 +298,13 @@ error_log($nume.'!!!');
         $idCopilot = $request->copilot;
         $idSt1 = $request->steward1;
         $idSt2 = $request->steward2;
-
+        $nume=$request->nume;
 
       $result =  DB::table('echipaje')->where('idEchipaj',$idechipaj)->update(['idPilot'=>$idPilot,
         'idCopilot'=> $idCopilot,
         'idSteward1'=>$idSt1,
-        'idSteward2'=>$idSt2]);
+        'idSteward2'=>$idSt2,
+        'nume'=>$nume]);
 
        return  redirect()->intended('/echipaje?editscs='.$result); 
     }
@@ -333,6 +334,15 @@ error_log($nume.'!!!');
         return redirect()->intended('/echipaje?addscs='.$result);  
          }
 
+
+         public function deleteechipaje( Request $request)
+    {    $idechipaje = $request->id;
+         
+        DB::table('echipaje')->where('idEchipaj',$idechipaje)->delete();
+       
+        
+        return  redirect()->intended('/echipaje');
+        }
      //zboruri
      public function editzboruriForm($idzbor){
            
@@ -382,8 +392,8 @@ error_log($nume.'!!!');
         $idRuta = $request->ruta;
         $idAvion = $request->avion;
         $idEchipaj = $request->echipaj;
-        $ora_plecare = $request->ora_plecare;
-        $ora_sosire = $request->ora_sosire;
+        $ora_plecare = $request->data_plecare.' '.$request->ora_plecare;
+        $ora_sosire = $request->data_sosire.' '.$request->ora_sosire;
         $Observatii=$request->Observatii;
 
       $result =  DB::table('zboruri')->where('idZbor',$idzbor)->update(['idRuta'=>$idRuta,
@@ -425,10 +435,17 @@ error_log($nume.'!!!');
         'ora_sosire'=>$ora_sosire,
         'Observatii'=>$Observatii]);
 
-       return  redirect()->intended('/zboruri?editscs='.$result); 
+       return  redirect()->intended('/zboruri?add_scs='.$result); 
 
     }
-
+    public function deletezboruri( Request $request)
+    {    $idzboruri = $request->id;
+         
+        DB::table('zboruri')->where('idZbor',$idzboruri)->delete();
+       
+        
+        return  redirect()->intended('/zboruri');
+        }
 
     
 

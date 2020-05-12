@@ -61,7 +61,7 @@
                 <label class='title'>Echipaj</label>
                <select class="echipaj" name="echipaj">  
                     <option ang="{{$zbor->echipaje->idEchipaj}}" selected  value="{{$zbor->echipaje->nume}}" calificari="{{$zbor->echipaje->nume}}">
-                         {{$zbor->avioane->nume.' '.$zbor->avioane->model}}
+                         {{$zbor->echipaje->nume}}
                     </option>
                   
                 </select>
@@ -71,16 +71,31 @@
             <div class="group">
             <div class="form-group">
                 <label class='title'>Informatii plecare*</label>
-                <input type="datetime-local" id="ora_plecare" class="form-control" name='ora_plecare' value="{{$zbor->ora_plecare}}" >
+                <input type="date" id="data_plecare" class="form-control" name='data_plecare' >
+             
              
             </div>
+
+            <div class="form-group">
+                <label class='title'>Informatii plecare*</label>
+                <input type="text" id="ora_plecare" name="ora_plecare" class=" form-control hidden">
+                <input type="text" class="clock">
+             
             </div>
-            <div class="group">
+
+          
+            </div>
+      
             <div class="form-group">
                 <label class='title'>Informatii sosire*</label>
-                <input type="datetime-local" id="ora_sosire" class="form-control" name='ora_sosire'  value="{{$zbor->ora_sosire}}">
-           
+                <input type="date" id="data_sosire" class="form-control" name='data_sosire' >
+              
             </div>
+
+            <div class="form-group">
+                <label class='title'>Informatii sosire*</label>
+                <input type="text" id="ora_sosire" name='ora_sosire' class="form-control hidden" >
+                <input type="text" class="clock">
             </div>
             <div class="form-group">
                 <label class='title'>Observatii</label>
