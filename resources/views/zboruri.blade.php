@@ -117,7 +117,7 @@
                   
 
                   
-                  <a href="/stergezboruri/{{$zbor->idZbor}}"class='btn btn-danger'>Delete</a>
+                  <a href="/stergezboruri?id={{$zbor->idZbor}}"class='btn btn-danger'>Delete</a>
                   
                   </td>
                   
