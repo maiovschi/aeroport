@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use DB;
+use Session;
 
 class Controller extends BaseController
 {
@@ -15,7 +16,10 @@ class Controller extends BaseController
     
     public function index() {
         
-        return view('welcome');
+        $angajat_logat = Session::get('user');
+        $nivel_acc = Session::get('nivel_acc');
+
+        return view('welcome')->with(['angajat_logat'=>$angajat_logat,'nivel_acc'=>$nivel_acc]);
     }
 
     //rute
@@ -181,9 +185,9 @@ class Controller extends BaseController
         $data_angajare =  $request->input('data_angajare');
         $salariu =  $request->input('salariu');
         $tip_angajat =  $request->input('tip_angajat');
-        $calificari =  $request->input('calificari');
-        $username =  $request->input('username');
-        $parola =  $request->input('parola');
+        $calificari =  !$request->input('calificari')?NULL:$request->input('calificari');
+        $username = $request->input('email');
+        $parola =  $request->input('cnp');
         $result = DB::table('angajati')->insert(['nume'=>$nume,
                                             'prenume'=>$prenume,
                                             'email'=>$email,
@@ -215,21 +219,12 @@ class Controller extends BaseController
         $salariu = $request->salariu;
         $tip_angajat = $request->tip_angajat;
         $calificari = $request->calificari;
-        $username = $request->usernmae;
+        $username = $request->username;
         $parola = $request->parola;
 
-       $angajat_de_editat =  DB::table('angajati')->where('idAngajat',$idangajat)->first();
+        $angajat_de_editat =  DB::table('angajati')->where('idAngajat',$idangajat)->first();
        $result = 0;
-      /* if($angajat_de_editat->nume != $nume &&
-         $angajat_de_editat->prenume != $prenume&&
-         $angajat_de_editat->email != $prenume &&
-         $angajat_de_editat->cnp != $cnp &&
-         $angajat_de_editat->data_angajare != $data_angajare &&
-         $angajat_de_editat->salariu != $salariu &&
-         $angajat_de_editat->tip_angajat != $tip_angajat &&
-         $angajat_de_editat->calificari != $calificari 
-         ){ 
-           */  $result = DB::table('angajati')->where('idAngajat',$idangajat)
+       $result = DB::table('angajati')->where('idAngajat',$idangajat)
                                 ->update(['nume'=>$nume,
                                             'prenume'=>$prenume,
                                             'cnp'=>$cnp,
@@ -549,5 +544,61 @@ DB::table('program')->where('idProgram',$idprogram)->delete();
 return  redirect()->intended('/program');
 }
     
+
+public function login(Request $req){
+    if(Session::get('user'))
+        return redirect()->intended('/');
+
+
+    $err = $req->err;
+
+    return view('login')->with(['err'=>$err]);
+}
+
+public function loginform(Request $req){
+
+    $username = $req->user;
+    $parola = $req->password;
+
+   $user = DB::table('angajati')->where(['username'=>$username,'parola'=>$parola])->first();
+    if($user){
+        Session::put('user',$user);
+        Session::put('nivel_acc',$user->tip_angajat);
+        return redirect()->intended('/');
+    }else{
+        return redirect()->intended('/login?err=true');
+    }
+}
+
+public function resetpass(Request $req){
+    $email = $req->email;
+    $user = DB::table('angajati')->where('email',$email)->first();
+    if($user){
+      $ok = DB::table('angajati')->where('email',$email)->update(['parola'=>$user->cnp]);
+    }
+
+    return response()->json(['scs'=>$ok]);
+}
+
+public function resetuser(Request $req){
+
+    $email = $req->email;
+    $user = DB::table('angajati')->where('email',$email)->first();
+
+    if($user){
+      $ok = DB::table('angajati')->where('email',$email)->update(['nickname'=>$user->email]);
+    }
+
+    return response()->json(['scs'=>$ok]);
+}
+
+public function delogare(Request $req){
+
+    Session::forget('user');
+    Session::forget('nivel_acc');
+
+    return redirect()->intended('/login');
+
+}
 
 }

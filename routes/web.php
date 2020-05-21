@@ -52,7 +52,13 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/zboruriedit/{idzbor}', 'Controller@editzboruri')->name('zboruriedit'); //edit
     Route::get('/zboruriedit/{idzbor}', 'Controller@editzboruriForm')->name('zboruriedit.form');//edit 
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
-   
+    
+    //Login 
 
+    Route::get('/login','Controller@login')->name('login');
+    Route::post('/login','Controller@loginform')->name('login.form');
+    Route::post('/resetpass','Controller@resetpass')->name('resetpass');
+    Route::post('/resetuser','Controller@resetuser')->name('resetuser');
+    Route::get('/delogare','Controller@delogare');
 
    
