@@ -79,15 +79,17 @@
                  
                   <th scope="col">Ruta</th>
                   <th scope="col">Avion</th>
-                  <th scope='col'>Echipaj</th>
-                  <th scole="col">Ora plecare</th>
-                  <th scope="col">Ora sosire</th>
+                  <th scope='col'>Numar Zbor</th>
+                  <th scole="col">Informatii Plecare</th>
+                  <th scope="col">Informatii Sosire</th>
                   <th scope="col">Observati</th>
+                  <th scope="col">Stare zbor</th>
                   <th scope="col">Optiuni</th>
               </tr>
           </thead>
           <tfoot>
               <tr>
+                  <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
@@ -104,10 +106,11 @@
               <tr>
                   <th scope="row">{{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}</th>
                   <td>{{$zbor->avioane->nume.' '.$zbor->avioane->model}}</td>
-                  <td>{{$zbor->echipaje->nume}}</td>
-                  <td>{{$zbor->ora_plecare}}</td>
-                  <td>{{$zbor->ora_sosire}}</td>
+                  <td>{{$zbor->nrZbor}}</td>
+                  <td>{{$zbor->data_ora_plecare}}</td>
+                  <td>{{$zbor->data_ora_sosire}}</td>
                   <td>{{$zbor->Observatii}} </td>
+                  <td>{{$zbor->stareZbor}} </td>
                     <td>
 
                         <!--button type="submit" class="btn btn-danger">Delete</button-->

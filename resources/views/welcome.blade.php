@@ -15,7 +15,7 @@
             <div class='px-5'><a href="{{route('ruta')}}">&#9679;Rute</div>
             <div class='px-5'><a href="{{route('avioane')}}">&#9679;Avioane</div>
             <div class='px-5'><a href="{{route('angajati')}}">&#9679;Angajati</div>
-            <div class='px-5'><a href="{{route('echipaje')}}">&#9679;Echipaje</div>
+            <div class='px-5'><a href="{{route('program')}}">&#9679;Echipaje</div>
             <div class='px-5'><a href="{{route('zboruri')}}">&#9679;Zboruri</div>
         
         </div>

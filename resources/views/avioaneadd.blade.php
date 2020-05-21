@@ -39,17 +39,22 @@
         <form class='text-left' action="{{route('avioaneadd')}}" method='post' enctype="multipart/form-data">
         @csrf
             
-            <div class="form-group">
-                <label class='title'>Model*</label>
-                <input type="text" class="form-control" name='model' >
-            </div>
-            <div class="form-group">
+        <div class="form-group">
                 <label class='title'>Marca*</label>
                 <input type="text" class="form-control" name='marca' >
             </div>
             <div class="form-group">
+                <label class='title'>Model*</label>
+                <input type="text" class="form-control" name='model' >
+            </div>
+            
+            <div class="form-group">
                 <label class='title'>Nume*</label>
                 <input type="text" class="form-control" name='nume' >
+            </div>
+            <div class="form-group">
+                <label class='title'>Data fabricarii*</label>
+                <input type="date" class="form-control" name='data_fabricatie' >
             </div>
           
 
@@ -69,7 +74,7 @@
             </div> -->
             
             <div class='d-flex justify-content-end'>
-                <button type='submit' class='btn btn-lg btn-success my-3 title'>Adauga ruta</button>
+                <button type='submit' class='btn btn-lg btn-success my-3 title'>Adauga avion</button>
             </div>
 
             

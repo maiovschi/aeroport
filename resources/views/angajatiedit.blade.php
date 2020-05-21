@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label class='title'>E-mail*</label>
-                <input type="text" id="email" class="form-control" name='email' value="{{$angajati->email}}" >
+                <input type="email" id="email" class="form-control" name='email' value="{{$angajati->email}}" >
             </div>
 
             <div class="form-group">

@@ -28,11 +28,11 @@
     <div class='container text-center'>
         
         <a href="{{route('home')}}" class='btn btn-lg btn-info mt-4 title'>Acasa</a>
-        <!-- <div class='px-5'><a href="{{route('ruta')}}">&#9679;Rute</div> -->
+ 
        
         
       <div class='d-flex flex-row'>
-        <div class='px-5 title'>Editeaza zbor</div>
+        <div class='px-5 title'>Adauga zbor</div>
       </div>
       
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
@@ -70,23 +70,12 @@
                 </select>
             </div>
             </div>
+           
             <div class="form-group">
-                <label class='title'>Echipaj</label>
-               <select class="echipaj" name="echipaj">  
-               <option  selected  value="-1">
-                       Selectati
-                    </option>
-               @foreach($echipaje as $echipaj)
-                       
-                       <option ang="" value="{{$echipaj->idEchipaj}}" class="" calificare = "{{$echipaj->pilot->calificari}}">
-                       {{$echipaj->nume}}
-                       </option>
-                    
-               @endforeach
-                  
-                </select>
+                <label class='title'>Numar zbor</label>
+                <input type="text"  class="form-control nume" name='nrZbor' >
             </div>
-            </div>
+               
 
             <div class="group">
             <div class="form-group">
@@ -118,17 +107,17 @@
                 <input type="text" class="clock">
             </div>
 
-
-         
-           
-            
             <div class="form-group">
                 <label class='title'>Observatii</label>
                 <input type="text"  class="form-control nume" name='Observatii' >
             </div>
+            <div class="form-group">
+                <label class='title'>Stare avion</label>
+                <input type="text"  class="form-control nume" name='stareZbor' >
+            </div>
 
                 <div class='d-flex justify-content-end'>
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica zbor</button>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adaugaa zbor</button>
             </div>
 
             
@@ -163,35 +152,7 @@
             $('.clock').clockTimePicker();
       })
 
-      $('select').on('change',function(){
-             var selected_option = this.options[this.options.selectedIndex];
-        
-
-            var calificare = $(selected_option).attr("calificare");
-            if($(this).hasClass('avion')){
-                var selected_option_echipaj = $('.echipaj')[0].options[$('.echipaj')[0].options.selectedIndex];
-                    if($(selected_option_echipaj).attr("calificare") != calificare){
-                        $(selected_option_echipaj).parent().addClass("wrong");
-                    }else{
-                        $(selected_option_echipaj).parent().removeClass("wrong");
-                    }
-            }
-
-            if($(this).hasClass('echipaj')){
-                var selected_option_avion = $('.avion')[0].options[$('.avion')[0].options.selectedIndex];
-            
-                if($(selected_option_avion).attr("calificare") != calificare){
-                        $(selected_option_avion).parent().addClass("wrong");
-                    }else{
-                        $(selected_option_avion).parent().removeClass("wrong");
-                    }
-            }
-
-            if($(this).hasClass('avion') || $(this).hasClass('echipaj'))
-                    $(this).removeClass('wrong');
-
-
-      })
+   
    
     </script> 
 

@@ -37,13 +37,13 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/angajatiedit/{idangajat}', 'Controller@editangajatiForm')->name('angajatiedit.form');//edit 
     Route::get('/stergeangajati','Controller@deleteangajati');//delete
    
-    // echipaje
-    Route::get('/echipajeadd', 'Controller@echipajeForm')->name('echipaje.form'); //adauga
-    Route::post('/echipajeadd', 'Controller@addechipaje')->name('echipajeadd'); //adauga
-    Route::get('/echipaje', 'Controller@getEchipaje')->name('echipaje'); //pag echipaje
-    Route::post('/echipajeedit/{idechipaj}', 'Controller@editechipaje')->name('echipajeedit'); //edit
-    Route::get('/echipajeedit/{idechipaj}', 'Controller@editechipajeForm')->name('echipajeedit.form');//edit 
-    Route::get('/stergeechipaje','Controller@deleteechipaje');//delete
+    // program
+    Route::get('/programadd', 'Controller@programForm')->name('program.form'); //adauga
+    Route::post('/programadd', 'Controller@addprogram')->name('programadd'); //adauga
+    Route::get('/program', 'Controller@getProgram')->name('program'); //pag echipaje
+    Route::post('/programedit/{idechipaj}', 'Controller@editprogram')->name('programedit'); //edit
+    Route::get('/programedit/{idechipaj}', 'Controller@editprogramForm')->name('programedit.form');//edit 
+    Route::get('/stergeprogram','Controller@deleteprogram');//delete
    
     // zboruri
     Route::get('/zboruriadd', 'Controller@zboruriForm')->name('zboruri.form'); //adauga

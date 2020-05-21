@@ -48,7 +48,7 @@
             </div>
             <div class="form-group">
                 <label class='title'>E-mail*</label>
-                <input type="text" class="form-control" name='email' >
+                <input type="email" class="form-control" name='email' >
             </div>
             <div class="form-group">
                 <label class='title'>CNP*</label>
@@ -76,6 +76,7 @@
                 <label class='title'>Calificare*</label>
                 <input type="text" class="form-control" name='calificari' >
             </div>
+         
 
           
 

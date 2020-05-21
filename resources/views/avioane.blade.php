@@ -77,9 +77,11 @@
           <thead>
               <tr>
                   <th scope="col" class='px-1'>Nr. avion</th>
-                  <th scope="col">Model</th>
                   <th scope="col">Marca</th>
+                  <th scope="col">Model</th>
+              
                   <th scope="col">Nume</th>
+                  <th scope="col">Data fabricarii</th>
                   <th scope='col'>Optiuni</th>
                   
               </tr>
@@ -92,6 +94,7 @@
                   <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
+                  <th scope="col"></th>
                   
             
               </tr>
@@ -100,10 +103,11 @@
           @foreach($avioane as $key => $avioane)
               <tr>
                   <th scope="row">{{$avioane-> idAvion}}</th>
-                  <td>{{$avioane-> model}}</td>
                   <td>{{$avioane-> marca}}</td>
-                  <td>{{$avioane-> nume}}</td>
+                  <td>{{$avioane-> model}}</td>
                 
+                  <td>{{$avioane-> nume}}</td>
+                  <td>{{$avioane-> data_fabricatie}}</td>
                   <td>
                 
 

@@ -28,13 +28,13 @@ CREATE TABLE IF NOT EXISTS `aeroport`.`angajati` (
   `idAngajat` INT NOT NULL AUTO_INCREMENT,
   `nume` VARCHAR(45) NULL,
   `prenume` VARCHAR(45) NULL,
-  `email` VARCHAR(45) NULL,
-  `cnp` VARCHAR(45) NULL,
-  `data_angajare` DATETIME NULL,
+  `email` VARCHAR(45) NULL UNIQUE,
+  `cnp` VARCHAR(45) NULL UNIQUE,
+  `data_angajare` DATE NULL,
   `salariu` INT NULL,
   `tip_angajat` VARCHAR(50) NULL,
   `calificari` VARCHAR(45) NULL,
-  `username` VARCHAR(45) NULL,
+  `username` VARCHAR(45) NULL UNIQUE,
   `parola` VARCHAR(45) NULL,
   PRIMARY KEY (`idAngajat`));
 
