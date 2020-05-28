@@ -54,10 +54,12 @@
                 <input type="email" id="email" class="form-control" name='email' value="{{$angajati->email}}" >
             </div>
 
-            <div class="form-group">
+     @if($user->tip_angajat == 'Administrator')
+           <div class="form-group">
                 <label class='title'>CNP*</label>
                 <input type="text" id="cnp" class="form-control" name='cnp' value="{{$angajati->cnp}}" >
             </div>
+      @endif      
 
             <div class="form-group">
                 <label class='title'>Data angajarii*</label>
@@ -72,16 +74,16 @@
                 <label class='title'>Tip angajat*</label>
                 <!--input type="text" class="form-control" name='tip_angajat' -->
                 <select name='tip_angajat'> 
-                  <option value="{{$angajati->tip_angajat}}">  {{$angajati->tip_angajat}}  </option>
-                  <option>  Pilot  </option>
-                  <option>  Steward  </option>
-                  <option>  Serviciul suport tehnic zboruri  </option>
-                  <option>  Serviciul planificari  </option>
-                  <option>  Serviciul gestiune si analiza operatiuni zboruri  </option>
-                  <option>  Director piloti  </option>
-                  <option>  Director steward </option>
-                  <option>  Director servicii </option>
-                  <option>  Administrator </option>
+                  <option value="{{$angajati->tip_angajat}}" selected>  {{$angajati->tip_angajat}}  </option>
+                @if($angajati->tip_angajat != 'Pilot')  <option>  Pilot  </option> @endif
+                @if($angajati->tip_angajat != 'Steward')  <option>  Steward  </option>@endif
+                @if($angajati->tip_angajat != 'Serviciul suport tehnic zboruri')  <option>  Serviciul suport tehnic zboruri  </option>@endif
+                @if($angajati->tip_angajat != 'Serviciul planificari')  <option>  Serviciul planificari  </option>@endif
+                @if($angajati->tip_angajat != 'Serviciul gestiune si analiza operatiuni zboruri')  <option>  Serviciul gestiune si analiza operatiuni zboruri  </option>@endif
+                @if($angajati->tip_angajat != 'Director piloti')  <option>  Director piloti  </option>@endif
+                @if($angajati->tip_angajat != 'Director steward')  <option>  Director steward </option>@endif
+                @if($angajati->tip_angajat != 'Director servicii')  <option>  Director servicii </option>@endif
+                @if($angajati->tip_angajat != 'Administrator')  <option>  Administrator </option>@endif
                 </select>
             </div>
             <div class="form-group calif hidden">

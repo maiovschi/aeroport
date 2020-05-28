@@ -60,5 +60,6 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/resetpass','Controller@resetpass')->name('resetpass');
     Route::post('/resetuser','Controller@resetuser')->name('resetuser');
     Route::get('/delogare','Controller@delogare');
+    Route::get('/programpiloti','Controller@programpiloti');
 
    

@@ -47,6 +47,11 @@
                 <label class='title'>aeroport sosire*</label>
                 <input type="text" class="form-control" name='aeroport_sosire' >
             </div>
+            @if($error)
+              <div class="form-group " style="color:red;">
+                 {{$error}}
+              </div>
+              @endif
           
 
            <!--  <div class="container" style="margin-top: 20px">

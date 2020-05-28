@@ -37,15 +37,21 @@ class Controller extends BaseController
         $rute = DB::table('rute');
     //    if($rute::all()->isEmpty()) $nr_ruta = 1;
     //    else $nr_ruta = $rute::all()->last()->idrute + 1;
-        return view('rutaadd');
+        return view('rutaadd')->with(['error'=>false]);
     }
 
     public function addruta(Request $request) {
         $aero_plecare =  $request->input('aeroport_plecare');
         $aero_sosire = $request->input('aeroport_sosire');
-        $result = DB::table('rute')->insert(['aeroport_plecare'=>$aero_plecare,
+        //
+       $exista =  DB::table('rute')->where(['aeroport_plecare'=>$aero_plecare,'aeroport_sosire'=>$aero_sosire])->first();
+       if(!$exista){
+         $result = DB::table('rute')->insert(['aeroport_plecare'=>$aero_plecare,
                                             'aeroport_sosire'=>$aero_sosire
                                             ]);
+       } else{
+           return view('rutaadd')->with(['error'=>'Ruta deja exista!!']);
+       }
         /*$ruta = new rute();
         $ruta->plecare = $request->input('aeroport_plecare');
         $ruta->sosire = $request->input('aeroport_sosire');
@@ -206,32 +212,53 @@ class Controller extends BaseController
    
     public function editangajatiForm($idangajat) {
         $angajati = DB::table('angajati')->where('idAngajat',$idangajat)->first();
-        return view ('angajatiedit', compact('angajati'));   
+        $user  = Session::get('user');
+        return view ('angajatiedit', compact('angajati'))->with(['user'=>$user]);   
     }
 
     public function editangajati(Request $request, $idangajat)
     {   
+        $vector_update = [];
+
         $nume = $request->nume;
+        if($nume){
+            $vector_update['nume']=$nume;
+        }
         $prenume = $request->prenume;
+        if($prenume){
+            $vector_update['prenume']=$prenume;
+        }
         $email = $request->email;
+        if($email){
+            $vector_update['email']=$email;
+        }
         $cnp = $request->cnp;
+        if($cnp){
+            $vector_update['cnp']=$cnp;
+        }
         $data_angajare = $request->data_angajare;
+        if($data_angajare){
+            $vector_update['data_angajare']=$data_angajare;
+        }
         $salariu = $request->salariu;
+        if($salariu){
+            $vector_update['salariu']=$salariu;
+        }
         $tip_angajat = $request->tip_angajat;
+        if($tip_angajat){
+            $vector_update['tip_angajat']=$tip_angajat;
+        }
         $calificari = $request->calificari;
+        if($calificari){
+            $vector_update['calificari']=$calificari;
+        }
+        
      
 
         $angajat_de_editat =  DB::table('angajati')->where('idAngajat',$idangajat)->first();
         $result = 0;
          $result = DB::table('angajati')->where('idAngajat',$idangajat)
-                                ->update(['nume'=>$nume,
-                                            'prenume'=>$prenume,
-                                            'cnp'=>$cnp,
-                                            'data_angajare'=>$data_angajare,
-                                            'salariu'=>$salariu,
-                                            'tip_angajat'=>$tip_angajat,
-                                            'calificari'=>$calificari,
-                                           ]);
+                                ->update($vector_update);
         
  
         
@@ -598,5 +625,11 @@ public function delogare(Request $req){
     return redirect()->intended('/login');
 
 }
+
+public function programpiloti(Request $req){
+
+    return view('programpiloti');
+}
+
 
 }
