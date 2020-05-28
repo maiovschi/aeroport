@@ -5,29 +5,25 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 
-<body>
 
-<div>
+<body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
+<div class='container-fluid text-center'>
+<div class="gridMaster"> 
 <form method="POST" action="/login">
    @csrf
     <div class="row">
-     <h4>Nickname</h4>
+     <h4>Username</h4>
      <input type="text" name="user">
     </div>
-
     <div class="row">
      <h4>Parola</h4>
      <input type="password" name="password" >
     </div>
-
     <div class="row">
         <input type="submit" value="Log in">
     </div>
-
     <div class="row">
         <button class="passreset"> Reseteaza parola </button>
-    </div>
-    <div class="row">
         <button class="userreset"> Reseteaza nickname </button>
     </div>
 
@@ -35,9 +31,9 @@
         @if($err)
             <h4>Datele sunt gresite!</h4>
         @endif
-    </div>
     
-
+ </div>
+ </div>
 </form>
 <script>
     $('.passreset').on('click',function(ev){
@@ -87,7 +83,18 @@
 </script>
 </div>
 <style>
-
+.gridMaster{
+             width:40%;
+  
+    margin-left: 450px;
+        margin-top: 120px;
+ 
+         grid-gap: .5rem;
+       padding: .7rem;
+   
+           /* box-shadow:0px 10px 50px 0px black;*/
+            
+        }
 </style>
 <body>
 </html>

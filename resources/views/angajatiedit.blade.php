@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> 
@@ -65,14 +67,28 @@
                 <label class='title'>Salariu*</label>
                 <input type="text" id="salariu" class="form-control" name='salariu' value="{{$angajati->salariu}}" >
             </div>
-            <div class="form-group">
+         
+             <div class="form-group">
                 <label class='title'>Tip angajat*</label>
-                <input type="text" id="tip_angajat" class="form-control" name='tip_angajat' value="{{$angajati->tip_angajat}}" >
+                <!--input type="text" class="form-control" name='tip_angajat' -->
+                <select name='tip_angajat'> 
+                  <option value="{{$angajati->tip_angajat}}">  {{$angajati->tip_angajat}}  </option>
+                  <option>  Pilot  </option>
+                  <option>  Steward  </option>
+                  <option>  Serviciul suport tehnic zboruri  </option>
+                  <option>  Serviciul planificari  </option>
+                  <option>  Serviciul gestiune si analiza operatiuni zboruri  </option>
+                  <option>  Director piloti  </option>
+                  <option>  Director steward </option>
+                  <option>  Director servicii </option>
+                  <option>  Administrator </option>
+                </select>
             </div>
-            <div class="form-group">
+            <div class="form-group calif hidden">
                 <label class='title'>Calificare*</label>
-                <input type="text" id="calificari" class="form-control" name='calificari' value="{{$angajati->calificari}}" >
+                <input type="text" class="form-control calf" name='calificari' >
             </div>
+         
          
             
             <div class='d-flex justify-content-end'>
@@ -85,10 +101,47 @@
 
   
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
     
-   
+    <script>
+            $('select[name=tip_angajat]').on('change',function(ev){
+                if($(this).val()!='Pilot'){
+                  $('.calif').addClass('hidden');
+                  $('.calif input').val("");
+                }else{
+                  $('.calif').removeClass('hidden');
+                }
+            })
+
+            $('#submit_button').on('click',function(ev){
+            ev.preventDefault();
+
+
+            var ok = true;
+            $('input,select').toArray().forEach(em=>{
+
+              if(!$(em).hasClass('calf') || 
+                 ($(em).hasClass('calf') && $('select[name=tip_angajat]').val() == 'Pilot')){
+                
+                ok = ok&& $(em).val();
+                if(!$(em).val() || $(em).val() == -1){
+                  $(em).addClass('wrong');
+
+                }else{
+                  $(em).removeClass('wrong');
+                }
+              }
+            })
+       
+            if(ok){
+              var form = $('form')[0];
+              form.submit();
+            } else{
+                alert("Nu toate campurile sunt ok!");
+            }
+            
+      })
+          </script>
 
     <style>
       .wrong{

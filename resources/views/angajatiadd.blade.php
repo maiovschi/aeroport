@@ -71,8 +71,13 @@
                   <option value="-1">  Selectati un tip de ang.  </option>
                   <option>  Pilot  </option>
                   <option>  Steward  </option>
-                  <option>  Admin  </option>
-                  <option>  Director  </option>
+                  <option>  Serviciul suport tehnic zboruri  </option>
+                  <option>  Serviciul planificari  </option>
+                  <option>  Serviciul gestiune si analiza operatiuni zboruri  </option>
+                  <option>  Director piloti  </option>
+                  <option>  Director steward </option>
+                  <option>  Director servicii </option>
+                  <option>  Administrator </option>
                 </select>
             </div>
             <div class="form-group calif hidden">

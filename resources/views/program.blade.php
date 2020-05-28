@@ -99,7 +99,7 @@
           </tfoot>
           <tbody>
       
-          @foreach($echipaje as $echipaj)
+         <!--  @foreach($echipaje as $echipaj)
               <tr>
                   <th scope="row">{{$echipaj->pilot->nume.' '.$echipaj->pilot->prenume}}</th>
                   <td>{{$echipaj->copilot->nume.' '.$echipaj->copilot->prenume}}</td>
@@ -122,7 +122,7 @@
                   
                   
                </tr>
-           @endforeach
+           @endforeach -->
           </tbody>
           
       </table>

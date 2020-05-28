@@ -1,4 +1,5 @@
-
+DROP  DATABASE IF EXISTS aeroport;
+CREATE DATABASE IF NOT EXISTS aeroport;
 USE `aeroport` ;
 
 
@@ -47,9 +48,7 @@ CREATE TABLE `aeroport`.`zboruri` (
 `data_ora_sosire` DATETIME NOT NULL,
 `Observatii` VARCHAR(45) NULL,
 `stareZbor` VARCHAR(45) NOT NULL,
-INDEX `avion_fk_idx` (`idAvion`),
-INDEX `ruta_fk_idx` (`idRuta`),
-UNIQUE INDEX `nr_zbor_UNIQUE` (`nrZbor`),
+
 CONSTRAINT `avion_fk`
 FOREIGN KEY (`idAvion`)
 REFERENCES `aeroport`.`avioane` (`idAvion`)
@@ -70,8 +69,6 @@ CREATE TABLE  `aeroport`.`programe` (
 `idZbor` INT NULL,
 `idAngajat` INT NOT NULL,
 PRIMARY KEY (`idProgram`),
-INDEX `fk_Program_1_idx` (`idZbor`),
-INDEX `fk_ang_idx` (`idAngajat`),
 CONSTRAINT `fk_zbor`
 FOREIGN KEY (`idZbor`)
 REFERENCES `aeroport`.`zboruri` (`idZbor`)
@@ -91,7 +88,6 @@ CREATE TABLE  `aeroport`.`documente` (
 `cale` VARCHAR(45) NOT NULL,
 `nume` VARCHAR(45) NOT NULL,
 PRIMARY KEY (`idDocument`),
-INDEX `fk_ang_doc_idx` (`idAngajat`),
 CONSTRAINT `fk_ang_doc`
 FOREIGN KEY (`idAngajat`)
 REFERENCES `aeroport`.`angajati` (`idAngajat`)

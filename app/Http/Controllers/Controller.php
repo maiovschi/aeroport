@@ -219,12 +219,11 @@ class Controller extends BaseController
         $salariu = $request->salariu;
         $tip_angajat = $request->tip_angajat;
         $calificari = $request->calificari;
-        $username = $request->username;
-        $parola = $request->parola;
+     
 
         $angajat_de_editat =  DB::table('angajati')->where('idAngajat',$idangajat)->first();
-       $result = 0;
-       $result = DB::table('angajati')->where('idAngajat',$idangajat)
+        $result = 0;
+         $result = DB::table('angajati')->where('idAngajat',$idangajat)
                                 ->update(['nume'=>$nume,
                                             'prenume'=>$prenume,
                                             'cnp'=>$cnp,
@@ -232,8 +231,7 @@ class Controller extends BaseController
                                             'salariu'=>$salariu,
                                             'tip_angajat'=>$tip_angajat,
                                             'calificari'=>$calificari,
-                                            'username'=>$username,
-                                            'parola'=>$parola]);
+                                           ]);
         
  
         
@@ -457,7 +455,7 @@ class Controller extends BaseController
 
   public function editprogramForm($idprogram){
            
-    $prg = DB::table('program')->where('idProgram',$idprogram)->first();
+    $prg = DB::table('programe')->where('idProgram',$idprogram)->first();
 
     $program = new \stdClass();
     $program->tip_activitate = $ecp->tip_activitate;
@@ -474,7 +472,7 @@ class Controller extends BaseController
 
 public function getProgram(Request $request){
 
-$program_brute = DB::table('program')->get();
+$program_brute = DB::table('programe')->get();
 $program_ = array();
 foreach($program_brute as $prg){
   $program = new \stdClass();
@@ -538,13 +536,13 @@ return redirect()->intended('/echipaje?addscs='.$result);
  public function deleteprogram( Request $request)
 {    $idprogram = $request->id;
  
-DB::table('program')->where('idProgram',$idprogram)->delete();
+DB::table('programe')->where('idProgram',$idprogram)->delete();
 
 
 return  redirect()->intended('/program');
 }
     
-
+// logara
 public function login(Request $req){
     if(Session::get('user'))
         return redirect()->intended('/');
