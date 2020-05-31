@@ -59,7 +59,17 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/login','Controller@loginform')->name('login.form');
     Route::post('/resetpass','Controller@resetpass')->name('resetpass');
     Route::post('/resetuser','Controller@resetuser')->name('resetuser');
-    Route::get('/delogare','Controller@delogare');
-    Route::get('/programpiloti','Controller@programpiloti');
+    Route::get('/delogare','Controller@delogare')->name('delogare');
+
+
+    //programe
+    Route::get('/programpiloti','Controller@programpiloti')->name('programpiloti');
+    Route::get('/programstewarzi','Controller@programstewarzi')->name('programstewarzi');
+    Route::get('/programavioane','Controller@programavioane')->name('programavioane');
+    Route::get('/programzboruri','Controller@programzboruri')->name('programzboruri');
+
+    //profil
+
+    Route::get('/profil','Controller@profil')->name('profil');
 
    

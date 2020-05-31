@@ -7,37 +7,13 @@
   </head>
   <body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
     <div class='container-fluid text-center'>
-        
-     
- 
-   <!--      <div class='d-flex flex-row'>
-          
-        @if($nivel_acc ==='admin')
-          <div class='px-5'><a href="{{route('ruta')}}">&#9679;Rute</div>
-          <div class='px-5'><a href="{{route('avioane')}}">&#9679;Avioane</div>
-            <div class='px-5'><a href="{{route('angajati')}}">&#9679;Angajati</div>
-            <div class='px-5'><a href="{{route('program')}}">&#9679;Echipaje</div>
-            <div class='px-5'><a href="{{route('zboruri')}}">&#9679;Zboruri</div>
-            <div class='px-5'><a href="/">&#9679;Delogare</a></div>
-        @endif
-
-
-      
-            <div class='px-5'><a href="{{route('ruta')}}">&#9679;Rute</div>     
-            <div class='px-5'><a href="{{route('avioane')}}">&#9679;Avioane</div>
-            <div class='px-5'><a href="{{route('angajati')}}">&#9679;Angajati</div>
-            <div class='px-5'><a href="{{route('program')}}">&#9679;Echipaje</div>
-            <div class='px-5'><a href="{{route('zboruri')}}">&#9679;Zboruri</div>
-            <div class='px-5'><a href="/">&#9679;Delogare</a></div>
-        </div> -->
-       
-        
+    <a href="{{route('delogare')}}" class='btn btn-lg btn-info my-4'>Delogare</a>
     </div>
 
     <div class="gridMaster"> 
         <div class="grid">
         @if($nivel_acc ==='Administrator')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
             <a href="{{route('ruta')}}" class="blocks"> Rute </a>
@@ -46,11 +22,12 @@
             <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Avion </a>  
             <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
-            <a href="{{route('angajati')}}" class="blocks"> Program Piloti </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program Steward </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Steward </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program Avion </a> 
+            <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
+            <a href="{{route('programstewarzi')}}" class="blocks"> Program Steward </a>
+            <a href="{{route('programavioane')}}" class="blocks"> Program Avioane </a> 
+            <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
         </div>
           @endif
           <div class="grid">

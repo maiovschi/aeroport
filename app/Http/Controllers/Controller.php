@@ -278,99 +278,7 @@ class Controller extends BaseController
   
   
   
-  
-   // program
-
-   /*  public function editprogramForm($idprogram){
-           
-            $prg = DB::table('program')->where('idProgram',$idprogram)->first();
-        
-            $program = new \stdClass();
-            $program->zbor = DB::table('angajati')->where('idAngajat','=',$ecp->idPilot)->first();
-            $program->copilot = DB::table('angajati')->where('idAngajat','=',$ecp->idCopilot)->first();
-            $program->steward1 = DB::table('angajati')->where('idAngajat','=',$ecp->idSteward1)->first();
-            $program->steward2 = DB::table('angajati')->where('idAngajat','=',$ecp->idSteward2)->first();
-            $program->nume = $ecp->nume;
-            $program->idProgram = $prg->idProgram;
-
-            $angajati = DB::table('angajati')->get();
-
-            return view('echipajeedit')->with(['echipaj'=>$echipaj,'angajati'=>$angajati]);
-    }
-
-    public function getProgram(Request $request){
-     
-      $echipaje_brute = DB::table('echipaje')->get();
-      $echipaje_ = array();
-      foreach($echipaje_brute as $ecp){
-          $echipaj = new \stdClass();
-          $echipaj->pilot = DB::table('angajati')->where('idAngajat','=',$ecp->idPilot)->first();
-          $echipaj->copilot = DB::table('angajati')->where('idAngajat','=',$ecp->idCopilot)->first();
-          $echipaj->steward1 = DB::table('angajati')->where('idAngajat','=',$ecp->idSteward1)->first();
-          $echipaj->steward2 = DB::table('angajati')->where('idAngajat','=',$ecp->idSteward2)->first();
-          $echipaj->nume = $ecp->nume;
-          $echipaj->idEchipaj = $ecp->idEchipaj;
-          $echipaje_[] = $echipaj;
-      }
-      $edit_scs = $request->editscs == '1'?"true":"false";
-      $add_scs = $request->addscs == '1'?"true":"false";
-      error_log($edit_scs);
-
-       return view('echipaje')->with(['echipaje'=>$echipaje_,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]);                     
-
-    }
-
-    public function editprogram($idechipaj,Request $request){
-
-        $idPilot = $request->pilot;
-        $idCopilot = $request->copilot;
-        $idSt1 = $request->steward1;
-        $idSt2 = $request->steward2;
-        $nume=$request->nume;
-
-      $result =  DB::table('echipaje')->where('idEchipaj',$idechipaj)->update(['idPilot'=>$idPilot,
-        'idCopilot'=> $idCopilot,
-        'idSteward1'=>$idSt1,
-        'idSteward2'=>$idSt2,
-        'nume'=>$nume]);
-
-       return  redirect()->intended('/echipaje?editscs='.$result); 
-    }
-
-
-    //  adauga form 
-    public function programForm(){
-           
-      //  $echipaj = DB::table('echipaje')->get();
-
-      error_log(">> trecee ");
-      $angajati = DB::table('angajati')->get();
-        return view('echipajeadd')->with(['angajati'=>$angajati]);
-      }
-    public function addprogram(Request $request){
-        
-        $idPilot = $request->input('pilot');
-        $idCopilot = $request->input('copilot');
-        $idSt1 = $request->input('steward1');
-        $idSt2 = $request->input('steward2');
-        $result =  DB::table('echipaje')->insert(['idPilot'=>$idPilot,
-        'idCopilot'=> $idCopilot,
-        'idSteward1'=>$idSt1,
-        'idSteward2'=>$idSt2,
-        'nume'=> $request->input('nume')
-        ]);
-        return redirect()->intended('/echipaje?addscs='.$result);  
-         }
-
-
-         public function deleteprogram( Request $request)
-    {    $idprogram = $request->id;
-         
-        DB::table('program')->where('idProgram',$idprogram)->delete();
-       
-        
-        return  redirect()->intended('/program');
-        } */
+ 
      //zboruri
      public function editzboruriForm($idzbor){
            
@@ -626,10 +534,32 @@ public function delogare(Request $req){
 
 }
 
+// calendar programe
 public function programpiloti(Request $req){
 
     return view('programpiloti');
 }
 
+public function programstewarzi(Request $req){
+
+    return view('programstewarzi');
+}
+public function programavioane(Request $req){
+
+    return view('programavioane');
+}public function programzboruri(Request $req){
+
+    return view('programzboruri');
+}
+
+// profil
+
+public function profil($idAngajat, Request $request)
+{
+    $idAngajat = $request->idAngajat;
+$profil=DB::table('angajati')->where(['idAngajat'=>$idAngajat])->first();
+
+return view('profil')->with(['idAngajat'=>$profil]);
+}
 
 }

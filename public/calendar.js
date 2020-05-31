@@ -23,8 +23,8 @@ document.getElementById("year").innerHTML = createYear;
 var calendar = document.getElementById("calendar");
 var lang = calendar.getAttribute('data-lang');
 
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+var months = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+var days = ["Duminica", "Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata"];
 
 var dayHeader = "<tr>";
 for (day in days) {

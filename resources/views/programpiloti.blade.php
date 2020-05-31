@@ -15,7 +15,10 @@
 </head>
 
 <body style='font-family: Arial; background-color: #cde8f9;'>
-
+<div class="d-flex justify-content-between">
+        <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
+  
+      </div>
 <div class="modal-wrapper hidden">
         <div class="modal ">
             <div class="row">
@@ -53,18 +56,18 @@
   <div class="footer-container-calendar">
     <label for="month">Jump To: </label>
     <select id="month" onchange="jump()">
-      <option value=0>Jan</option>
-      <option value=1>Feb</option>
-      <option value=2>Mar</option>
-      <option value=3>Apr</option>
-      <option value=4>May</option>
-      <option value=5>Jun</option>
-      <option value=6>Jul</option>
-      <option value=7>Aug</option>
-      <option value=8>Sep</option>
-      <option value=9>Oct</option>
-      <option value=10>Nov</option>
-      <option value=11>Dec</option>
+      <option value=0>Ianuarie</option>
+      <option value=1>Februarie</option>
+      <option value=2>Martie</option>
+      <option value=3>Aprilie</option>
+      <option value=4>Mai</option>
+      <option value=5>Iunie</option>
+      <option value=6>Iulie</option>
+      <option value=7>August</option>
+      <option value=8>Septembrie</option>
+      <option value=9>Octombrie</option>
+      <option value=10>Noiembrie</option>
+      <option value=11>Decembrie</option>
     </select>
     <select id="year" onchange="jump()"></select>
   </div>
@@ -100,8 +103,8 @@ document.getElementById("year").innerHTML = createYear;
 var calendar = document.getElementById("calendar");
 var lang = calendar.getAttribute('data-lang');
 
-var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+var months = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+var days = ["Duminica", "Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata"];
 
 var dayHeader = "<tr>";
 for (day in days) {
