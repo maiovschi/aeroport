@@ -105,9 +105,9 @@
               </tr>
           </tfoot>
           <tbody>
-          @foreach($profil as $key => $profil)
+      
               <tr>
-                  <th scope="row">{{$profil-> idAngajat}}</th>
+                  <th scope="row">{{$profil->idAngajat}}</th>
                   <td>{{$profil-> nume}}</td>
                   <td>{{$profil-> prenume}}</td>
                   <td>{{$profil-> email}}</td>
@@ -129,7 +129,7 @@
                   
                   
                </tr>
-           @endforeach
+       
           </tbody>
           
       </table>

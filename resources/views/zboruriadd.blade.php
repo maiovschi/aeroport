@@ -111,10 +111,7 @@
                 <label class='title'>Observatii</label>
                 <input type="text"  class="form-control nume" name='Observatii' >
             </div>
-            <div class="form-group">
-                <label class='title'>Stare avion</label>
-                <input type="text"  class="form-control nume" name='stareZbor' >
-            </div>
+           
 
                 <div class='d-flex justify-content-end'>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adaugaa zbor</button>

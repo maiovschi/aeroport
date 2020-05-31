@@ -56,10 +56,11 @@
       </div>
       
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
-        <form class='text-left' id="edit-form" action="{{route('echipajeadd')}}" method='post' enctype="multipart/form-data">
+        <form class='text-left' id="edit-form" action="/addechipaj" method='post' enctype="multipart/form-data">
         @csrf
             <div class="group">
             <div class="form-group">
+                <input type="hidden" value="{{$zbor->idZbor}}" name="zbor"/>
                 <label class='title'>Pilot</label>
                    <select class="pilot" name="pilot">
                    <option value="-1">
@@ -75,6 +76,7 @@
                     @endforeach
                 </select>
             </div>
+            <?php error_log("linia 78"); ?>
             <div class="form-group">
                 <label class='title'>Copilot</label>
                <select class="copilot" name="copilot">  
@@ -124,10 +126,7 @@
                 </select>
             </div>
             </div>
-            <div class="form-group">
-                <label class='title'>Nume Echipaj</label>
-                <input type="text"  class="form-control nume" name='nume' placeholder="" >
-            </div>
+         
 
                 <div class='d-flex justify-content-end'>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
@@ -137,7 +136,7 @@
         </form>
     </div>
 
-  <?php error_log("inainte de final") ?>
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

@@ -52,6 +52,8 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/zboruriedit/{idzbor}', 'Controller@editzboruri')->name('zboruriedit'); //edit
     Route::get('/zboruriedit/{idzbor}', 'Controller@editzboruriForm')->name('zboruriedit.form');//edit 
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
+    Route::get('/addechipaj','Controller@addechipaj');
+    Route::post('/addechipaj','Controller@addechipajPOST');
     
     //Login 
 
