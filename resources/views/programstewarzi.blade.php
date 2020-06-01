@@ -19,17 +19,52 @@
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
   
       </div>
-<div class="modal-wrapper hidden">
+      <div class="modal-wrapper hidden">
         <div class="modal ">
             <div class="row">
             </div>
             <div class="row">
+               <input class="" value="Radoi">
+               <input class="" value="Manuel">
+               <select>
+               <option selected>
+                ZBOR
+               </option>
+                 <option >
+                   DUTY
+                 </option>
+
+                 <option >
+                   FREE
+                 </option>
+               </select>
                
+             <input type="text" readonly style="width:120px;" value="EAP-300">
             </div>
 
             <div class="row">
-   
+              <button class="" onclick="ascundeModal()">Adauga</button>
+            </div>
+
+            <div class="row">
+              <select>
+                <option> Pilot1 </option>
+                <option> Pilot2 </option>
+                <option> Pilot3 </option>
+              </select>
+              <input type="text" readonly value="DUTY">
+            </div>
+            <div class="row">
+              <select>
+                <option> Pilot1 </option>
+                <option> Pilot2 </option>
+                <option> Pilot3 </option>
+              </select>
+              <input type="text" readonly value="DUTY">
+            </div>
+            <div class="row">
                 <button class="cancel" onclick="ascundeModal()">Cancel</button>
+                <button class="cancel" onclick="ascundeModal()">Salveaza</button>
             </div>
         </div>
     </div>

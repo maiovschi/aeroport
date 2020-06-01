@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Companie</title>
+    <title>{{Session::get('user')->tip_angajat}} </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
@@ -32,9 +32,10 @@
           @endif
           <div class="grid">
         @if($nivel_acc ==='Pilot')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program  </a>
+            <a href="{{route('programpilot')}}" class="blocks"> Program  </a>
+            <a href="{{route('orarpilot')}}" class="blocks"> Program - Lista </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
         </div>
           @endif
@@ -43,6 +44,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Program  </a>
+            <a href="{{route('angajati')}}" class="blocks"> Program - Lista </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
         </div>
           @endif
@@ -61,6 +63,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Zboruri </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri </a>
+            <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
             <a href="{{route('angajati')}}" class="blocks"> Program piloti </a>
             <a href="{{route('angajati')}}" class="blocks"> Program steward </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice piloti </a>
@@ -80,7 +83,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program  </a>
+            <a href="{{route('angajati')}}" class="blocks"> Program Piloti  </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice angajati </a>
         </div>
           @endif
@@ -89,7 +92,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program  </a>
+            <a href="{{route('angajati')}}" class="blocks"> Program Stewarzi </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice angajati</a>
         </div>
           @endif
@@ -104,6 +107,13 @@
             <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice piloti </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice steward </a>
+            <a href="{{route('angajati')}}" class="blocks"> Program piloti </a>
+            <a href="{{route('angajati')}}" class="blocks"> Program steward </a>   
+            <a href="{{route('programavioane')}}" class="blocks"> Program Avioane </a> 
+            <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
+       
         </div>
           @endif
      </div>

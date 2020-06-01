@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use DB;
 use Session;
+use PDO;
 
 class Controller extends BaseController
 {
@@ -87,7 +88,9 @@ class Controller extends BaseController
     public function deleteruta( Request $request)
     {    $idRuta = $request->id;
          
+        DB::table('zboruri')->where('idRuta',$idRuta)->update(['idRuta'=>NULL,'stareZbor'=>'ATENTIE']);
         DB::table('rute')->where('idRuta',$idRuta)->delete();
+        
         // Ruta::find($idRuta)->delete();
         
         return  redirect()->intended('/ruta');//redirect()->route('ruta')->with('success','Ruta a fost stearsa');
@@ -157,6 +160,8 @@ class Controller extends BaseController
     public function deleteavioane( Request $request)
     {    $idAvion = $request->id;
          
+        DB::table('zboruri')->where('idAvion',$idAvion)->update(['idAvion'=>NULL,'stareZbor'=>'ATENTIE']);
+      
         DB::table('avioane')->where('idAvion',$idAvion)->delete();
        
         
@@ -268,7 +273,14 @@ class Controller extends BaseController
   
     public function deleteangajati( Request $request)
     {    $idangajati = $request->id;
-         
+        
+        $programe = DB::table('programe')->where('idAngajat',$idangajati)->get();
+        foreach($programe as $prg){
+            if($prg->idZbor)
+                DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ATENTIE']);
+      
+        }
+
         DB::table('angajati')->where('idAngajat',$idangajati)->delete();
        
         
@@ -367,22 +379,30 @@ class Controller extends BaseController
         $Observatii=$request->Observatii;
         $stareZbor=$request->stareZbor;
 
-      $result =  DB::table('zboruri')->insert(['idRuta'=>$idRuta,
+      $idZbor =  DB::table('zboruri')->insertGetId(['idRuta'=>$idRuta,
       'idAvion'=> $idAvion,
       'nrZbor'=>$nrZbor,
       'data_ora_plecare'=>$data_ora_plecare,
       'data_ora_sosire'=>$data_ora_sosire,
       'Observatii'=>$Observatii,
-      'stareZbor'=>$stareZbor]);
+      'stareZbor'=>'ATENTIE']);
 
-       return  redirect()->intended('/zboruri?add_scs='.$result); 
+    
+        if($idZbor){
+            return  redirect()->intended('/addechipaj?idzbor='.$idZbor); 
+        }else{
+            return  redirect()->intended('/zboruri?scs='.false); 
+        }
+       
+     
 
     }
     public function deletezboruri( Request $request)
     {    $idzboruri = $request->id;
          
+        DB::table('programe')->where('idZbor',$idzboruri)->update(['tip_activitate'=>'DUTY','idZbor'=>NULL]);
         DB::table('zboruri')->where('idZbor',$idzboruri)->delete();
-       
+        
         
         return  redirect()->intended('/zboruri');
         }
@@ -554,12 +574,91 @@ public function programavioane(Request $req){
 
 // profil
 
-public function profil($idAngajat, Request $request)
+public function profil(Request $request)
 {
-    $idAngajat = $request->idAngajat;
-$profil=DB::table('angajati')->where(['idAngajat'=>$idAngajat])->first();
+   $angajat = Session::get('user');
+//$profil=DB::table('angajati')->where(['idAngajat'=>$idAngajat])->first();
 
-return view('profil')->with(['idAngajat'=>$profil]);
+return view('profil')->with(['profil'=>$angajat]);
+}
+
+public function addechipaj(Request $request){
+
+    $idZbor = $request->idzbor;
+    if($idZbor){
+
+        $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+        $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
+        $data = explode(' ',$zbor->data_ora_plecare)[0]; //2020-05-19 22:23:00 => ['2020-05-19','22:23:00'];
+       /* 
+        $connection = new PDO("mysql:host=".'localhost:3306'.";dbname=aeroport", 'root','');
+        $stmt = $connection->prepare("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')"); 
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_NUM);
+        $results = $stmt->fetchAll();
+        $connection = null;
+*/
+
+       $results =  DB::select("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')");
+       error_log(count($results));
+       $angajati = array();
+        foreach($results as $result){
+            $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
+            if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
+                continue;
+            $angajati[] = $temp;
+        }
+        return view('addechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati]);
+
+    }else{
+        return redirect()->intended('/zboruri');
+    }
+}
+
+public function addechipajPOST(Request $req){
+    $idZbor = $req->zbor;
+
+    $pilot1 = $req->pilot;
+    $pilot2 = $req->copilot;
+
+    $steward1 = $req->steward1;
+    $steward2 = $req->steward2;
+    $ok = true;
+
+   $ok = $ok && DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
+   $ok = $ok && DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
+   $ok = $ok && DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
+   $ok = $ok && DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
+   
+   if($ok){
+    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update('stareZbor','ACTIV');
+   }
+   if($ok){
+     return redirect()->intended('/zboruri');
+   }else{
+     return redirect()->intended('/addechipaj?idzbor='.$idZbor);
+   }
+     
+
+}
+// orar
+
+public function orarpilot(Request $req)
+{
+    return view('orarpilot');
+}
+public function programpilot(Request $req)
+{
+    return view('programpilot');
+}
+public function orarsteward(Request $req)
+{
+    return view('orarsteward');
+
+}
+public function programsteward(Request $req)
+{
+    return view('programsteward');
 }
 
 }

@@ -52,6 +52,8 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/zboruriedit/{idzbor}', 'Controller@editzboruri')->name('zboruriedit'); //edit
     Route::get('/zboruriedit/{idzbor}', 'Controller@editzboruriForm')->name('zboruriedit.form');//edit 
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
+    Route::get('/addechipaj','Controller@addechipaj');
+    Route::post('/addechipaj','Controller@addechipajPOST');
     
     //Login 
 
@@ -72,4 +74,8 @@ Route::get('/', 'Controller@index')->name('home');
 
     Route::get('/profil','Controller@profil')->name('profil');
 
-   
+    //orar 
+    Route::get('/orarpilot','Controller@orarpilot')->name('orarpilot');
+    Route::get('/programpilot','Controller@programpilot')->name('programpilot');
+    Route::get('/orarsteward','Controller@orarsteward')->name('orarsteward');
+    Route::get('/programsteward','Controller@programsteward')->name('programsteward');

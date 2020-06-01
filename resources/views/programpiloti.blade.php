@@ -24,12 +24,47 @@
             <div class="row">
             </div>
             <div class="row">
+               <input class="" value="Radoi">
+               <input class="" value="Manuel">
+               <select>
+               <option selected>
+                ZBOR
+               </option>
+                 <option >
+                   DUTY
+                 </option>
+
+                 <option >
+                   FREE
+                 </option>
+               </select>
                
+             <input type="text" readonly style="width:120px;" value="EAP-300">
             </div>
 
             <div class="row">
-   
+              <button class="" onclick="ascundeModal()">Adauga</button>
+            </div>
+
+            <div class="row">
+              <select>
+                <option> Pilot1 </option>
+                <option> Pilot2 </option>
+                <option> Pilot3 </option>
+              </select>
+              <input type="text" readonly value="DUTY">
+            </div>
+            <div class="row">
+              <select>
+                <option> Pilot1 </option>
+                <option> Pilot2 </option>
+                <option> Pilot3 </option>
+              </select>
+              <input type="text" readonly value="DUTY">
+            </div>
+            <div class="row">
                 <button class="cancel" onclick="ascundeModal()">Cancel</button>
+                <button class="cancel" onclick="ascundeModal()">Salveaza</button>
             </div>
         </div>
     </div>
@@ -143,9 +178,11 @@ function ascundeModal(){
 }
                     
                     function arataModal(date){
-                     
+                       
                        $('.modal-wrapper').removeClass("hidden")
                        $('.modal').css('display','block');
+
+
                     }
                     
 
@@ -171,7 +208,7 @@ function ascundeModal(){
             margin:0 auto;
             margin-top:15%;
             height:300px;
-            width:300px;
+            width:700px;
             padding:30px;
             position:relative;
         }
@@ -252,6 +289,12 @@ function ascundeModal(){
  .block:hover{
          transform:scale(1.1);
     }
+
+    .row{
+      padding:5px 0px;
+
+    }
+    .row>*{margin:0 5px;}
       </style>
 
 </body>

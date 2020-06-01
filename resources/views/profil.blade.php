@@ -72,67 +72,71 @@
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
  
       </div>
-  
-      <table class="table table-sm px-0 " id='entry-table'>
-          <thead>
-              <tr>
-                  <th scope="col" class='px-1'>Nr. angajati</th>
-                  <th scope="col">Nume</th>
-                  <th scope="col">Prenume</th>
-                  <th scope="col">E-mail</th>
-                  <th scope="col">CNP</th>
-                  <th scope="col">Data angajarii</th>
-                  <th scope="col">Salariu </th>
-                  <th scope="col">Tip angajat</th>
-                  <th scope="col">Calificare </th>
-                  <th scope="col">Username </th>
-                  <th scope="col">Parola </th>
-              </tr>
-          </thead>
-          <tfoot>
-              <tr>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-
-            
-              </tr>
-          </tfoot>
-          <tbody>
-          @foreach($profil as $key => $profil)
-              <tr>
-                  <th scope="row">{{$profil-> idAngajat}}</th>
+    <table>
+     
+                  <tr>
+                  <th >Nr. angajati</th>
+                  <th >{{$profil->idAngajat}}</th>
+                  </tr>
+                  <tr>
+                  <td >Nume</td>
                   <td>{{$profil-> nume}}</td>
+                  </tr>
+                  <tr>
+                  <td >Prenume</td>
                   <td>{{$profil-> prenume}}</td>
+                  </tr>
+                  <tr>
+                  <td >E-mail</td>
                   <td>{{$profil-> email}}</td>
+                  </tr>
+                  <tr>
+                  <td >CNP</td>
                   <td>{{$profil-> cnp}}</td>
+                 </tr>
+                 <tr>
+                  <td >Data angajarii</td>
                   <td>{{$profil-> data_angajare}}</td>
+                  </tr>
+                  <tr>
+                  <td >Salariu </td>
                   <td>{{$profil-> salariu}}</td>
+                  </tr>
+                  <tr>
+                  <td >Tip angajat</td>
                   <td>{{$profil-> tip_angajat}}</td>
+                  </tr>
+                  <tr>
+                  <td >Calificare </td>
                   <td>{{$profil-> calificari}}</td>
+                 </tr>
+                 <tr>
+                  <td >Username </td>
                   <td>{{$profil-> username}}</td>
+                  </tr>
+                  <tr>
+                  <td >Parola </td>
                   <td>{{$profil-> parola}}</td>
-                  <td>
-                
-
-                        <!--button type="submit" class="btn btn-danger">Delete</button-->
-                     
-              
-                  
-                  </td>
+                  </tr>
+      
+                 </table> 
                   
                   
-               </tr>
-           @endforeach
-          </tbody>
+                  
+                  
+                 
+                  
+                 
+                  
+                 
+               
+                  
+                  
+               
+       
           
-      </table>
+          
+   
     </div> 
 
     <script>
