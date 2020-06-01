@@ -661,4 +661,87 @@ public function programsteward(Request $req)
     return view('programsteward');
 }
 
+
+    //[["test","test2",1,"ASD-400"]]
+
+    public function getInfoPiloti(Request $req){
+        $data = $req->an.'-'.$req->luna.'-'.$req->zi;
+
+       $rez =   DB::select(" select ang.idAngajat, ang.nume, ang.prenume, prg.tip_activitate, zbr.nrZbor 
+                    from programe prg join angajati ang on(prg.idAngajat = ang.idAngajat) 
+                    left join zboruri zbr on(prg.idZbor = zbr.idZbor) where ang.tip_angajat = 'Pilot'
+                    and prg.date = '".$data."'");
+                   
+        $scs = count($rez)>0;            
+        $piloti = [];
+
+        foreach($rez as $result){
+            $line = [];
+            $line[] = $result->nume;
+            $line[] = $result->prenume;
+            $line[] = $result->tip_activitate == 'DUTY'?"1":"0";
+            $line[] = $result->nrZbor;
+            $line[] = $result->idAngajat;
+            $piloti[] = $line;        
+        }
+
+    $rez = DB::select("select ang1.idAngajat, ang1.nume, ang1.prenume from angajati ang1 where idAngajat not in(select ang.idAngajat 
+        from programe prg join angajati ang on(prg.idAngajat = ang.idAngajat) 
+        left join zboruri zbr on(prg.idZbor = zbr.idZbor) where ang.tip_angajat = 'Pilot'
+        and prg.date = '".$data."') and ang1.tip_angajat = 'Pilot'");
+
+       
+    
+
+    $scs = ($scs || count($rez)>0);            
+    $avpiloti = [];
+
+    foreach($rez as $result){
+        $line = [];
+        $line[] = $result->idAngajat;
+        $line[] = $result->nume." ".$result->prenume;   //pilot[1] din programpiloti linia 184
+        $avpiloti[] = $line;        
+    }
+
+    return response()->json(['scs'=>$scs,'rezultate'=>$piloti,'avpiloti'=>$avpiloti]);
+}
+
+public function saveProgramPiloti(Request $req){
+    $data =  $req->timestamp;
+    $piloti = $req->piloti;
+    $flag = true;
+  
+    if($piloti && count($piloti)>0){
+    foreach($piloti as $pilot){
+     
+        $entry =  DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->first();
+        print_r($entry->tip_activitate);
+        if($entry->tip_activitate == "ZBOR"){
+          $flag = !!DB::table('zboruri')->where('idZbor',$entry->idZbor)->update(['stareZbor'=>'ATENTIE']) && $flag;
+        }
+
+        if($pilot['tip_activitate'] == "2"){
+            $flag =  !!DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->delete() && $flag ;
+        }else{
+            $flag =  !!DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->update(['tip_activitate'=>"DUTY",'idZbor'=>NULL]) && $flag;
+        }
+     
+    }
+    }
+
+    $piloti_new = $req->piloti_new;
+
+    if($piloti_new && count($piloti_new)>0){
+
+    foreach($piloti_new as $pilot){ 
+        $flag = !!DB::table('programe')->insertGetID(['tip_activitate'=>'DUTY','idZbor'=>NULL,'idAngajat'=>$pilot['idAngajat'],'date'=>$data]) && $flag ;
+     }
+
+    }
+
+    return response()->json(['scs'=>$flag]);
+
+
+}
+
 }

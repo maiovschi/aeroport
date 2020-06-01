@@ -44,6 +44,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/programedit/{idechipaj}', 'Controller@editprogram')->name('programedit'); //edit
     Route::get('/programedit/{idechipaj}', 'Controller@editprogramForm')->name('programedit.form');//edit 
     Route::get('/stergeprogram','Controller@deleteprogram');//delete
+    
    
     // zboruri
     Route::get('/zboruriadd', 'Controller@zboruriForm')->name('zboruri.form'); //adauga
@@ -79,3 +80,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/programpilot','Controller@programpilot')->name('programpilot');
     Route::get('/orarsteward','Controller@orarsteward')->name('orarsteward');
     Route::get('/programsteward','Controller@programsteward')->name('programsteward');
+
+    //pragmul nou
+    Route::post('/getInfoPiloti','Controller@getInfoPiloti');
+    Route::post('/saveProgramPiloti','Controller@saveProgramPiloti');
