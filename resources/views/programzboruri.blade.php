@@ -28,7 +28,14 @@
       <div class="row">
       </div>
       <div class="zboruris-list">
-     
+      <div class="row head"> 
+          <input class="ruta" readonly="" value="Ruta">
+      <input class="avion" readonly="" value="Avion">
+      <input class="nrzbor" readonly="" value="NrZbor">
+      <input class="stare" readonly="" value="Stare">
+
+  
+</div>
     </div>
       
      <div class="new-rows">
@@ -87,9 +94,7 @@
       <input class="ruta" value="">
       <input class="avion" value="">
       <input class="nrzbor" value="">
-      
-
-      <input type="text" class="flight" readonly style="width:120px;" value="">
+      <input class="stare" value="">
     </div>
   </div>
 
@@ -158,8 +163,9 @@
           if (data.scs) {
 
            
-
             arataModal(data.rezultate,an+"-"+luna+"-"+zi);
+          }else{
+            alert("Nu exista zboruri in ziua selectata!");
           }
         },
         error: function (err) {
@@ -300,18 +306,29 @@
     function arataModal(date,timestamp) {
       date.forEach(function (line) {
          var empty_row = $('.modal-row-blueprint .row').clone();
-         empty_row.attr("aid",line[4]); //indicele asta trebuie corectat pentru avioane
-         empty_row.find(".firstname").val(line[0]);
+         /*
+          <input class="ruta" value="">
+      <input class="avion" value="">
+      <input class="nrzbor" value="">
+      <input class="stare" value=""> 
+     0     $line[] = $result->nrZbor;
+    1   $line[] = $result->stareZbor;
+    2    $line[] = $result->aeroport_plecare."-".$result->aeroport_sosire;
+    3    $line[] = $result->nume;
+    4    $line[] = $result->model;
+    5    $line[] = $result->idZbor;
+      */
+
+        empty_row.attr("fid",line[5]); //indicele asta trebuie corectat pentru avioane
+         empty_row.find(".ruta").val(line[2]);
          //pt avioane stergi de aici in jos
-         empty_row.find(".lastname").val(line[1]);
-         empty_row.find(".activity").val(line[2]);
-         if(line[2] == 0){
-           empty_row.find(".flight").val(line[3]);
-         }else{
-           empty_row.find('option[value="0"]').remove();
-         }
+         empty_row.find(".avion").val(line[3]+" - "+line[4]);
+         empty_row.find(".nrzbor").val(line[0]);
+         empty_row.find(".stare").val(line[1]);
+
+         $(empty_row).on('click',function(){ window.location.href = "/zboruriedit/"+$(this).attr("fid")})
          //pana aici
-         $('.stewards-list')[0].appendChild(empty_row[0]);
+         $('.zboruris-list')[0].appendChild(empty_row[0]);
          empty_row.find('.activity').on('change',onActivityChange)
       })
 
@@ -327,6 +344,16 @@
   </script>
 
   <style>
+  .zboruris-list input{
+    text-align:center;
+    cursor:pointer;
+    border:none;
+  }
+  .row.head>input{
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid black;
+  }
     .modal-wrapper {
       z-index: 99;
     }
@@ -350,7 +377,7 @@
       margin: 0 auto;
       margin-top: 15%;
       height: 300px;
-      width: 700px;
+      width: max-content;
       padding: 30px;
       position: relative;
     }

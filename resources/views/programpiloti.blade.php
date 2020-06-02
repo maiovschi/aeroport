@@ -373,12 +373,14 @@
 
     .modal {
       background: white;
-      margin: 0 auto;
-      margin-top: 15%;
-      height: 300px;
-      width: 700px;
-      padding: 30px;
-      position: relative;
+    margin: 0 auto;
+    margin-top: 10vh;
+    height: auto;
+    width: 700px;
+    padding: 30px;
+    position: relative;
+    max-height: 700px;
+    overflow-y: auto;
     }
 
     .blocks {

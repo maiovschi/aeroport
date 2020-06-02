@@ -104,8 +104,8 @@
       
           @foreach($zboruri as $zbor)
               <tr>
-                  <th scope="row">{{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}</th>
-                  <td>{{$zbor->avioane->nume.' '.$zbor->avioane->model}}</td>
+                  <th scope="row">{{property_exists($zbor->ruta,'aeroport_plecare')?$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire:''}}</th>
+                  <td>{{property_exists($zbor->avioane,'nume') && property_exists($zbor->avioane,'model')? $zbor->avioane->nume.' '.$zbor->avioane->model : ''}}</td>
                   <td>{{$zbor->nrZbor}}</td>
                   <td>{{$zbor->data_ora_plecare}}</td>
                   <td>{{$zbor->data_ora_sosire}}</td>

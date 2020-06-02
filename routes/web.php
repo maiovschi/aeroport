@@ -85,4 +85,5 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/getInfoPiloti','Controller@getInfoPiloti');
     Route::post('/saveProgramPiloti','Controller@saveProgramPiloti');
     Route::post('/getInfoStewarzi','Controller@getInfoStewarzi');
+    Route::post('/getInfoZboruri','Controller@getInfoZboruri');
     Route::post('/saveProgramStewarzi','Controller@saveProgramStewarzi');

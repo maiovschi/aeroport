@@ -301,12 +301,14 @@ class Controller extends BaseController
       $zbor->avioane = DB::table('avioane')->where('idAvion','=',$zbr->idAvion)->first();
       $zbor->nrZbor = $zbr->nrZbor;
       $zbor->data_ora_plecare = $zbr->data_ora_plecare;
-      $zbor->data_ora_sosire = $zbr->data_ora_plecare;
+      $zbor->data_ora_sosire = $zbr->data_ora_sosire;
       $zbor->Observatii = $zbr->Observatii;
       $zbor->stareZbor = $zbr->stareZbor;
       $zbor->idZbor = $zbr->idZbor;
 
+
       $ruta = DB::table('rute')->get();
+     
       $avioane = DB::table('avioane')->get();
     
 
@@ -320,7 +322,9 @@ class Controller extends BaseController
       foreach($zboruri_brute as $zbr){
         $zbor = new \stdClass();
       $zbor->ruta = DB::table('rute')->where('idRuta','=',$zbr->idRuta)->first();
+      $zbor->ruta = $zbor->ruta? $zbor->ruta : new \stdClass();
       $zbor->avioane = DB::table('avioane')->where('idAvion','=',$zbr->idAvion)->first();
+      $zbor->avioane = $zbor->avioane?$zbor->avioane:new \stdClass();
       $zbor->nrZbor = $zbr->nrZbor;
       $zbor->data_ora_plecare = $zbr->data_ora_plecare;
       $zbor->data_ora_sosire = $zbr->data_ora_plecare;
@@ -824,4 +828,31 @@ return response()->json(['scs'=>$flag]);
 
 
 }
+
+public function getInfoZboruri(Request $req){
+    $data_plecare_lower_limit = $req->an.'-'.$req->luna.'-'.$req->zi.' 00:00:00';
+    $data_plecare_upper_limit = $req->an.'-'.$req->luna.'-'.($req->zi+1).' 00:00:00';
+
+    $rez =   DB::select(" select idZbor, nrZbor,stareZbor, aeroport_plecare, aeroport_sosire,nume,model  from zboruri left join rute using(idRuta) left join avioane using(idAvion) where data_ora_plecare > '".$data_plecare_lower_limit."' and data_ora_plecare < '".$data_plecare_upper_limit."'");
+                
+     $scs = count($rez)>0;            
+     $zboruri = [];
+ 
+     foreach($rez as $result){
+         $line = [];
+         $line[] = $result->nrZbor;
+         $line[] = $result->stareZbor;
+         $line[] = $result->aeroport_plecare."-".$result->aeroport_sosire;
+         $line[] = $result->nume;
+         $line[] = $result->model;
+         $line[] = $result->idZbor;
+         $zboruri[] = $line;        
+     }
+ 
+ 
+ return response()->json(['scs'=>$scs,'rezultate'=>$zboruri]);
+ 
+}
+
+
 }

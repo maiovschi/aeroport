@@ -39,70 +39,84 @@
         <form class='text-left' id="edit-form" action="{{route('zboruriedit',['idzbor' => $zbor->idZbor])}}" method='post' enctype="multipart/form-data">
         @csrf
             <div class="group">
-            <div class="form-group">
+            <div class="form-group container">
+            <?php error_log("inceput") ?>
                 <label class='title'>Ruta</label>
                    <select class="ruta" name="ruta">
-                    <option ang="{{$zbor->ruta->idRuta}}" selected value="{{$zbor->ruta->idRuta}}" >
-                        {{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}
-                    </option>
+                        @if(property_exists($zbor,'ruta') && $zbor->ruta)
+                            <option selected>  {{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}  </option>
+                        @else
+                            <option selected> Selectati o ruta </option>
+                        @endif
+                
+                        @foreach($ruta as $rt)
+                        <option ang="{{$rt->idRuta}}" selected value="{{$rt->idRuta}}" >
+                            {{$rt->aeroport_plecare.' '.$rt->aeroport_sosire}}
+                        </option>
+                        @endforeach
+            
                 </select>
             </div>
-            <div class="form-group">
+
+            <?php error_log("trece") ?>
+            <div class="form-group container">
                 <label class='title'>Avion</label>
                <select class="avion" name="avion">  
-                    <option ang="{{$zbor->avioane->idAvion}}" selected  value="{{$zbor->avioane->idAvion}}" calificari="{{$zbor->avioane->model}}">
-                         {{$zbor->avioane->nume.' '.$zbor->avioane->model}}
-                    </option>
-                   
+                    @if(property_exists($zbor,'avion') && $zbor->avion)
+                      <option ang="{{$zbor->avion->idAvion}}" selected  value="{{$zbor->avion->idAvion}}">
+                            {{$zbor->avion->nume.' '.$zbor->avion->model}}
+                        </option>
+                    @else
+                        <option selected> Selectati avion </option>
+                    @endif
+                    @foreach($avioane as $avion)
+                        <option ang="{{$avion->idAvion}}" selected  value="{{$avion->idAvion}}">
+                            {{$avion->nume.' '.$avion->model}}
+                        </option>
+                    @endforeach
                 </select>
             </div>
             </div>
-            <div class="form-group">
-                <label class='title'>Echipaj</label>
-               <select class="echipaj" name="echipaj">  
-                    <option ang="{{$zbor->echipaje->idEchipaj}}" selected  value="{{$zbor->echipaje->nume}}" calificari="{{$zbor->echipaje->nume}}">
-                         {{$zbor->echipaje->nume}}
-                    </option>
-                  
-                </select>
-            </div>
+        
             </div>
 
-            <div class="group">
-            <div class="form-group">
+            <div class="group ">
+            <div class="form-group container">
                 <label class='title'>Informatii plecare*</label>
-                <input type="date" id="data_plecare" class="form-control" name='data_plecare' >
+                <input type="date" id="data_plecare" class="form-control" name='data_plecare' value="{{explode(' ',$zbor->data_ora_plecare)[0]}}">
              
              
             </div>
 
-            <div class="form-group">
+            <div class="form-group container">
+                <h4 style="margin:0;">Ora plecare curenta: {{explode(' ',$zbor->data_ora_plecare)[1]}}</h4> <br>
                 <label class='title'>Informatii plecare*</label>
                 <input type="text" id="ora_plecare" name="ora_plecare" class=" form-control hidden">
-                <input type="text" class="clock">
+                <input type="text" class="clock" value="">
              
             </div>
 
           
             </div>
       
-            <div class="form-group">
+            <div class="form-group container">
                 <label class='title'>Informatii sosire*</label>
-                <input type="date" id="data_sosire" class="form-control" name='data_sosire' >
+                <input type="date" id="data_sosire" class="form-control" name='data_sosire' value="{{explode(' ',$zbor->data_ora_plecare)[0]}}" >
               
             </div>
 
-            <div class="form-group">
-                <label class='title'>Informatii sosire*</label>
+            <div class="form-group container">
+            <h4 style="margin:0;">Ora sosire curenta: {{explode(' ',$zbor->data_ora_sosire)[1]}}</h4> <br> 
+            <label class='title'>Informatii sosire*</label>
                 <input type="text" id="ora_sosire" name='ora_sosire' class="form-control hidden" >
                 <input type="text" class="clock">
             </div>
-            <div class="form-group">
+            <div class="form-group container">
                 <label class='title'>Observatii</label>
                 <input type="text"  class="form-control nume" name='Observatii' placeholder="{{$zbor->Observatii}}" >
             </div>
 
-                <div class='d-flex justify-content-end'>
+                <div class='d-flex justify-content-end' style="margin-right:150px;">
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica zbor</button>
             </div>
 
@@ -114,7 +128,25 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    
+    <script src="/jquery-clock-timepicker.min.js"></script>
+    <script>
+     $('.clock').clockTimePicker();
+   
+      $(document).ready(function(ev){
+           
+          /*  setTimeout(function(){
+                $('.clock').first().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_plecare)[1]}}'.substring(0,5));
+                $('.clock').last().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_sosire)[1]}}'.substring(0,5));
+            },600); */
+      })
+
+      /*  $('.clock').toArray().forEach(clock=>{
+              var value =   $(clock).val();
+              $(clock).closest('.form-group').find('.form-control').val(value);
+            })
+
+            */
+    </script>
      <!-- <script>
       $('#submit_button').on('click',function(ev){
             ev.preventDefault();

@@ -3,11 +3,41 @@
   <head>
     <meta charset="UTF-8">
     <title>{{Session::get('user')->tip_angajat}} </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   </head>
   <body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
+
+
+    <div class="header" style="padding:10px; border-bottom:1px solid black;">
+      <div class="clock" style="position:absolute;top:10px;left:10px;">
+
+      </div>
+      <div class="" style="margin:0 auto;text-align:center;">
+          {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+      </div>
+      <div class="" style="position:absolute;top:10px;right:10px;">
+          <a href="{{route('delogare')}}" class=''>Delogare</a>
+      </div>
+
+    </div>
+    <script>
+     var time = new Date();
+            $('.clock').html(time.toLocaleString());
+      window.onload = function(){
+       
+        setInterval(function(){
+          var time = new Date();
+            $('.clock').html(time.toLocaleString());
+        },1000);
+      }
+    </script>
+
+
+
     <div class='container-fluid text-center'>
-    <a href="{{route('delogare')}}" class='btn btn-lg btn-info my-4'>Delogare</a>
+    
     </div>
 
     <div class="gridMaster"> 
@@ -161,8 +191,8 @@
        .gridMaster{
              width:40%;
   
-    margin-left: 450px;
-        margin-top: 120px;
+        margin:0 auto;
+        margin-top: 30px;
  
          grid-gap: .5rem;
        padding: .7rem;
@@ -205,4 +235,5 @@
     }
       </style>
   </body>
+  
 </html>
