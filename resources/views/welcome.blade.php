@@ -19,6 +19,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Rute </a>
             <a href="{{route('avioane')}}" class="blocks"> Avioane </a>
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
+            <a href="{{route('ruta')}}" class="blocks"> Documente Avioane</a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Avion </a>  
             <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
@@ -26,7 +27,6 @@
             <a href="{{route('angajati')}}" class="blocks"> Grafice Steward </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program Steward </a>
-            <a href="{{route('programavioane')}}" class="blocks"> Program Avioane </a> 
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
         </div>
           @endif
@@ -101,7 +101,7 @@
             <a href="{{route('ruta')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('angajati')}}" class="blocks"> Avioane  </a>
+            <a href="{{route('avioane')}}" class="blocks"> Avioane  </a>
             <a href="{{route('angajati')}}" class="blocks"> Rute </a>
             <a href="{{route('angajati')}}" class="blocks"> Zboruri </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
@@ -111,8 +111,8 @@
             <a href="{{route('angajati')}}" class="blocks"> Grafice steward </a>
             <a href="{{route('angajati')}}" class="blocks"> Program piloti </a>
             <a href="{{route('angajati')}}" class="blocks"> Program steward </a>   
-            <a href="{{route('programavioane')}}" class="blocks"> Program Avioane </a> 
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
+            <a href="{{route('ruta')}}" class="blocks"> Documente Avioane </a>
        
         </div>
           @endif

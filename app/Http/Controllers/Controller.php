@@ -743,5 +743,85 @@ public function saveProgramPiloti(Request $req){
 
 
 }
+// program stewarzi
 
+public function getInfoStewarzi(Request $req){
+    $data = $req->an.'-'.$req->luna.'-'.$req->zi;
+
+   $rez =   DB::select(" select ang.idAngajat, ang.nume, ang.prenume, prg.tip_activitate, zbr.nrZbor 
+                from programe prg join angajati ang on(prg.idAngajat = ang.idAngajat) 
+                left join zboruri zbr on(prg.idZbor = zbr.idZbor) where ang.tip_angajat = 'Steward'
+                and prg.date = '".$data."'");
+               
+    $scs = count($rez)>0;            
+    $stewarzi = [];
+
+    foreach($rez as $result){
+        $line = [];
+        $line[] = $result->nume;
+        $line[] = $result->prenume;
+        $line[] = $result->tip_activitate == 'DUTY'?"1":"0";
+        $line[] = $result->nrZbor;
+        $line[] = $result->idAngajat;
+        $stewarzi[] = $line;        
+    }
+
+$rez = DB::select("select ang1.idAngajat, ang1.nume, ang1.prenume from angajati ang1 where idAngajat not in(select ang.idAngajat 
+    from programe prg join angajati ang on(prg.idAngajat = ang.idAngajat) 
+    left join zboruri zbr on(prg.idZbor = zbr.idZbor) where ang.tip_angajat = 'Steward'
+    and prg.date = '".$data."') and ang1.tip_angajat = 'Steward'");
+
+   
+
+
+$scs = ($scs || count($rez)>0);            
+$avstewarzi = [];
+
+foreach($rez as $result){
+    $line = [];
+    $line[] = $result->idAngajat;
+    $line[] = $result->nume." ".$result->prenume;   //pilot[1] din programpiloti linia 184
+    $avstewarzi[] = $line;        
+}
+
+return response()->json(['scs'=>$scs,'rezultate'=>$stewarzi,'avstewarzi'=>$avstewarzi]);
+}
+
+public function saveProgramStewarzi(Request $req){
+$data =  $req->timestamp;
+$stewarzi = $req->stewarzi;
+$flag = true;
+
+if($stewarzi && count($stewarzi)>0){
+foreach($stewarzi as $steward){
+ 
+    $entry =  DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->first();
+    print_r($entry->tip_activitate);
+    if($entry->tip_activitate == "ZBOR"){
+      $flag = !!DB::table('zboruri')->where('idZbor',$entry->idZbor)->update(['stareZbor'=>'ATENTIE']) && $flag;
+    }
+
+    if($steward['tip_activitate'] == "2"){
+        $flag =  !!DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->delete() && $flag ;
+    }else{
+        $flag =  !!DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->update(['tip_activitate'=>"DUTY",'idZbor'=>NULL]) && $flag;
+    }
+ 
+}
+}
+
+$stewarzi_new = $req->stewarzi_new;
+
+if($stewarzi_new && count($stewarzi_new)>0){
+
+foreach($stewarzi_new as $steward){ 
+    $flag = !!DB::table('programe')->insertGetID(['tip_activitate'=>'DUTY','idZbor'=>NULL,'idAngajat'=>$steward['idAngajat'],'date'=>$data]) && $flag ;
+ }
+
+}
+
+return response()->json(['scs'=>$flag]);
+
+
+}
 }

@@ -53,7 +53,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/zboruriedit/{idzbor}', 'Controller@editzboruri')->name('zboruriedit'); //edit
     Route::get('/zboruriedit/{idzbor}', 'Controller@editzboruriForm')->name('zboruriedit.form');//edit 
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
-    Route::get('/addechipaj','Controller@addechipaj');
+    Route::get('/addechipaj','Controller@addechipaj')->name('addechipaj');
     Route::post('/addechipaj','Controller@addechipajPOST');
     
     //Login 
@@ -84,3 +84,5 @@ Route::get('/', 'Controller@index')->name('home');
     //pragmul nou
     Route::post('/getInfoPiloti','Controller@getInfoPiloti');
     Route::post('/saveProgramPiloti','Controller@saveProgramPiloti');
+    Route::post('/getInfoStewarzi','Controller@getInfoStewarzi');
+    Route::post('/saveProgramStewarzi','Controller@saveProgramStewarzi');
