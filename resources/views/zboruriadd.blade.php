@@ -27,7 +27,7 @@
 
 
 <div class="header" style="padding:10px; border-bottom:1px solid black;">
-  <div class="clock" style="position:absolute;top:10px;left:10px;">
+  <div class="clockk" style="position:absolute;top:10px;left:10px;">
 
   </div>
   <div class="" style="margin:0 auto;text-align:center;">
@@ -40,12 +40,12 @@
 </div>
 <script>
  var time = new Date();
-        $('.clock').html(time.toLocaleString());
+        $('.clockk').html(time.toLocaleString());
   window.onload = function(){
    
     setInterval(function(){
       var time = new Date();
-        $('.clock').html(time.toLocaleString());
+        $('.clockk').html(time.toLocaleString());
     },1000);
   }
 </script>

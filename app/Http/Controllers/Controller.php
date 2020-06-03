@@ -298,7 +298,7 @@ class Controller extends BaseController
         
       $zbor = new \stdClass();
       $zbor->ruta = DB::table('rute')->where('idRuta','=',$zbr->idRuta)->first();
-      $zbor->avioane = DB::table('avioane')->where('idAvion','=',$zbr->idAvion)->first();
+      $zbor->avion = DB::table('avioane')->where('idAvion','=',$zbr->idAvion)->first();
       $zbor->nrZbor = $zbr->nrZbor;
       $zbor->data_ora_plecare = $zbr->data_ora_plecare;
       $zbor->data_ora_sosire = $zbr->data_ora_sosire;
@@ -346,8 +346,8 @@ class Controller extends BaseController
         $idRuta = $request->ruta;
         $idAvion = $request->avion;
         $nrZbor=$request->nrZbor;
-        $data_ora_plecare = $request->data_plecare.' '.$request->ora_plecare;
-        $data_ora_sosire = $request->data_sosire.' '.$request->ora_sosire;
+        $data_ora_plecare = $request->data_plecare.' '.$request->ora_plecare.':00';
+        $data_ora_sosire = $request->data_sosire.' '.$request->ora_sosire.':00';
         $Observatii=$request->Observatii;
         $stareZbor=$request->stareZbor;
 
@@ -361,10 +361,9 @@ class Controller extends BaseController
         'stareZbor'=>'ATENTIE']);
         
 
-        if($result){
-            return  redirect()->intended('/editechipaj?idzbor='.$result); 
-   
-        }
+      
+            return  redirect()->intended('/editechipaj?idzbor='.$idzbor); 
+        
        
      
     }
@@ -602,7 +601,7 @@ public function addechipaj(Request $request){
         $data = explode(' ',$zbor->data_ora_plecare)[0]; //2020-05-19 22:23:00 => ['2020-05-19','22:23:00'];
      
 
-       $results =  DB::select("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')");
+       $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
        error_log(count($results));
        $angajati = array();
         foreach($results as $result){
@@ -619,7 +618,7 @@ public function addechipaj(Request $request){
 }
 
 // echipaj zbor add && edit
-public function editechipaj(Request $req){
+public function editechipaj(Request $request){
     $idZbor = $request->idzbor;
     if($idZbor){
 
@@ -627,9 +626,11 @@ public function editechipaj(Request $req){
         $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
         $data = explode(' ',$zbor->data_ora_plecare)[0];
      
-
-       $results =  DB::select("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')");
-       error_log(count($results));
+      $piloti_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+      $stewarzi_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Steward' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+        error_log("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+      $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
+      error_log(count($results));
        $angajati = array();
         foreach($results as $result){
             $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
@@ -637,7 +638,7 @@ public function editechipaj(Request $req){
                 continue;
             $angajati[] = $temp;
         }
-        return view('editechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati]);
+        return view('editechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati,'pc'=>$piloti_curenti,'sc'=>$stewarzi_curenti]);
 
     }else{
         return redirect()->intended('/zboruri');
@@ -655,13 +656,13 @@ public function editechipajPOST(Request $req){
     $steward2 = $req->steward2;
     $ok = true;
 
-   $ok = $ok && DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
-   $ok = $ok && DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
-   $ok = $ok && DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
-   $ok = $ok && DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]);
+   $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+   $ok = !! DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+   $ok = !! DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+   $ok = !! DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
    
    if($ok){
-    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update('stareZbor','ACTIV');
+    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
    }
    if($ok){
      return redirect()->intended('/zboruri');
@@ -670,6 +671,32 @@ public function editechipajPOST(Request $req){
    }
      
 
+
+}
+
+public function addechipajPOST(Request $req){
+    $idZbor = $req->zbor;
+
+    $pilot1 = $req->pilot;
+    $pilot2 = $req->copilot;
+
+    $steward1 = $req->steward1;
+    $steward2 = $req->steward2;
+    $ok = true;
+
+   $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+   $ok =  !!DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+   $ok = !!DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+   $ok = !!DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])&& $ok;
+
+   if($ok){
+    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
+   }
+   if($ok){
+     return redirect()->intended('/zboruri');
+   }else{
+     return redirect()->intended('/addechipaj?idzbor='.$idZbor);
+   }
 
 }
 // orar

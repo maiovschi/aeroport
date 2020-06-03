@@ -70,13 +70,13 @@
                 <label class='title'>Ruta</label>
                    <select class="ruta" name="ruta">
                         @if(property_exists($zbor,'ruta') && $zbor->ruta)
-                            <option selected>  {{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}  </option>
+                            <option selected value="{{$zbor->ruta->idRuta}}">  {{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}  </option>
                         @else
                             <option selected> Selectati o ruta </option>
                         @endif
                 
                         @foreach($ruta as $rt)
-                        <option ang="{{$rt->idRuta}}" selected value="{{$rt->idRuta}}" >
+                        <option ang="{{$rt->idRuta}}"  value="{{$rt->idRuta}}" >
                             {{$rt->aeroport_plecare.' '.$rt->aeroport_sosire}}
                         </option>
                         @endforeach
@@ -96,7 +96,7 @@
                         <option selected> Selectati avion </option>
                     @endif
                     @foreach($avioane as $avion)
-                        <option ang="{{$avion->idAvion}}" selected  value="{{$avion->idAvion}}">
+                        <option ang="{{$avion->idAvion}}"   value="{{$avion->idAvion}}">
                             {{$avion->nume.' '.$avion->model}}
                         </option>
                     @endforeach
@@ -122,7 +122,7 @@
                 <h4 style="margin:0;">Ora plecare curenta: {{explode(' ',$zbor->data_ora_plecare)[1]}}</h4> <br>
                 <label class='title'>Informatii plecare*</label>
                 <input type="text" id="ora_plecare" name="ora_plecare" class=" form-control hidden">
-                <input type="text" class="clock" value="">
+                <input type="text" class="clockk" name="ora_plecare" value="{{substr(explode(' ',$zbor->data_ora_plecare)[1],0,5)}}">
              
             </div>
 
@@ -139,7 +139,7 @@
             <h4 style="margin:0;">Ora sosire curenta: {{explode(' ',$zbor->data_ora_sosire)[1]}}</h4> <br> 
             <label class='title'>Informatii sosire*</label>
                 <input type="text" id="ora_sosire" name='ora_sosire' class="form-control hidden" >
-                <input type="text" class="clock">
+                <input type="text" class="clockk"  value="{{substr(explode(' ',$zbor->data_ora_sosire)[1],0,5)}}">
             </div>
             <div class="form-group container">
                 <label class='title'>Observatii</label>
@@ -160,8 +160,23 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/jquery-clock-timepicker.min.js"></script>
     <script>
-     $('.clock').clockTimePicker();
-   
+     $('.clockk').clockTimePicker();
+     $('#submit_button').on('click',function(ev){
+            ev.preventDefault();
+
+            $('.clockk').toArray().forEach(clock=>{
+              var value =   $(clock).val();
+              $(clock).closest('.form-group').find('.form-control').val(value);
+            })
+
+            if($('.wrong').length == 0){
+              var form = document.getElementById('edit-form');
+              form.submit();
+            } else{
+                alert("Nu toate campurile sunt ok!");
+            }
+            
+      })
       $(document).ready(function(ev){
            
           /*  setTimeout(function(){

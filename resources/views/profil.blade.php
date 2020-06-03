@@ -97,6 +97,7 @@
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
  
       </div>
+      <img src="/images/default.png" style="width:300px;" />
     <table>
      
                   <tr>
@@ -113,7 +114,7 @@
                   </tr>
                   <tr>
                   <td >E-mail</td>
-                  <td>{{$profil-> email}}</td>
+                  <td><input type="email" value="{{$profil-> email}}"></td>
                   </tr>
                   <tr>
                   <td >CNP</td>
@@ -142,6 +143,10 @@
                   <tr>
                   <td >Parola </td>
                   <td>{{$profil-> parola}}</td>
+                  </tr>
+                  <tr>
+                  <td >Poza profil noua </td>
+                  <td><input type="file" name="poza_noua"></td>
                   </tr>
       
                  </table> 

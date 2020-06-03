@@ -81,16 +81,22 @@
       </div>
       
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
-        <form class='text-left' id="edit-form" action="/addechipaj" method='post' enctype="multipart/form-data">
+        <form class='text-left' id="edit-form" action="/editechipaj" method='post' enctype="multipart/form-data">
         @csrf
             <div class="group">
             <div class="form-group">
                 <input type="hidden" value="{{$zbor->idZbor}}" name="zbor"/>
                 <label class='title'>Pilot</label>
                    <select class="pilot" name="pilot">
+                   @if($pc && count($pc) > 0)
+                   <option ang="{{$pc[0]->idAngajat}}" value="{{$pc[0]->idAngajat}}" class="" calificari="{{$pc[0]->calificari}}">
+                                {{$pc[0]->nume.' '.$pc[0]->prenume}}
+                      </option>
+                   @else
                    <option value="-1">
                     Selectati
                    </option>
+                    @endif
                   <?php error_log("asdasfa") ?>
                     @foreach($angajati as $ang)
                         @if($ang->tip_angajat == "Pilot" && $ang->idAngajat )
@@ -105,9 +111,15 @@
             <div class="form-group">
                 <label class='title'>Copilot</label>
                <select class="copilot" name="copilot">  
-               <option value="-1">
+               @if($pc && count($pc) > 1)
+                   <option ang="{{$pc[1]->idAngajat}}" value="{{$pc[1]->idAngajat}}" class="" calificari="{{$pc[1]->calificari}}">
+                                {{$pc[1]->nume.' '.$pc[1]->prenume}}
+                      </option>
+                   @else
+                   <option value="-1">
                     Selectati
                    </option>
+                    @endif
                     @foreach($angajati as $ang)
                         @if($ang->tip_angajat == "Pilot" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}" class=""  calificari="{{$ang->calificari}}">
@@ -123,9 +135,15 @@
             <div class="form-group">
                 <label class='title'>Steward1</label>
                  <select class="steward1" name="steward1">
-                 <option value="-1">
+                 @if($sc && count($sc) > 0)
+                   <option ang="{{$sc[0]->idAngajat}}" value="{{$sc[0]->idAngajat}}" class="" calificari="{{$sc[0]->calificari}}">
+                                {{$sc[0]->nume.' '.$sc[0]->prenume}}
+                      </option>
+                   @else
+                   <option value="-1">
                     Selectati
                    </option>
+                    @endif
                     @foreach($angajati as $ang)
                         @if($ang->tip_angajat == "Steward" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
@@ -138,9 +156,15 @@
             <div class="form-group">
                 <label class='title'>Steward2</label>
                 <select class="steward2" name="steward2">
+                @if($sc && count($sc) > 1)
+                   <option ang="{{$sc[1]->idAngajat}}" value="{{$sc[1]->idAngajat}}" class="" calificari="{{$sc[1]->calificari}}">
+                                {{$sc[1]->nume.' '.$sc[1]->prenume}}
+                    </option>
+                   @else
                 <option value="-1">
                     Selectati
-                   </option>
+                </option>
+                    @endif
                     @foreach($angajati as $ang)
                         @if($ang->tip_angajat == "Steward" )
                             <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
@@ -154,7 +178,7 @@
          
 
                 <div class='d-flex justify-content-end'>
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Editeaza Echipaj</button>
             </div>
 
             
