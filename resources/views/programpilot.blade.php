@@ -14,7 +14,32 @@
 
 </head>
 
-<body style='font-family: Arial; background-color: #cde8f9;'>
+<body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
+
+
+<div class="header" style="padding:10px; border-bottom:1px solid black;">
+  <div class="clock" style="position:absolute;top:10px;left:10px;">
+
+  </div>
+  <div class="" style="margin:0 auto;text-align:center;">
+      {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+  </div>
+  <div class="" style="position:absolute;top:10px;right:10px;">
+      <a href="{{route('delogare')}}" class=''>Delogare</a>
+  </div>
+
+</div>
+<script>
+ var time = new Date();
+        $('.clock').html(time.toLocaleString());
+  window.onload = function(){
+   
+    setInterval(function(){
+      var time = new Date();
+        $('.clock').html(time.toLocaleString());
+    },1000);
+  }
+</script>
 <div class="d-flex justify-content-between">
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
   

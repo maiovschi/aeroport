@@ -2,6 +2,25 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <title>Echipaj nou</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script> 
+
+    <style>
+    html {
+      font-size: 12px;
+   
+    }<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
     <title>Avion nou</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -23,6 +42,7 @@
     }
     </style>
   </head>
+  <?php error_log("test") ?>
   <body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
 
 
@@ -50,7 +70,6 @@
   }
 </script>
 
-   
     <div class='container text-center'>
         
         <a href="{{route('home')}}" class='btn btn-lg btn-info mt-4 title'>Acasa</a>
@@ -58,130 +77,106 @@
        
         
       <div class='d-flex flex-row'>
-        <div class='px-5 title'>Editeaza zbor</div>
+        <div class='px-5 title'>Adauga Echipaj</div>
       </div>
       
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
-        <form class='text-left' id="edit-form" action="{{route('zboruriedit',['idzbor' => $zbor->idZbor])}}" method='post' enctype="multipart/form-data">
+        <form class='text-left' id="edit-form" action="/addechipaj" method='post' enctype="multipart/form-data">
         @csrf
             <div class="group">
-            <div class="form-group container">
-            <?php error_log("inceput") ?>
-                <label class='title'>Ruta</label>
-                   <select class="ruta" name="ruta">
-                        @if(property_exists($zbor,'ruta') && $zbor->ruta)
-                            <option selected>  {{$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire}}  </option>
-                        @else
-                            <option selected> Selectati o ruta </option>
-                        @endif
-                
-                        @foreach($ruta as $rt)
-                        <option ang="{{$rt->idRuta}}" selected value="{{$rt->idRuta}}" >
-                            {{$rt->aeroport_plecare.' '.$rt->aeroport_sosire}}
-                        </option>
-                        @endforeach
-            
+            <div class="form-group">
+                <input type="hidden" value="{{$zbor->idZbor}}" name="zbor"/>
+                <label class='title'>Pilot</label>
+                   <select class="pilot" name="pilot">
+                   <option value="-1">
+                    Selectati
+                   </option>
+                  <?php error_log("asdasfa") ?>
+                    @foreach($angajati as $ang)
+                        @if($ang->tip_angajat == "Pilot" && $ang->idAngajat )
+                            <option ang="{{$ang->idAngajat}}" value="{{$ang->idAngajat}}" class="" calificari="{{$ang->calificari}}">
+                                {{$ang->nume.' '.$ang->prenume}}
+                            </option>
+                         @endif
+                    @endforeach
                 </select>
             </div>
-
-            <?php error_log("trece") ?>
-            <div class="form-group container">
-                <label class='title'>Avion</label>
-               <select class="avion" name="avion">  
-                    @if(property_exists($zbor,'avion') && $zbor->avion)
-                      <option ang="{{$zbor->avion->idAvion}}" selected  value="{{$zbor->avion->idAvion}}">
-                            {{$zbor->avion->nume.' '.$zbor->avion->model}}
-                        </option>
-                    @else
-                        <option selected> Selectati avion </option>
-                    @endif
-                    @foreach($avioane as $avion)
-                        <option ang="{{$avion->idAvion}}" selected  value="{{$avion->idAvion}}">
-                            {{$avion->nume.' '.$avion->model}}
-                        </option>
+            <?php error_log("linia 78"); ?>
+            <div class="form-group">
+                <label class='title'>Copilot</label>
+               <select class="copilot" name="copilot">  
+               <option value="-1">
+                    Selectati
+                   </option>
+                    @foreach($angajati as $ang)
+                        @if($ang->tip_angajat == "Pilot" )
+                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}" class=""  calificari="{{$ang->calificari}}">
+                                {{$ang->nume.' '.$ang->prenume}}
+                            </option>
+                         @endif
                     @endforeach
                 </select>
             </div>
             </div>
+   
+            <div class="group">
             <div class="form-group">
-                <label class='title'>Numar zbor</label>
-                <input type="text"  class="form-control nume" name='nrZbor'  value="{{$zbor->nrZbor}}" >
+                <label class='title'>Steward1</label>
+                 <select class="steward1" name="steward1">
+                 <option value="-1">
+                    Selectati
+                   </option>
+                    @foreach($angajati as $ang)
+                        @if($ang->tip_angajat == "Steward" )
+                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
+                                {{$ang->nume.' '.$ang->prenume}}
+                            </option>
+                         @endif
+                    @endforeach
+                </select>
             </div>
-               
+            <div class="form-group">
+                <label class='title'>Steward2</label>
+                <select class="steward2" name="steward2">
+                <option value="-1">
+                    Selectati
+                   </option>
+                    @foreach($angajati as $ang)
+                        @if($ang->tip_angajat == "Steward" )
+                            <option ang="{{$ang->idAngajat}}"  value="{{$ang->idAngajat}}"  class="" >
+                                {{$ang->nume.' '.$ang->prenume}}
+                            </option>
+                         @endif
+                    @endforeach
+                </select>
             </div>
+            </div>
+         
 
-            <div class="group ">
-            <div class="form-group container">
-                <label class='title'>Informatii plecare*</label>
-                <input type="date" id="data_plecare" class="form-control" name='data_plecare' value="{{explode(' ',$zbor->data_ora_plecare)[0]}}">
-             
-             
-            </div>
-
-            <div class="form-group container">
-                <h4 style="margin:0;">Ora plecare curenta: {{explode(' ',$zbor->data_ora_plecare)[1]}}</h4> <br>
-                <label class='title'>Informatii plecare*</label>
-                <input type="text" id="ora_plecare" name="ora_plecare" class=" form-control hidden">
-                <input type="text" class="clock" value="">
-             
-            </div>
-
-          
-            </div>
-      
-            <div class="form-group container">
-                <label class='title'>Informatii sosire*</label>
-                <input type="date" id="data_sosire" class="form-control" name='data_sosire' value="{{explode(' ',$zbor->data_ora_plecare)[0]}}" >
-              
-            </div>
-
-            <div class="form-group container">
-            <h4 style="margin:0;">Ora sosire curenta: {{explode(' ',$zbor->data_ora_sosire)[1]}}</h4> <br> 
-            <label class='title'>Informatii sosire*</label>
-                <input type="text" id="ora_sosire" name='ora_sosire' class="form-control hidden" >
-                <input type="text" class="clock">
-            </div>
-            <div class="form-group container">
-                <label class='title'>Observatii</label>
-                <input type="text"  class="form-control nume" name='Observatii' placeholder="{{$zbor->Observatii}}" >
-            </div>
-
-                <div class='d-flex justify-content-end' style="margin-right:150px;">
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica zbor</button>
+                <div class='d-flex justify-content-end'>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
             </div>
 
             
         </form>
     </div>
 
-  
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="/jquery-clock-timepicker.min.js"></script>
-    <script>
-     $('.clock').clockTimePicker();
-   
-      $(document).ready(function(ev){
-           
-          /*  setTimeout(function(){
-                $('.clock').first().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_plecare)[1]}}'.substring(0,5));
-                $('.clock').last().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_sosire)[1]}}'.substring(0,5));
-            },600); */
-      })
-
-      /*  $('.clock').toArray().forEach(clock=>{
-              var value =   $(clock).val();
-              $(clock).closest('.form-group').find('.form-control').val(value);
-            })
-
-            */
-    </script>
-     <!-- <script>
+    
+     <script>
       $('#submit_button').on('click',function(ev){
             ev.preventDefault();
+
+            var selecturi = $('select').toArray();
+            var ok = true;
+            selecturi.forEach(select=>{
+                ok = ok && (select.value != -1);
+            })
        
-            if($('.wrong').length == 0){
+            if($('.wrong').length == 0 && ok){
               var form = document.getElementById('edit-form');
               form.submit();
             } else{
@@ -226,9 +221,15 @@
                     $(this).removeClass('wrong');
 
 
+
+
+
+
+
+
       })
    
-    </script> -->
+    </script>
 
     <style>
       .wrong{
@@ -241,4 +242,5 @@
     </style>
  
   </body>
+
 </html>

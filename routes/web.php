@@ -55,6 +55,10 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
     Route::get('/addechipaj','Controller@addechipaj')->name('addechipaj');
     Route::post('/addechipaj','Controller@addechipajPOST');
+  
+  //
+    Route::get('/editechipaj','Controller@editechipaj')->name('editechipaj');
+    Route::post('/editechipaj','Controller@editechipajPOST');
     
     //Login 
 

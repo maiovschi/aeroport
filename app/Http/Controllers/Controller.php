@@ -327,7 +327,7 @@ class Controller extends BaseController
       $zbor->avioane = $zbor->avioane?$zbor->avioane:new \stdClass();
       $zbor->nrZbor = $zbr->nrZbor;
       $zbor->data_ora_plecare = $zbr->data_ora_plecare;
-      $zbor->data_ora_sosire = $zbr->data_ora_plecare;
+      $zbor->data_ora_sosire = $zbr->data_ora_sosire;
       $zbor->Observatii = $zbr->Observatii;
       $zbor->stareZbor = $zbr->stareZbor;
       $zbor->idZbor = $zbr->idZbor;
@@ -354,13 +354,19 @@ class Controller extends BaseController
       $result =  DB::table('zboruri')->where('idZbor',$idzbor)->update(['idRuta'=>$idRuta,
         'idAvion'=> $idAvion,
         'nrZbor'=>$nrZbor,
-        'ora_plecare'=>$ora_plecare,
-        'ora_sosire'=>$ora_sosire,
+        'data_ora_plecare'=>$data_ora_plecare,
+        'data_ora_sosire'=>$data_ora_sosire,
         'Observatii'=>$Observatii,
-        'stareZbor'=>$stareZbor
-        ]);
+        'stareZbor'=>$stareZbor,
+        'stareZbor'=>'ATENTIE']);
+        
 
-       return  redirect()->intended('/zboruri?editscs='.$result); 
+        if($result){
+            return  redirect()->intended('/editechipaj?idzbor='.$result); 
+   
+        }
+       
+     
     }
 
 
@@ -594,14 +600,7 @@ public function addechipaj(Request $request){
         $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
         $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
         $data = explode(' ',$zbor->data_ora_plecare)[0]; //2020-05-19 22:23:00 => ['2020-05-19','22:23:00'];
-       /* 
-        $connection = new PDO("mysql:host=".'localhost:3306'.";dbname=aeroport", 'root','');
-        $stmt = $connection->prepare("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')"); 
-        $stmt->execute();
-        $stmt->setFetchMode(PDO::FETCH_NUM);
-        $results = $stmt->fetchAll();
-        $connection = null;
-*/
+     
 
        $results =  DB::select("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')");
        error_log(count($results));
@@ -619,7 +618,34 @@ public function addechipaj(Request $request){
     }
 }
 
-public function addechipajPOST(Request $req){
+// echipaj zbor add && edit
+public function editechipaj(Request $req){
+    $idZbor = $request->idzbor;
+    if($idZbor){
+
+        $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+        $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
+        $data = explode(' ',$zbor->data_ora_plecare)[0];
+     
+
+       $results =  DB::select("select distinct idAngajat from programe pgr where 1 not in(select count(*) from programe pgr2 where `pgr2`.`idAngajat` = `pgr`.`idAngajat` and `pgr2`.`date` = '".$data."' and `pgr2`.`tip_activitate` != 'DUTY')");
+       error_log(count($results));
+       $angajati = array();
+        foreach($results as $result){
+            $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
+            if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
+                continue;
+            $angajati[] = $temp;
+        }
+        return view('editechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati]);
+
+    }else{
+        return redirect()->intended('/zboruri');
+    }
+
+}
+
+public function editechipajPOST(Request $req){
     $idZbor = $req->zbor;
 
     $pilot1 = $req->pilot;
@@ -640,9 +666,10 @@ public function addechipajPOST(Request $req){
    if($ok){
      return redirect()->intended('/zboruri');
    }else{
-     return redirect()->intended('/addechipaj?idzbor='.$idZbor);
+     return redirect()->intended('/editechipaj?idzbor='.$idZbor);
    }
      
+
 
 }
 // orar
