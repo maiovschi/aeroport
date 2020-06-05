@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'Controller@index')->name('home');
+    
     //rute
     Route::get('/rutaadd', 'Controller@rutaForm')->name('ruta.form'); //adauga
     Route::post('/rutaadd', 'Controller@addruta')->name('rutaadd'); //adauga
@@ -21,6 +22,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/rutaedit/{idruta}', 'Controller@editruta')->name('rutaedit'); //edit
     Route::get('/rutaedit/{idruta}', 'Controller@editrutaForm')->name('rutaedit.form');//edit 
     Route::get('/stergeruta','Controller@deleteruta');//delete
+  
     //avion
     Route::get('/avioaneadd', 'Controller@avioaneForm')->name('avioane.form'); //adauga
     Route::post('/avioaneadd', 'Controller@addavioane')->name('avioaneadd'); //adauga
@@ -55,11 +57,6 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/stergezboruri','Controller@deletezboruri');//delete
     Route::get('/addechipaj','Controller@addechipaj')->name('addechipaj');
     Route::post('/addechipaj','Controller@addechipajPOST');
-
-
-
-  
-  //
     Route::get('/editechipaj','Controller@editechipaj')->name('editechipaj');
     Route::post('/editechipaj','Controller@editechipajPOST');
     
@@ -77,6 +74,11 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/programstewarzi','Controller@programstewarzi')->name('programstewarzi');
     Route::get('/programavioane','Controller@programavioane')->name('programavioane');
     Route::get('/programzboruri','Controller@programzboruri')->name('programzboruri');
+    Route::post('/getInfoPiloti','Controller@getInfoPiloti');
+    Route::post('/saveProgramPiloti','Controller@saveProgramPiloti');
+    Route::post('/getInfoStewarzi','Controller@getInfoStewarzi');
+    Route::post('/getInfoZboruri','Controller@getInfoZboruri');
+    Route::post('/saveProgramStewarzi','Controller@saveProgramStewarzi');
 
     //profil
 
@@ -88,9 +90,5 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/orarsteward','Controller@orarsteward')->name('orarsteward');
     Route::get('/programsteward','Controller@programsteward')->name('programsteward');
 
-    //pragmul nou
-    Route::post('/getInfoPiloti','Controller@getInfoPiloti');
-    Route::post('/saveProgramPiloti','Controller@saveProgramPiloti');
-    Route::post('/getInfoStewarzi','Controller@getInfoStewarzi');
-    Route::post('/getInfoZboruri','Controller@getInfoZboruri');
-    Route::post('/saveProgramStewarzi','Controller@saveProgramStewarzi');
+    
+   

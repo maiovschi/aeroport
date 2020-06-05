@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Angajati</title>
+    <title>Profil</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
   
@@ -57,7 +57,20 @@
   .logo {
     width: 250px;
   }
+  .center {
+   
+    margin-left:auto; 
+    margin-right:auto;
+   
+  }
+  .centru {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
   </style>
+  
   </head>
   <body style='font-family: Arial; background-color: #cde8f9; font-size: 14px;'>
 
@@ -67,7 +80,7 @@
 
   </div>
   <div class="" style="margin:0 auto;text-align:center;">
-      {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+  {{Session::get('user')->nume.' '.Session::get('user')->prenume.' '.Session::get('user')->tip_angajat}}
   </div>
   <div class="" style="position:absolute;top:10px;right:10px;">
       <a href="{{route('delogare')}}" class=''>Delogare</a>
@@ -86,24 +99,14 @@
   }
 </script>
 
-         <!-- <div class='d-flex justify-content-start'>
-          <img src='images/sigla.png' class='logo'>
-      </div> -->
-      <div class='d-flex flex-row'>
-        <div class='px-5'>&#9679;Angajati</div>
-      </div>
-      <hr class='bg-dark'>
-      <div class="d-flex justify-content-between">
+
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
  
-      </div>
-      <img src="/images/default.png" style="width:300px;" />
-    <table>
+      <img src="/images/zoican.jpeg" style="width:300px;" class="centru" />
+      
+      <table class="center">
      
-                  <tr>
-                  <th >Nr. angajati</th>
-                  <th >{{$profil->idAngajat}}</th>
-                  </tr>
+                 
                   <tr>
                   <td >Nume</td>
                   <td>{{$profil-> nume}}</td>
@@ -139,17 +142,22 @@
                  <tr>
                   <td >Username </td>
                   <td>{{$profil-> username}}</td>
+                  <td><input type="text" class="form-control" name='username_nou' ></td>
                   </tr>
                   <tr>
                   <td >Parola </td>
-                  <td>{{$profil-> parola}}</td>
+                  <td><input type="text" class="form-control" name='parola_vehce' ></td>
+                  <td><input type="text" class="form-control" name='parola_noua' ></td>
                   </tr>
                   <tr>
                   <td >Poza profil noua </td>
-                  <td><input type="file" name="poza_noua"></td>
+                  <td><input type="file" name="poza_noua" accept="image/x-png,image/gif,image/jpeg" /></td>
                   </tr>
-      
                  </table> 
+                 <div class='d-flex justify-content-end'>
+                <button type='submit' class='btn btn-lg btn-success my-3 title'>Salveaza modificarile</button>
+                 </div>
+
                   
                   
                   
@@ -173,6 +181,7 @@
  
      
     </script>
+  
   
   <script>
         $(document).ready(function() {

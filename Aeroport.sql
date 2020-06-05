@@ -68,6 +68,7 @@ CREATE TABLE  `aeroport`.`programe` (
 `tip_activitate` VARCHAR(64) NOT NULL,
 `idZbor` INT NULL,
 `idAngajat` INT NOT NULL,
+'date' DATE,
 PRIMARY KEY (`idProgram`),
 CONSTRAINT `fk_zbor`
 FOREIGN KEY (`idZbor`)

@@ -31,7 +31,7 @@
 
   </div>
   <div class="" style="margin:0 auto;text-align:center;">
-      {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+  {{Session::get('user')->nume.' '.Session::get('user')->prenume.' '.Session::get('user')->tip_angajat}}
   </div>
   <div class="" style="position:absolute;top:10px;right:10px;">
       <a href="{{route('delogare')}}" class=''>Delogare</a>
@@ -66,11 +66,11 @@
         @csrf
             
             <div class="form-group">
-                <label class='title'>aeroport plecare*</label>
+                <label class='title'>Aeroport plecare*</label>
                 <input type="text" class="form-control" name='aeroport_plecare' >
             </div>
             <div class="form-group">
-                <label class='title'>aeroport sosire*</label>
+                <label class='title'>Aeroport sosire*</label>
                 <input type="text" class="form-control" name='aeroport_sosire' >
             </div>
             @if($error)

@@ -91,13 +91,14 @@ class Controller extends BaseController
         DB::table('zboruri')->where('idRuta',$idRuta)->update(['idRuta'=>NULL,'stareZbor'=>'ATENTIE']);
         DB::table('rute')->where('idRuta',$idRuta)->delete();
         
-        // Ruta::find($idRuta)->delete();
+      
         
         return  redirect()->intended('/ruta');//redirect()->route('ruta')->with('success','Ruta a fost stearsa');
     }
 
 
     //avion
+   
     public function getAvioane(Request $request) {
         $edit_scs = $request->editscs == '1'?"true":"false";
         $add_scs = $request->addscs == '1'?"true":"false";
@@ -292,6 +293,7 @@ class Controller extends BaseController
   
  
      //zboruri
+     
      public function editzboruriForm($idzbor){
            
         $zbr = DB::table('zboruri')->where('idZbor',$idzbor)->first();
@@ -415,7 +417,116 @@ class Controller extends BaseController
         
         return  redirect()->intended('/zboruri');
         }
-  // program
+        public function addechipaj(Request $request){
+
+            $idZbor = $request->idzbor;
+            if($idZbor){
+        
+                $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+                $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
+                $data = explode(' ',$zbor->data_ora_plecare)[0]; //2020-05-19 22:23:00 => ['2020-05-19','22:23:00'];
+             
+        
+               $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
+               error_log(count($results));
+               $angajati = array();
+                foreach($results as $result){
+                    $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
+                    if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
+                        continue;
+                    $angajati[] = $temp;
+                }
+                return view('addechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati]);
+        
+            }else{
+                return redirect()->intended('/zboruri');
+            }
+        }
+        
+        // echipaj zbor add && edit
+        public function editechipaj(Request $request){
+            $idZbor = $request->idzbor;
+            if($idZbor){
+        
+                $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+                $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
+                $data = explode(' ',$zbor->data_ora_plecare)[0];
+             
+              $piloti_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+              $stewarzi_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Steward' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+                error_log("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
+              $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
+              error_log(count($results));
+               $angajati = array();
+                foreach($results as $result){
+                    $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
+                    if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
+                        continue;
+                    $angajati[] = $temp;
+                }
+                return view('editechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati,'pc'=>$piloti_curenti,'sc'=>$stewarzi_curenti]);
+        
+            }else{
+                return redirect()->intended('/zboruri');
+            }
+        
+        }
+        
+        public function editechipajPOST(Request $req){
+            $idZbor = $req->zbor;
+        
+            $pilot1 = $req->pilot;
+            $pilot2 = $req->copilot;
+        
+            $steward1 = $req->steward1;
+            $steward2 = $req->steward2;
+            $ok = true;
+        
+           $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+           $ok = !! DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           $ok = !! DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           $ok = !! DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           
+           if($ok){
+            $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
+           }
+           if($ok){
+             return redirect()->intended('/zboruri');
+           }else{
+             return redirect()->intended('/editechipaj?idzbor='.$idZbor);
+           }
+             
+        
+        
+        }
+        
+        public function addechipajPOST(Request $req){
+            $idZbor = $req->zbor;
+        
+            $pilot1 = $req->pilot;
+            $pilot2 = $req->copilot;
+        
+            $steward1 = $req->steward1;
+            $steward2 = $req->steward2;
+            $ok = true;
+        
+           $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+           $ok =  !!DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+           $ok = !!DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+           $ok = !!DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])&& $ok;
+        
+           if($ok){
+            $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
+           }
+           if($ok){
+             return redirect()->intended('/zboruri');
+           }else{
+             return redirect()->intended('/addechipaj?idzbor='.$idZbor);
+           }
+        
+        }
+ 
+        // program
 
   public function editprogramForm($idprogram){
            
@@ -472,7 +583,6 @@ return  redirect()->intended('/echipaje?editscs='.$result);
 }
 
 
-//  adauga form 
 public function programForm(){
    
 //  $echipaj = DB::table('echipaje')->get();
@@ -505,8 +615,32 @@ DB::table('programe')->where('idProgram',$idprogram)->delete();
 
 return  redirect()->intended('/program');
 }
+public function getInfoZboruri(Request $req){
+    $data_plecare_lower_limit = $req->an.'-'.$req->luna.'-'.$req->zi.' 00:00:00';
+    $data_plecare_upper_limit = $req->an.'-'.$req->luna.'-'.($req->zi+1).' 00:00:00';
+
+    $rez =   DB::select(" select idZbor, nrZbor,stareZbor, aeroport_plecare, aeroport_sosire,nume,model  from zboruri left join rute using(idRuta) left join avioane using(idAvion) where data_ora_plecare > '".$data_plecare_lower_limit."' and data_ora_plecare < '".$data_plecare_upper_limit."'");
+                
+     $scs = count($rez)>0;            
+     $zboruri = [];
+ 
+     foreach($rez as $result){
+         $line = [];
+         $line[] = $result->nrZbor;
+         $line[] = $result->stareZbor;
+         $line[] = $result->aeroport_plecare."-".$result->aeroport_sosire;
+         $line[] = $result->nume;
+         $line[] = $result->model;
+         $line[] = $result->idZbor;
+         $zboruri[] = $line;        
+     }
+ 
+ 
+ return response()->json(['scs'=>$scs,'rezultate'=>$zboruri]);
+ 
+}
     
-// logara
+// logare
 public function login(Request $req){
     if(Session::get('user'))
         return redirect()->intended('/');
@@ -564,6 +698,7 @@ public function delogare(Request $req){
 }
 
 // calendar programe
+
 public function programpiloti(Request $req){
 
     return view('programpiloti');
@@ -591,136 +726,23 @@ public function profil(Request $request)
 return view('profil')->with(['profil'=>$angajat]);
 }
 
-public function addechipaj(Request $request){
 
-    $idZbor = $request->idzbor;
-    if($idZbor){
-
-        $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
-        $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
-        $data = explode(' ',$zbor->data_ora_plecare)[0]; //2020-05-19 22:23:00 => ['2020-05-19','22:23:00'];
-     
-
-       $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
-       error_log(count($results));
-       $angajati = array();
-        foreach($results as $result){
-            $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
-            if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
-                continue;
-            $angajati[] = $temp;
-        }
-        return view('addechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati]);
-
-    }else{
-        return redirect()->intended('/zboruri');
-    }
-}
-
-// echipaj zbor add && edit
-public function editechipaj(Request $request){
-    $idZbor = $request->idzbor;
-    if($idZbor){
-
-        $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
-        $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
-        $data = explode(' ',$zbor->data_ora_plecare)[0];
-     
-      $piloti_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
-      $stewarzi_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Steward' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
-        error_log("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
-      $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'");
-      error_log(count($results));
-       $angajati = array();
-        foreach($results as $result){
-            $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
-            if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
-                continue;
-            $angajati[] = $temp;
-        }
-        return view('editechipaj')->with(['zbor'=>$zbor,'angajati'=>$angajati,'pc'=>$piloti_curenti,'sc'=>$stewarzi_curenti]);
-
-    }else{
-        return redirect()->intended('/zboruri');
-    }
-
-}
-
-public function editechipajPOST(Request $req){
-    $idZbor = $req->zbor;
-
-    $pilot1 = $req->pilot;
-    $pilot2 = $req->copilot;
-
-    $steward1 = $req->steward1;
-    $steward2 = $req->steward2;
-    $ok = true;
-
-   $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-   $ok = !! DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-   $ok = !! DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-   $ok = !! DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-   
-   if($ok){
-    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
-   }
-   if($ok){
-     return redirect()->intended('/zboruri');
-   }else{
-     return redirect()->intended('/editechipaj?idzbor='.$idZbor);
-   }
-     
-
-
-}
-
-public function addechipajPOST(Request $req){
-    $idZbor = $req->zbor;
-
-    $pilot1 = $req->pilot;
-    $pilot2 = $req->copilot;
-
-    $steward1 = $req->steward1;
-    $steward2 = $req->steward2;
-    $ok = true;
-
-   $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-   $ok =  !!DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-   $ok = !!DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-   $ok = !!DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])&& $ok;
-
-   if($ok){
-    $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
-   }
-   if($ok){
-     return redirect()->intended('/zboruri');
-   }else{
-     return redirect()->intended('/addechipaj?idzbor='.$idZbor);
-   }
-
-}
 // orar
 
 public function orarpilot(Request $req)
 {
     return view('orarpilot');
 }
-public function programpilot(Request $req)
-{
-    return view('programpilot');
-}
+
 public function orarsteward(Request $req)
 {
     return view('orarsteward');
 
 }
-public function programsteward(Request $req)
-{
-    return view('programsteward');
-}
 
 
-    //[["test","test2",1,"ASD-400"]]
+
+    //program piloti
 
     public function getInfoPiloti(Request $req){
         $data = $req->an.'-'.$req->luna.'-'.$req->zi;
@@ -883,30 +905,7 @@ return response()->json(['scs'=>$flag]);
 
 }
 
-public function getInfoZboruri(Request $req){
-    $data_plecare_lower_limit = $req->an.'-'.$req->luna.'-'.$req->zi.' 00:00:00';
-    $data_plecare_upper_limit = $req->an.'-'.$req->luna.'-'.($req->zi+1).' 00:00:00';
 
-    $rez =   DB::select(" select idZbor, nrZbor,stareZbor, aeroport_plecare, aeroport_sosire,nume,model  from zboruri left join rute using(idRuta) left join avioane using(idAvion) where data_ora_plecare > '".$data_plecare_lower_limit."' and data_ora_plecare < '".$data_plecare_upper_limit."'");
-                
-     $scs = count($rez)>0;            
-     $zboruri = [];
- 
-     foreach($rez as $result){
-         $line = [];
-         $line[] = $result->nrZbor;
-         $line[] = $result->stareZbor;
-         $line[] = $result->aeroport_plecare."-".$result->aeroport_sosire;
-         $line[] = $result->nume;
-         $line[] = $result->model;
-         $line[] = $result->idZbor;
-         $zboruri[] = $line;        
-     }
- 
- 
- return response()->json(['scs'=>$scs,'rezultate'=>$zboruri]);
- 
-}
 
 
 }

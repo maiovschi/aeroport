@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>{{Session::get('user')->tip_angajat}} </title>
+    <title> HOME </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -15,7 +15,7 @@
 
       </div>
       <div class="" style="margin:0 auto;text-align:center;">
-          {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+          {{Session::get('user')->nume.' '.Session::get('user')->prenume.' '.Session::get('user')->tip_angajat}}
       </div>
       <div class="" style="position:absolute;top:10px;right:10px;">
           <a href="{{route('delogare')}}" class=''>Delogare</a>
@@ -60,90 +60,88 @@
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ==='Pilot')
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('programpilot')}}" class="blocks"> Program  </a>
             <a href="{{route('orarpilot')}}" class="blocks"> Program - Lista </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ==='Steward')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program  </a>
             <a href="{{route('angajati')}}" class="blocks"> Program - Lista </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ==='Serviciul suport tehnic zboruri')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Avioane </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
             <a href="{{route('angajati')}}" class="blocks"> Documente Avioane </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
+        
         </div>
           @endif
           <div class="grid">
         @if($nivel_acc ==='Serviciul planificari')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Zboruri </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri </a>
+            <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
-            <a href="{{route('angajati')}}" class="blocks"> Program piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program steward </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri </a>
+            <a href="{{route('programpiloti')}}" class="blocks"> Program piloti </a>
+            <a href="{{route('programstewarzi')}}" class="blocks"> Program steward </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice piloti </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice steward </a>
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ===' Serviciul gestiune si analiza operatiuni zboruri')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Rute </a>
+            <a href="{{route('ruta')}}" class="blocks"> Rute </a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ==='Director piloti')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program Piloti  </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice angajati </a>
+            <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti  </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
         </div>
           @endif
-          <div class="grid">
+          <div class="grid2">
         @if($nivel_acc ==='Director steward')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program Stewarzi </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice angajati</a>
+            <a href="{{route('programstewarzi')}}" class="blocks"> Program Stewarzi </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Stewarzi</a>
         </div>
           @endif
           <div class="grid">
         @if($nivel_acc ==='Director servicii')
-            <a href="{{route('ruta')}}" class="blocks"> Profil </a>
+            <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
-            <a href="{{route('avioane')}}" class="blocks"> Avioane  </a>
-            <a href="{{route('angajati')}}" class="blocks"> Rute </a>
-            <a href="{{route('angajati')}}" class="blocks"> Zboruri </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
+            <a href="{{route('ruta')}}" class="blocks"> Rute </a>
+            <a href="{{route('avioane')}}" class="blocks"> Avioane </a>
+            <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
+            <a href="{{route('ruta')}}" class="blocks"> Documente Avioane</a>
             <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Avion </a>  
             <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice steward </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program steward </a>   
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
+            <a href="{{route('angajati')}}" class="blocks"> Grafice Steward </a>
+            <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
+            <a href="{{route('programstewarzi')}}" class="blocks"> Program Steward </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
-            <a href="{{route('ruta')}}" class="blocks"> Documente Avioane </a>
-       
         </div>
           @endif
      </div>
@@ -177,16 +175,18 @@
       }
              .grid2 {
   
-          margin:0 auto;
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-           grid-gap: .5rem;
+             margin:0 auto;
+             display: grid;
+             
+             grid-template-columns: repeat(2, 1fr);
+               grid-gap: .5rem;
             padding: .5rem;
             grid-auto-rows: minmax(100px, auto);
       
             
          
             }
+            
 
        .gridMaster{
              width:40%;
@@ -195,7 +195,7 @@
         margin-top: 30px;
  
          grid-gap: .5rem;
-       padding: .7rem;
+         padding: .7rem;
    
            /* box-shadow:0px 10px 50px 0px black;*/
             

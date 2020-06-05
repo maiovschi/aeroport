@@ -31,7 +31,7 @@
 
   </div>
   <div class="" style="margin:0 auto;text-align:center;">
-      {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+  {{Session::get('user')->nume.' '.Session::get('user')->prenume.' '.Session::get('user')->tip_angajat}}
   </div>
   <div class="" style="position:absolute;top:10px;right:10px;">
       <a href="{{route('delogare')}}" class=''>Delogare</a>

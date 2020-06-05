@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Avion nou</title>
+    <title>Editare zbor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     
@@ -31,7 +31,7 @@
 
   </div>
   <div class="" style="margin:0 auto;text-align:center;">
-      {{Session::get('user')->nume.' '.Session::get('user')->prenume}}
+  {{Session::get('user')->nume.' '.Session::get('user')->prenume.' '.Session::get('user')->tip_angajat}}
   </div>
   <div class="" style="position:absolute;top:10px;right:10px;">
       <a href="{{route('delogare')}}" class=''>Delogare</a>
