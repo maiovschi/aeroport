@@ -90,5 +90,13 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/orarsteward','Controller@orarsteward')->name('orarsteward');
     Route::get('/programsteward','Controller@programsteward')->name('programsteward');
 
+
+    //Documente
+
+    Route::get('/documents','Controller@arataDocumente');
+    Route::get('/downloadDoc','Controller@descarcaDocument');
+    Route::post('/uploadDoc','Controller@uploadeazaDocument');
+    Route::post('/changeDoc','Controller@schimbaDocument');
+    Route::get('/deleteDoc','Controller@stergeDocument');
     
    

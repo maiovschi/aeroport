@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 use DB;
 use Session;
 use PDO;
+use Storage;
 
 class Controller extends BaseController
 {
@@ -904,6 +905,130 @@ return response()->json(['scs'=>$flag]);
 
 
 }
+
+
+public function arataDocumente(Request $req){
+
+    $user = Session::get("user");
+    $documente = null;
+    if($user){
+        switch($user->tip_angajat){
+
+            case "Pilot":{
+                $documente = DB::select("select * from documente where idAngajat = '".$user->idAngajat."'");
+            }break;
+
+            case "Steward":{
+                $documente = DB::select("select * from documente where idAngajat = '".$user->idAngajat."'");
+            }break;
+
+            case "Director piloti":{
+                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Pilot' or idAngajat = '".$user->idAngajat."'");
+            }break;
+
+            case "Director stewarzi":{
+                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Steward' or idAngajat = '".$user->idAngajat."'");
+            }break;
+
+            case "Direcor servicii":{
+                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Serviciul suport tehnic zboruri' or angajati.tip_angajat = 'Serviciul planificari' or angajati.tip_angajat = 'Serviciul gestiune si analiza operatiuni zboruri' or idAngajat = '".$user->idAngajat."'");
+         
+            }break;
+
+            case "Serviciul suport tehnic zboruri":{
+                $documente = DB::select("select * from documente where idAngajat = '".$user->idAngajat."'");
+            }break;
+
+
+            case "Serviciul planificari":{
+                $documente = DB::select("select * from documente where idAngajat = '".$user->idAngajat."'");
+            }break;
+
+
+            case "Serviciul gestiune si analiza operatiuni zboruri":{
+                $documente = DB::select("select * from documente where idAngajat = '".$user->idAngajat."'");
+            }break;
+
+
+            case "Administrator":{
+                $documente = DB::select("select documente.*, angajati.nume as nume_ang, angajati.prenume as prenume_ang  from documente join angajati on(angajati.idAngajat = documente.idAngajat)");
+            }break;
+
+        }   
+        
+        return view('documents')->with(['documente'=>$documente]);
+    }
+}
+
+public function descarcaDocument(Request $req){
+    $id = $req->idDoc;
+
+    $doc = DB::table('documente')->where('idDocument',$id)->first();
+    if($doc){
+      $file = Storage::get($doc->cale);
+     return Storage::download('/'.$doc->cale,"Document - ".$doc->nume);//aresponse()->download($file, "Document - ".$doc->nume);
+    }else{
+        return response()->json(['error'=>'Bad parameter']);
+    }
+}
+
+public function uploadeazaDocument(Request $req){
+    $doc = $req->file('doc');
+   
+    $doc_name  = $req->nume;
+    /*
+       Storage::disk('local')->putFileAs(
+        'files/'.$filename,
+        $uploadedFile,
+        $filename
+      );
+    */
+   // $res = $req->file('doc')->storeAs('storage/documente',$doc_name,$doc);
+   $res =  Storage::disk('local')->putFileAs(
+        '/documente/',
+        $doc,
+        $doc_name
+      );
+    if($res){
+        DB::table('documente')->insert(['nume'=>$doc_name,'idAngajat'=>Session::get("user")->idAngajat,
+                                            'cale'=>'/documente/'.$doc_name
+                                        ]);
+
+        return redirect()->intended('/documents');
+    }
+    return response()->json(['scs'=>$res]);
+}
+
+public function schimbaDocument(Request $req){
+    $doc = $req->file('doc');
+    $doc_id  = $req->idDoc;
+    $doc_db = DB::table('documente')->where('idDocument',$doc_id)->first();
+    $res = false;
+    Storage::delete($doc_db->cale);
+    if($doc && $doc_db){
+    $res =  Storage::disk('local')->putFileAs(
+            '/documente/',
+            $doc,
+            $doc_db->nume
+          );
+          if($res){
+            return redirect()->intended('/documents');
+          }
+    }
+    return response()->json(['scs'=>$res]);
+}
+
+public function stergeDocument(Request $req){
+    $doc_id  = $req->idDoc;
+   $doc = DB::table('documente')->where('idDocument',$doc_id)->first();
+    $res = false;
+    $res = Storage::delete($doc->cale);
+    if($res){
+        DB::table('documente')->where('idDocument',$doc->idDocument)->delete();
+    }
+    return redirect()->intended('/documents');
+}
+
 
 
 
