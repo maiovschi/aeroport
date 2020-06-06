@@ -124,7 +124,7 @@
 <table class="table table-sm px-0 " id='entry-table'>
        <thead>
             <tr>
-              @if(strpos(Session::get("user")->tip_angajat,'Director') >= 0 || strpos(Session::get("user")->tip_angajat,'Admin') >= 0)
+              @if(property_exists($documente[0],'nume_ang') && property_exists($documente[0],'prenume_ang'))
                 <th>Nume</th>
                 <th>Prenume</th>
               @endif
@@ -136,7 +136,7 @@
 
             @foreach($documente as $doc)
             <tr ref="{{$doc->idDocument}}">
-                @if(strpos(Session::get("user")->tip_angajat,'Director') >= 0 || strpos(Session::get("user")->tip_angajat,'Admin') >= 0)
+                @if(property_exists($doc,'nume_ang') && property_exists($doc,'prenume_ang'))
                     <td>
                         {{$doc->nume_ang}}
                     </td>

@@ -137,10 +137,43 @@
                 <label class='title'>Observatii</label>
                 <input type="text"  class="form-control nume" name='Observatii' >
             </div>
-           
+
+            <div class="form-group">
+                <label class="title"> Retur? </label>
+                <input type="checkbox" class="retur-check" />
+           </div>
+
+      <div class="retur hidden">   
+          
+           <div class="form-group">
+                <label class='title'>Informatii plecare retur*</label>
+                <input type="date" id="data_plecare" class="form-control" name='data_plecare2' >
+            </div>
+
+            <div class="form-group">
+                <label class='title'>Informatii plecare retur*</label>
+                <input type="text" id="ora_plecare" name="ora_plecare2" class=" form-control hidden">
+                <input type="text" class="clock">
+            </div>
+
+          
+
+      
+            <div class="form-group">
+                <label class='title'>Informatii sosire retur*</label>
+                <input type="date" id="data_sosire" class="form-control" name='data_sosire2' >
+              
+            </div>
+
+            <div class="form-group">
+                <label class='title'>Informatii sosire retur*</label>
+                <input type="text" id="ora_sosire2" name='ora_sosire2' class="form-control hidden" >
+                <input type="text" class="clock">
+            </div>
+</div>
 
                 <div class='d-flex justify-content-end'>
-                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adaugaa zbor</button>
+                <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga zbor</button>
             </div>
 
             
@@ -158,7 +191,7 @@
             ev.preventDefault();
 
             $('.clock').toArray().forEach(clock=>{
-              var value =   $(clock).val();
+              var value = $(clock).val();
               $(clock).closest('.form-group').find('.form-control').val(value);
             })
 
@@ -168,12 +201,16 @@
             } else{
                 alert("Nu toate campurile sunt ok!");
             }
-            
+
       })
 
       $(document).ready(function(ev){
             $('.clock').clockTimePicker();
       })
+
+      $('.retur-check').on('click',function(){
+          $('.retur').toggleClass('hidden');
+      });
 
    
    
