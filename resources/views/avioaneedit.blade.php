@@ -79,7 +79,7 @@
 
             <div class="form-group">
                 <label class='title'>Data fabricarii*</label>
-                <input type="date" class="form-control" name='data_fabricarii'placeholder="{{$avioane->data_fabricatie}}" >
+                <input type="date" class="form-control" name='data_fabricarii' placevalue="{{$avioane->data_fabricatie}}" >
             </div>
                 <div class='d-flex justify-content-end'>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica avion</button>
@@ -100,11 +100,12 @@
           var marca = $('#marca').val();
           var model = $('#model').val();
           var nume =  $('#nume').val();
-          var nume =  $('#data_fabricatie').val();
+          var data_fabricatie =  $('#data_fabricatie').val();
             if(marca == $('#marca').attr('placeholder') ||
                model == $('#model').attr('placeholder') ||
                nume == $('#nume').attr('placeholder') ||
-               data_fabricatie==$('#data_fabricatie').attr('placeholder')|| marca.length == 0 || model.length == 0||nume.length==0||data_fabricatie.lenght==0){
+               data_fabricatie == $('#data_fabricatie').attr('placeholder')||
+                marca.length == 0 || model.length == 0||nume.length==0||data_fabricatie.lenght==0){
                     if(marca == $('#marca').attr('placeholder') || marca.length == 0){
                       $('#marca').addClass('wrong');
                     }else{
@@ -120,7 +121,7 @@
                     }else{
                       $('#nume').removeClass('wrong');
                     }
-                    if(nume == $('#data_fabricatie').attr('placeholder')  || data_fabricatie.length == 0){
+                    if(data_fabricatie == $('#data_fabricatie').attr('placeholder')  || data_fabricatie.length == 0){
                       $('#data_fabricatie').addClass('wrong');
                     }else{
                       $('#data_fabricatie').removeClass('wrong');

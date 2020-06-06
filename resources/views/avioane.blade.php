@@ -141,7 +141,7 @@
                   <a href="{{route('avioaneedit.form',['idavion' => $avioane->idAvion])}} "class='btn btn-md btn-info'>Editeaza</a>
 
                   
-
+                  <a href="/downloadAvion?id={{$avioane->doc}}"  class='btn btn-md btn-info'>Descarca</a>
                   
                   <a href="/stergeavioane?id={{$avioane->idAvion}}"class='btn btn-danger'>Delete</a>
                   
@@ -187,6 +187,7 @@
             });
         });
     </script>
+    
   
 
 

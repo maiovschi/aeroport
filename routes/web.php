@@ -30,7 +30,9 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/avioaneedit/{idavion}', 'Controller@editavioane')->name('avioaneedit'); //edit
     Route::get('/avioaneedit/{idavion}', 'Controller@editavioaneForm')->name('avioaneedit.form');//edit 
     Route::get('/stergeavioane','Controller@deleteavioane');//delete
-   
+    Route::get('/downloadAvion','Controller@descarcaAvion');
+     
+    
     //angajati
     Route::get('/angajatieadd', 'Controller@angajatiForm')->name('angajati.form'); //adauga
     Route::post('/angajatiadd', 'Controller@addangajati')->name('angajatiadd'); //adauga
@@ -93,7 +95,7 @@ Route::get('/', 'Controller@index')->name('home');
 
     //Documente
 
-    Route::get('/documents','Controller@arataDocumente');
+    Route::get('/documents','Controller@arataDocumente')->name('documents');
     Route::get('/downloadDoc','Controller@descarcaDocument');
     Route::post('/uploadDoc','Controller@uploadeazaDocument');
     Route::post('/changeDoc','Controller@schimbaDocument');

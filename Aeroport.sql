@@ -84,7 +84,7 @@ ON UPDATE NO ACTION);
 
 
 CREATE TABLE  `aeroport`.`documente` (
-`idDocument` INT NOT NULL,
+`idDocument` INT NOT NULL AUTO_INCREMENT,
 `idAngajat` INT NOT NULL,
 `cale` VARCHAR(45) NOT NULL,
 `nume` VARCHAR(45) NOT NULL,

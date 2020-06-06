@@ -100,7 +100,7 @@
                   <option>  Serviciul planificari  </option>
                   <option>  Serviciul gestiune si analiza operatiuni zboruri  </option>
                   <option>  Director piloti  </option>
-                  <option>  Director steward </option>
+                  <option>  Director stewarzi </option>
                   <option>  Director servicii </option>
                   <option>  Administrator </option>
                 </select>

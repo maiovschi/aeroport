@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Profil</title>
+    <title>Documente</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
   
@@ -104,10 +104,25 @@
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
         <a style="cursor:pointer;color:white;" class='btn btn-lg btn-info my-4 add'>Adauga</a>
       </div>
- 
-  <div class="section">
-        <table>
-        
+      <div class="section upload" style="display:none; text-align:center;margin-top:50px;">
+  <form method="POST" action="/uploadDoc" enctype="multipart/form-data">
+   <input type="file" name="doc">
+   <input type="text" name="nume">
+   @csrf
+   <input type="submit" value="Uploadeaza" class="start-upload"/>
+   </form>
+</div>
+
+<div class="hidden">
+    <form method="POST" id="exc" action="/changeDoc" enctype="multipart/form-data">
+        <input type="file" name="doc">
+        <input type="number" name="idDoc">
+        @csrf
+    </form>
+</div>
+
+<table class="table table-sm px-0 " id='entry-table'>
+       <thead>
             <tr>
               @if(strpos(Session::get("user")->tip_angajat,'Director') >= 0 || strpos(Session::get("user")->tip_angajat,'Admin') >= 0)
                 <th>Nume</th>
@@ -116,6 +131,9 @@
                 <th>Tip Document</th>
                 <th>Optiuni</th>
             </tr>
+            </thead>
+            
+
             @foreach($documente as $doc)
             <tr ref="{{$doc->idDocument}}">
                 @if(strpos(Session::get("user")->tip_angajat,'Director') >= 0 || strpos(Session::get("user")->tip_angajat,'Admin') >= 0)
@@ -140,22 +158,7 @@
   </div>
 
   
-<div class="section upload" style="display:none; text-align:center;margin-top:50px;">
-  <form method="POST" action="/uploadDoc" enctype="multipart/form-data">
-   <input type="file" name="doc">
-   <input type="text" name="nume">
-   @csrf
-   <input type="submit" value="Uploadeaza" class="start-upload"/>
-   </form>
-</div>
 
-<div class="hidden">
-    <form method="POST" id="exc" action="/changeDoc" enctype="multipart/form-data">
-        <input type="file" name="doc">
-        <input type="number" name="idDoc">
-        @csrf
-    </form>
-</div>
 
 
    
@@ -225,7 +228,7 @@ document.body.onfocus = function(){
         $(document).ready(function() {
          
 
-            var table = $('table').DataTable( {
+            var table = $('#entry-table').DataTable( {
                 orderCellsTop: true,
                 fixedHeader: true
             });

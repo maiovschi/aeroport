@@ -121,10 +121,15 @@ class Controller extends BaseController
         $marca = $request->input('marca');
         $nume = $request->input('nume');
         $data_fabricatie = $request->input('data_fabricatie');
+        $doc=$request->file('doc');
+        $filename = time().$doc->getClientOriginalName();
+        $res= Storage::disk('local')->putFileAs('/documente/',$doc,$filename);
+        
         $result = DB::table('avioane')->insert(['model'=>$model,
                                             'marca'=>$marca,
                                             'nume'=>$nume,
-                                            'data_fabricatie'=>$data_fabricatie
+                                            'data_fabricatie'=>$data_fabricatie,
+                                            'doc'=>'documente/'
                                             ]);
        
         return redirect()->intended('/avioane?addscs='.$result);
@@ -158,6 +163,18 @@ class Controller extends BaseController
 
         return redirect()->intended('/avioane?editscs='.$result);
     }
+    public function descarcaAvion( Request $req)
+    {
+        $id = $req->idAvion;
+
+    $doc = DB::table('avioane')->where('idAvion',$id)->first();
+    if($doc){
+      $file = Storage::get($doc->cale);
+     return Storage::download('/'.$doc->cale,"Document - ");
+    }else{
+        return response()->json(['error'=>'Bad parameter']);
+    }
+    }
   
     public function deleteavioane( Request $request)
     {    $idAvion = $request->id;
@@ -169,6 +186,7 @@ class Controller extends BaseController
         
         return  redirect()->intended('/avioane');
     }
+    
 
 
 
@@ -906,7 +924,7 @@ return response()->json(['scs'=>$flag]);
 
 }
 
-
+//documente angajati
 public function arataDocumente(Request $req){
 
     $user = Session::get("user");
@@ -923,15 +941,15 @@ public function arataDocumente(Request $req){
             }break;
 
             case "Director piloti":{
-                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Pilot' or idAngajat = '".$user->idAngajat."'");
+                $documente = DB::select("select documente.*, angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Pilot' or documente.idAngajat = '".$user->idAngajat."'");
             }break;
 
             case "Director stewarzi":{
-                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Steward' or idAngajat = '".$user->idAngajat."'");
+                $documente = DB::select("select documente.*, angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Steward' or documente.idAngajat = '".$user->idAngajat."'");
             }break;
 
             case "Direcor servicii":{
-                $documente = DB::select("select documente.*,angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Serviciul suport tehnic zboruri' or angajati.tip_angajat = 'Serviciul planificari' or angajati.tip_angajat = 'Serviciul gestiune si analiza operatiuni zboruri' or idAngajat = '".$user->idAngajat."'");
+                $documente = DB::select("select documente.*, angajati.nume as nume_ang,angajati.prenume as prenume_ang from documente join angajati on(documente.idAngajat = angajati.idAngajat) where angajati.tip_angajat = 'Serviciul suport tehnic zboruri' or angajati.tip_angajat = 'Serviciul planificari' or angajati.tip_angajat = 'Serviciul gestiune si analiza operatiuni zboruri' or documente.idAngajat = '".$user->idAngajat."'");
          
             }break;
 

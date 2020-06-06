@@ -23,8 +23,8 @@
         <input type="submit" value="Log in">
     </div>
     <div class="row">
-        <button class="passreset"> Reseteaza parola </button>
-        <button class="userreset"> Reseteaza nickname </button>
+        <button class="passreset"> Reset parola </button>
+        <button class="userreset"> Reset username </button>
     </div>
 
     <div class="row">
