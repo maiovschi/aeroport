@@ -106,7 +106,7 @@
       </div>
       <div class="section upload" style="display:none; text-align:center;margin-top:50px;">
   <form method="POST" action="/uploadDoc" enctype="multipart/form-data">
-   <input type="file" name="doc">
+   <input type="file"  name="doc">
    <input type="text" name="nume">
    @csrf
    <input type="submit" value="Uploadeaza" class="start-upload"/>
@@ -124,7 +124,7 @@
 <table class="table table-sm px-0 " id='entry-table'>
        <thead>
             <tr>
-              @if(property_exists($documente[0],'nume_ang') && property_exists($documente[0],'prenume_ang'))
+              @if(count($documente)>0 && property_exists($documente[0],'nume_ang') && property_exists($documente[0],'prenume_ang'))
                 <th>Nume</th>
                 <th>Prenume</th>
               @endif

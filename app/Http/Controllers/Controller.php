@@ -183,7 +183,14 @@ class Controller extends BaseController
         $edit_scs = $request->editscs == '1'?"true":"false";
         $add_scs = $request->addscs == '1'?"true":"false";
      //   $delete_scs = (isset($_GET['deletescs']) && $_GET['deletescs'])== '1'?"true":"false";
-        $angajati = DB::table('angajati')->get();
+       $user = Session::get("user");
+       if($user->tip_angajat == "Administrator"){
+            $angajati = DB::table('angajati')->get();
+       }
+       if($user->tip_angajat == "Director piloti"){
+           $angajati = DB::table('angajati')->where('tip_angajat',"Pilot")->get();
+         //  $angajati[] = DB::table('angajati')->where('tip_angajat',"alt_tip")->get();
+       }
         // $ruta= Ruta::all();
         return  view('angajati')->with(['angajati'=>$angajati,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); //view ('ruta', compact('ruta'));
        }
@@ -1057,11 +1064,17 @@ public function arataDocumente(Request $req){
 
 public function descarcaDocument(Request $req){
     $id = $req->idDoc;
-
+    $user = Session::get("user");
     $doc = DB::table('documente')->where('idDocument',$id)->first();
     if($doc){
       $file = Storage::get($doc->cale);
-     return Storage::download('/'.$doc->cale,"Document - ".$doc->nume);//aresponse()->download($file, "Document - ".$doc->nume);
+      if($doc->idAngajat == $user->idAngajat)
+        $nume_dl = "Document-".$doc->nume;
+        else{
+          $ang =   DB::table('angajati')->where('idAngajat',$doc->idAngajat)->first();
+            $nume_dl = 'Document-'.$ang->nume.'-'.$ang->prenume.'-'.$doc->nume;
+        }
+     return Storage::download('/'.$doc->cale,$nume_dl);//aresponse()->download($file, "Document - ".$doc->nume);
     }else{
         return response()->json(['error'=>'Bad parameter']);
     }
@@ -1069,8 +1082,14 @@ public function descarcaDocument(Request $req){
 
 public function uploadeazaDocument(Request $req){
     $doc = $req->file('doc');
-   
-    $doc_name  = $req->nume;
+//var_dump($_FILES);
+
+  // var_dump('.'.explode('.',$doc->getClientOriginalName())[1]);
+   if(strpos($doc->getClientOriginalName(),'.')>0){
+       $arr = explode('.',$doc->getClientOriginalName());
+     $ext =   '.'.$arr[count($arr)-1];
+   }
+    $doc_name  = $req->nume.$ext;
     /*
        Storage::disk('local')->putFileAs(
         'files/'.$filename,
