@@ -65,21 +65,21 @@
         @csrf
         <div class="form-group">
                 <label class='title'>Marca*</label>
-                <input type="text" id="marca" class="form-control" name='marca' placeholder="{{$avioane->marca}}" >
+                <input type="text" id="marca" class="form-control" name='marca' value="{{$avioane->marca}}" >
             </div>
             <div class="form-group">
                 <label class='title'>Model*</label>
-                <input type="text" id="model" class="form-control" name='model' placeholder="{{$avioane->model}}" >
+                <input type="text" id="model" class="form-control" name='model' value="{{$avioane->model}}" >
             </div>
            
             <div class="form-group">
                 <label class='title'>Nume*</label>
-                <input type="text" id="nume" class="form-control" name='nume' placeholder="{{$avioane->nume}}" >
+                <input type="text" id="nume" class="form-control" name='nume' value="{{$avioane->nume}}" >
             </div>
 
             <div class="form-group">
                 <label class='title'>Data fabricarii*</label>
-                <input type="date" class="form-control" name='data_fabricarii' placevalue="{{$avioane->data_fabricatie}}" >
+                <input type="date" class="form-control" name='data_fabricarii' value="{{$avioane->data_fabricatie}}" >
             </div>
                 <div class='d-flex justify-content-end'>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Modifica avion</button>
@@ -94,7 +94,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     
-     <script>
+     <!-- <script>
       $('#submit_button').on('click',function(ev){
             ev.preventDefault();
           var marca = $('#marca').val();
@@ -138,7 +138,7 @@
             
       })
    
-    </script>
+    </script> -->
 
     <style>
       .wrong{

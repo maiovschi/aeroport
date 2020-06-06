@@ -98,13 +98,7 @@
                 <input class="timepicker form-control" type="text" name='oradecolare' required>
             </div> -->
 
-            <div class="form-group">
-                <label class='title'>Document avion</label>
-               
-                <input type="file" name="doc" accept=".pdf,.doc">
-            
-            </div>
-           
+         
             
             <div class='d-flex justify-content-end'>
                 <button type='submit' class='btn btn-lg btn-success my-3 title'>Adauga avion</button>

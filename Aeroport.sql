@@ -18,7 +18,7 @@ CREATE TABLE  `aeroport`.`avioane` (
 `marca` VARCHAR(45) NULL,
 `nume` VARCHAR(45) NULL UNIQUE,
 `data_fabricatie` DATE NULL,
-`cale` VARCHAR(64) NULL,
+`doc` VARCHAR(64) NULL,
 PRIMARY KEY (`idAvion`));
 
 

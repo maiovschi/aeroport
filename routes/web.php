@@ -30,7 +30,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::post('/avioaneedit/{idavion}', 'Controller@editavioane')->name('avioaneedit'); //edit
     Route::get('/avioaneedit/{idavion}', 'Controller@editavioaneForm')->name('avioaneedit.form');//edit 
     Route::get('/stergeavioane','Controller@deleteavioane');//delete
-    Route::get('/downloadAvion','Controller@descarcaAvion');
+    
      
     
     //angajati

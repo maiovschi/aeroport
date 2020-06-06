@@ -121,15 +121,13 @@ class Controller extends BaseController
         $marca = $request->input('marca');
         $nume = $request->input('nume');
         $data_fabricatie = $request->input('data_fabricatie');
-        $doc=$request->file('doc');
-        $filename = time().$doc->getClientOriginalName();
-        $res= Storage::disk('local')->putFileAs('/documente/',$doc,$filename);
+       
         
         $result = DB::table('avioane')->insert(['model'=>$model,
                                             'marca'=>$marca,
                                             'nume'=>$nume,
-                                            'data_fabricatie'=>$data_fabricatie,
-                                            'doc'=>'documente/'
+                                            'data_fabricatie'=>$data_fabricatie
+                                        
                                             ]);
        
         return redirect()->intended('/avioane?addscs='.$result);
@@ -148,9 +146,9 @@ class Controller extends BaseController
         $data_fabricatie=$request->date_fabricatie;
         $avion_de_editat =  DB::table('avioane')->where('idAvion',$idavion)->first();
        $result = 0;
-      if($avion_de_editat->model != $model &&
-         $avion_de_editat->marca != $marca&&
-         $avion_de_editat->nume != $nume &&
+      if($avion_de_editat->model != $model ||
+         $avion_de_editat->marca != $marca||
+         $avion_de_editat->nume != $nume ||
          $avion_de_editat->nume != $data_fabricatie){ 
             $result = DB::table('avioane')->where('idAvion',$idavion)
                                 ->update(['model'=>$model,
@@ -163,18 +161,7 @@ class Controller extends BaseController
 
         return redirect()->intended('/avioane?editscs='.$result);
     }
-    public function descarcaAvion( Request $req)
-    {
-        $id = $req->idAvion;
-
-    $doc = DB::table('avioane')->where('idAvion',$id)->first();
-    if($doc){
-      $file = Storage::get($doc->cale);
-     return Storage::download('/'.$doc->cale,"Document - ");
-    }else{
-        return response()->json(['error'=>'Bad parameter']);
-    }
-    }
+   
   
     public function deleteavioane( Request $request)
     {    $idAvion = $request->id;
