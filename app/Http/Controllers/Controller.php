@@ -376,8 +376,8 @@ class Controller extends BaseController
         $zbor_retur = DB::table('zboruri')->where('nrZbor',$nrZbor.'R')->first();
         $ruta = DB::table('rute')->where('idRuta',$idRuta)->first();
         if($zbor_retur){
-            $ruta_retur = DB::table('rute')->where(['aeroport_plecare'=>$ruta->aeroport_sosire, 'aeroport_sosire'=>$ruta->aeroport_placere])->first();
-            $conditie_avion_ok = $retur->idAvion == $idAvion;
+            $ruta_retur = DB::table('rute')->where(['aeroport_plecare'=>$ruta->aeroport_sosire, 'aeroport_sosire'=>$ruta->aeroport_plecare])->first();
+            $conditie_avion_ok = $zbor_retur->idAvion == $idAvion;
             $conditie_ruta_ok = !!$ruta_retur;
             $conditie_data_ok = strcmp($zbor_retur->data_ora_plecare, $data_ora_sosire) >= 0;
 
@@ -400,7 +400,7 @@ class Controller extends BaseController
                 $update_vector['stareZbor']='ATENTIE';
             }
 
-            DB::table('zboruri')->where('idZbor',$retur->idZbor)->update($vector_update);
+            DB::table('zboruri')->where('idZbor',$zbor_retur->idZbor)->update($update_vector);
 
         }
 
@@ -520,25 +520,26 @@ class Controller extends BaseController
         // echipaj zbor add && edit
         public function editechipaj(Request $request){
             $idZbor = $request->idzbor;
-            $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
-            $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first() || DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)))->first();
-            
-           
-
-
+           // $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+           $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+      
+            $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first();;
+            if(!$zborR)
+              $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)))->first();
 
             if($idZbor){
-        
-                $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
+
                 $avion = DB::table('avioane')->where('idAvion',$zbor->idAvion)->first();
+
                 $data = explode(' ',$zbor->data_ora_plecare)[0];
              
               $piloti_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
               $stewarzi_curenti = DB::select("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Steward' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
                 error_log("select distinct * from programe pgr join angajati using(idAngajat) where tip_angajat='Pilot' and idZbor = '".$zbor->idZbor."'  and tip_activitate = 'ZBOR' and date  = '".$data."'");
               $results =  DB::select("select distinct idAngajat from programe pgr where tip_activitate = 'DUTY' and date  = '".$data."'".($zborR?" and 1 in(select count(*) from programe pgr2 where pgr2.tip_activitate = 'DUTY' and pgr2.idAngajat = pgr.idAngajat and pgr2.date = '".explode(' ',$zborR->data_ora_plecare)[0]."')":""));
-              error_log(count($results));
+              error_log(count($stewarzi_curenti));
                $angajati = array();
+            
                 foreach($results as $result){
                     $temp = DB::table('angajati')->where('idAngajat',$result->idAngajat)->first();
                     if($temp->tip_angajat == "Pilot" && $temp->calificari != $avion->model)
@@ -557,9 +558,12 @@ class Controller extends BaseController
             $idZbor = $req->zbor;
 
             $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
-
-            $zbor_retur = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first() || DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)))->first();
+            $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first();
             
+            if(!$zborR)
+                $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)-1))->first();
+            
+                error_log(substr($zbor->nrZbor,0,strlen($zbor->nrZbor)));
       
         
             $pilot1 = $req->pilot;
@@ -575,32 +579,69 @@ class Controller extends BaseController
             }
 
         
-           $ok =  !!DB::table('programe')->where(['idAngajat'=>$pilot1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-           $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-           $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-           $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
-           
+           $ok =  !!DB::table('programe')->where(['idAngajat'=>$pilot1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+           $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+           error_log($ok);
            if($ok){
             $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
            }
 
 
            if($zborR){
-
+            error_log($zborR->nrZbor);
+           
             $echipaj_curent = DB::table('programe')->where('idZbor',$zborR->idZbor)->get();
             foreach($echipaj_curent as $persoana){
                 DB::table('programe')->where(['idAngajat'=>$persoana->idAngajat,'idZbor'=>$zborR->idZbor])->update(['tip_activitate'=>'DUTY','idZbor'=>NULL]);
             }
 
-              
-                $ok =  !!DB::table('programe')->where(['idAngajat'=>$pilot1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor]) && $ok;
-                $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
-                $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
-                $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
-                
+         
+
+              error_log($ok);
+              $count =  DB::select("select count(*) as c from programe where idAngajat = '".$pilot1."' and date = '".$zborR->data_ora_plecare."'")[0]->c;
+              error_log($count." <<count");
+              if($count == 2)
+                $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor]) && $ok;
+                else{
+                    $ok =  !!DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$pilot1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]]) && $ok;  
+                }
+
+
+                $count =  DB::select("select count(*) as c from programe where idAngajat = '".$pilot2."' and date = '".$zborR->data_ora_plecare."'")[0]->c;
+                if($count == 2)
+                  $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor]) && $ok;
+                  else{
+                      $ok =  !!DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$pilot2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]]) && $ok;  
+                  }
+
+
+                  $count =  DB::select("select count(*) as c from programe where idAngajat = '".$steward1."' and date = '".$zborR->data_ora_plecare."'")[0]->c;
+                  if($count == 2)
+                    $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor]) && $ok;
+                    else{
+                        $ok =  !!DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$steward1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]]) && $ok;  
+                    }
+
+
+                    $count =  DB::select("select count(*) as c from programe where idAngajat = '".$steward2."' and date = '".$zborR->data_ora_plecare."'")[0]->c;
+                    if($count == 2)
+                      $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor]) && $ok;
+                      else{
+                          $ok =  !!DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]]) && $ok;  
+                      }
+           //     $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
+           //     $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
+           //     $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
+              error_log($ok);
             }
+            if($ok){
+                error_log("intra pe penultimul ifok");
+                $ok = DB::table('zboruri')->where('idZbor',$zborR->idZbor)->update(['stareZbor'=>'ACTIV']);
+               }
 
-
+               error_log($ok);
            if($ok){
              return redirect()->intended('/zboruri');
            }else{
@@ -613,22 +654,51 @@ class Controller extends BaseController
         
         public function addechipajPOST(Request $req){
             $idZbor = $req->zbor;
-        
+
+            $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
             $pilot1 = $req->pilot;
             $pilot2 = $req->copilot;
         
             $steward1 = $req->steward1;
             $steward2 = $req->steward2;
             $ok = true;
+
+
+            $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first();
+
+            if(!$zborR)
+                $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)-1))->first();
+            
+            
         
-           $ok =  !!DB::table('programe')->where('idAngajat',$pilot1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-           $ok =  !!DB::table('programe')->where('idAngajat',$pilot2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-           $ok = !!DB::table('programe')->where('idAngajat',$steward1)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
-           $ok = !!DB::table('programe')->where('idAngajat',$steward2)->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])&& $ok;
-        
+  
+            $ok =  !!DB::table('programe')->where(['idAngajat'=>$pilot1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor]) && $ok;
+            $ok = !! DB::table('programe')->where(['idAngajat'=>$pilot2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+            $ok = !! DB::table('programe')->where(['idAngajat'=>$steward1,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+            $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zbor->data_ora_plecare)[0]])->update(['tip_activitate'=>"ZBOR","idZbor"=>$idZbor])  && $ok;
+             
            if($ok){
             $ok = DB::table('zboruri')->where('idZbor',$idZbor)->update(['stareZbor'=>'ACTIV']);
            }
+
+
+           if($zborR){
+
+            $echipaj_curent = DB::table('programe')->where('idZbor',$zborR->idZbor)->get();
+     
+              
+                $ok =  !!DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$pilot1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]]) && $ok;
+                $ok = !! DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$pilot2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])  && $ok;
+                $ok = !! DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$steward1,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])  && $ok;
+                $ok = !! DB::table('programe')->insert(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor,'idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])  && $ok;
+                
+            }
+
+            if($ok){
+                $ok = DB::table('zboruri')->where('idZbor',$zborR->idZbor)->update(['stareZbor'=>'ACTIV']);
+            }
+
+
            if($ok){
              return redirect()->intended('/zboruri');
            }else{
