@@ -123,7 +123,7 @@
         </div>
           @endif
         
-        @if($nivel_acc ==='Director steward')
+        @if($nivel_acc ==='Director stewarzi')
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>

@@ -191,14 +191,21 @@ class Controller extends BaseController
            $angajati = DB::table('angajati')->where('tip_angajat',"Pilot")->get();
          //  $angajati[] = DB::table('angajati')->where('tip_angajat',"alt_tip")->get();
        }
-        // $ruta= Ruta::all();
-        return  view('angajati')->with(['angajati'=>$angajati,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); //view ('ruta', compact('ruta'));
+       if($user->tip_angajat == "Director stewarzi"){
+        $angajati = DB::table('angajati')->where('tip_angajat',"Steward")->get();
+      //  $angajati[] = DB::table('angajati')->where('tip_angajat',"alt_tip")->get();
+         }
+         if($user->tip_angajat == "Director servicii"){
+            $angajati = DB::table('angajati')->whereIN('tip_angajat',['Serviciul suport tehnic zboruri', 'Serviciul planificari','Serviciul gestiune si analiza operatiuni zboruri'])->get();
+         //   $angajati[] = DB::table('angajati')->where('tip_angajat',"Serviciul planificari ")->get();
+           // $angajati[] = DB::table('angajati')->where('tip_angajat',"Serviciul gestiune si analiza operatiuni zboruri")->get();
+             }
+        return  view('angajati')->with(['angajati'=>$angajati,'edit_scs'=>$edit_scs,'add_scs'=>$add_scs]); 
        }
 
     public function angajatiForm() {
         $angajati = DB::table('angajati');
-        //    if($rute::all()->isEmpty()) $nr_ruta = 1;
-        //    else $nr_ruta = $rute::all()->last()->idrute + 1;
+       
             return view('angajatiadd');
     }
 
@@ -368,7 +375,7 @@ class Controller extends BaseController
 
         $zbor_retur = DB::table('zboruri')->where('nrZbor',$nrZbor.'R')->first();
         $ruta = DB::table('rute')->where('idRuta',$idRuta)->first();
-        if($retur){
+        if($zbor_retur){
             $ruta_retur = DB::table('rute')->where(['aeroport_plecare'=>$ruta->aeroport_sosire, 'aeroport_sosire'=>$ruta->aeroport_placere])->first();
             $conditie_avion_ok = $retur->idAvion == $idAvion;
             $conditie_ruta_ok = !!$ruta_retur;
@@ -513,9 +520,10 @@ class Controller extends BaseController
         // echipaj zbor add && edit
         public function editechipaj(Request $request){
             $idZbor = $request->idzbor;
+            $zbor = DB::table('zboruri')->where('idZbor',$idZbor)->first();
             $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first() || DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)))->first();
             
-
+           
 
 
 
