@@ -11,6 +11,7 @@ use DB;
 use Session;
 use PDO;
 use Storage;
+use Carbon\Carbon;
 
 class Controller extends BaseController
 {
@@ -913,7 +914,47 @@ return view('profil')->with(['profil'=>$angajat]);
 
 public function orarpilot(Request $req)
 {
-    return view('orarpilot');
+    $delta = $req->delta;
+    //Tip Activitat Interval
+    //Duty          Toata ziua
+    //Zbor          10:30 - 23:10
+    $delta = $delta?$delta:0;
+    $pilot = Session::get('user');
+    $zilele_lunii = array();
+    $date = Carbon::now()->addMonths($delta - 1);
+    $luna_curenta = $date->format('m');
+    $start = $date->firstOfMonth();
+   // var_dump($start);
+    $final = $date->lastOfMonth();
+ //   var_dump($final);
+
+    $nrzile = (int)($final->format('d')) ;
+ 
+    for($i = 1; $i<$nrzile; $i++){
+        $zilele_lunii[] = array();
+        $current_day = $start->addDays(1)->format('yy-m-d');
+     
+       
+        $activitati = DB::table('programe')->where(['date'=>$current_day,'idAngajat'=>$pilot->idAngajat])->get();
+        if(count($activitati) > 0){
+            foreach($activitati as $activitate){
+                if($activitate->tip_activitate == "DUTY"){
+                    $zilele_lunii[$i-1][] = array('DUTY',' ',' ',' ','Toata Ziua');
+                }else{
+                   $detalii_activitate =  DB::select("select nrZbor, data_ora_plecare, data_ora_sosire, aeroport_plecare, aeroport_sosire, Observatii from zboruri natural join rute where idZbor = '".$activitate->idZbor."'")[0];
+                   $zilele_lunii[$i-1][] = array('ZBOR',$detalii_activitate->nrZbor,$detalii_activitate->aeroport_plecare.' '.explode(' ',$detalii_activitate->data_ora_plecare)[1],$detalii_activitate->aeroport_sosire.' '.explode(' ',$detalii_activitate->data_ora_sosire)[1],$detalii_activitate->Observatii);
+                   
+                }
+                
+            }
+        }else{
+            $zilele_lunii[$i-1][] = array('LIBER',' ',' ',' ', 'Toata Ziua');
+        }
+    }
+
+    
+ 
+    return view('orarpilot')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
 }
 
 public function orarsteward(Request $req)

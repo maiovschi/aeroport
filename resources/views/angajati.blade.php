@@ -148,9 +148,9 @@
 
                   
 
-                 
+                @if(Session::get("user")->tip_angajat == "Administrator")                 
                   <a href="/stergeangajati?id={{$angajati->idAngajat}}"class='btn btn-danger'>Delete</a>
-                  
+                @endif
                   </td>
                   
                   
