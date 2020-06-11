@@ -101,7 +101,7 @@
       <table class="table table-sm px-0 " id='entry-table'>
           <thead>
               <tr>
-                  
+              <th scope="col">id angajat</th>
                   <th scope="col">Nume</th>
                   <th scope="col">Prenume</th>
                   <th scope="col">E-mail</th>
@@ -117,7 +117,7 @@
           <tfoot>
               <tr>
                   <th scope="col"></th>
-
+                  <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
@@ -129,6 +129,7 @@
           <tbody>
           @foreach($angajati as $key => $angajati)
               <tr>
+              <td>{{$angajati-> idAngajat}}</td>
                   <td>{{$angajati-> nume}}</td>
                   <td>{{$angajati-> prenume}}</td>
                   <td>{{$angajati-> email}}</td>
@@ -141,13 +142,13 @@
                   <td>
                 
 
-                        <!--button type="submit" class="btn btn-danger">Delete</button-->
-                     
+                       
+               
                   <a href="/angajatiedit/{{$angajati->idAngajat}} "class='btn btn-md btn-info'>Editeaza</a>
 
                   
 
-                  
+                 
                   <a href="/stergeangajati?id={{$angajati->idAngajat}}"class='btn btn-danger'>Delete</a>
                   
                   </td>

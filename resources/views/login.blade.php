@@ -84,17 +84,16 @@
 </div>
 <style>
 .gridMaster{
-             width:40%;
-  
-    margin-left: 450px;
-        margin-top: 120px;
- 
-         grid-gap: .5rem;
-       padding: .7rem;
-   
-           /* box-shadow:0px 10px 50px 0px black;*/
+         margin: 0 auto;
+        margin-top: 100px;
+        
+                   /* box-shadow:0px 10px 50px 0px black;*/
             
         }
+form {
+    width: max-content;
+    margin: 0 auto;
+}
 </style>
 <body>
 </html>

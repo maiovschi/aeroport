@@ -189,29 +189,23 @@
       <script>
       $('#submit_button').on('click',function(ev){
             ev.preventDefault();
-
             $('.clock').toArray().forEach(clock=>{
               var value = $(clock).val();
               $(clock).closest('.form-group').find('.form-control').val(value);
             })
-
             if($('.wrong').length == 0){
               var form = document.getElementById('edit-form');
               form.submit();
             } else{
                 alert("Nu toate campurile sunt ok!");
             }
-
       })
-
       $(document).ready(function(ev){
             $('.clock').clockTimePicker();
       })
-
       $('.retur-check').on('click',function(){
           $('.retur').toggleClass('hidden');
       });
-
    
    
     </script> 
@@ -224,7 +218,26 @@
       .hidden{
           display:none;
       }
-    </style>
+</style>
+      <script>
+      $('#submit_button').on('click',function(ev){
+            ev.preventDefault();
+
+            var selecturi = $('select').toArray();
+            var ok = true;
+            selecturi.forEach(select=>{
+                ok = ok && (select.value != -1);
+            })
+       
+            if($('.wrong').length == 0 && ok){
+              var form = document.getElementById('edit-form');
+              form.submit();
+            } else{
+                alert("Nu toate campurile sunt ok!");
+            }
+            
+      })
+    </script>
  
   </body>
 </html>

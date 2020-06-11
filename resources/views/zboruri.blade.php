@@ -102,7 +102,7 @@
       <table class="table table-sm px-0 " id='entry-table'>
           <thead>
               <tr>
-                 
+                  <th scope="col">id zbor</th>
                   <th scope="col">Ruta</th>
                   <th scope="col">Avion</th>
                   <th scope='col'>Numar Zbor</th>
@@ -115,6 +115,7 @@
           </thead>
           <tfoot>
               <tr>
+              <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
                   <th scope="col"></th>
@@ -130,6 +131,7 @@
       
           @foreach($zboruri as $zbor)
               <tr>
+              <td>{{$zbor->idZbor}}</td>
                   <th scope="row">{{property_exists($zbor->ruta,'aeroport_plecare')?$zbor->ruta->aeroport_plecare.' '.$zbor->ruta->aeroport_sosire:''}}</th>
                   <td>{{property_exists($zbor->avioane,'nume') && property_exists($zbor->avioane,'model')? $zbor->avioane->nume.' '.$zbor->avioane->model : ''}}</td>
                   <td>{{$zbor->nrZbor}}</td>

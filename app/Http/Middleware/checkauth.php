@@ -20,7 +20,7 @@ class checkauth
     {
        $user = Session::get('user');
        $url = $request->url();
-       if($user || strpos($url,"login")!== false)
+       if($user || strpos($url,"login")!== false || strpos($url,"resetuser")!== false|| strpos($url,"resetpass")!== false)
         return $next($request);
         else
         return redirect()->intended('/login');

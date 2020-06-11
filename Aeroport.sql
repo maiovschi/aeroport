@@ -18,7 +18,7 @@ CREATE TABLE  `aeroport`.`avioane` (
 `marca` VARCHAR(45) NULL,
 `nume` VARCHAR(45) NULL UNIQUE,
 `data_fabricatie` DATE NULL,
-`doc` VARCHAR(64) NULL,
+
 PRIMARY KEY (`idAvion`));
 
 
@@ -68,7 +68,7 @@ CREATE TABLE  `aeroport`.`programe` (
 `tip_activitate` VARCHAR(64) NOT NULL,
 `idZbor` INT NULL,
 `idAngajat` INT NOT NULL,
-'date' DATE,
+'date' DATE NOT NULL,
 PRIMARY KEY (`idProgram`),
 CONSTRAINT `fk_zbor`
 FOREIGN KEY (`idZbor`)
