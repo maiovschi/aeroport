@@ -51,11 +51,11 @@
             <a href="{{route('avioane')}}" class="blocks"> Avioane </a>
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
 
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Avion </a>  
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Steward </a>
+            <a href="{{route('gfrt')}}" class="blocks"> Grafice Rute </a>
+            <a href="{{route('gfav')}}" class="blocks"> Grafice Avion </a>  
+            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri</a>
+            <a href="{{route('gfpl')}}" class="blocks"> Grafice Piloti </a>
+            <a href="{{route('gfst')}}" class="blocks"> Grafice Steward </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program Steward </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 

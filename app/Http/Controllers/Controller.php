@@ -912,7 +912,7 @@ return view('profil')->with(['profil'=>$angajat]);
 
 // orar
 
-public function orar(Request $req)
+public function orarpilot(Request $req)
 {
     $delta = $req->delta;
     //Tip Activitat Interval
@@ -954,10 +954,14 @@ public function orar(Request $req)
 
     
  
-    return view('orar')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
+    return view('orarpilot')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
 }
 
+public function orarsteward(Request $req)
+{
+    return view('orarsteward');
 
+}
 
 
 
@@ -1250,7 +1254,7 @@ public function schimbaDocument(Request $req){
 
 public function stergeDocument(Request $req){
     $doc_id  = $req->idDoc;
-   $doc = DB::table('documente')->where('idDocument',$doc_id)->first();
+    $doc = DB::table('documente')->where('idDocument',$doc_id)->first();
     $res = false;
     $res = Storage::delete($doc->cale);
     if($res){
@@ -1260,7 +1264,39 @@ public function stergeDocument(Request $req){
 }
 
 
+public function gfzboruri(Request $req){
+    /*
+        tabel ierarhic dupa durata zborurlui la analytics zbor
+        cu nr zbor ruta etc
+    */
 
+   $results = DB::select("select *,TIMESTAMPDIFF(SECOND, zboruri.data_ora_plecare,zboruri.data_ora_sosire)/60 as durata from zboruri natural join rute  order by durata desc");
+   
+   return view('graficzboruri')->with(['results'=>$results]);
+}
 
+public function gfrute(Request $req){
+    
+    $results = DB::select("select zboruri.idRuta,rute.aeroport_plecare,rute.aeroport_sosire,count(*) as val_abs,(count(*)/(SELECT COUNT(*)
+    FROM zboruri))*100 as procentaj from zboruri join rute on(zboruri.idRuta = rute.idRuta) group by zboruri.idRuta,rute.aeroport_plecare,rute.aeroport_sosire ORDER by COUNT(*)
+    desc");
+    return view('graficrute')->with(['results'=>$results]);
+}
+
+public function gfpiloti(Request $req){
+
+    $results = DB::select("select programe.idAngajat,angajati.nume, angajati.prenume, angajati.tip_angajat , count(*) as nrzboruri, (count(*)*100/(SELECT count(*)
+    from zboruri)) as procentaj from programe
+   inner join angajati on (angajati.idAngajat=programe.idAngajat) where programe.tip_activitate=\"ZBOR\" and angajati.tip_angajat=\"Pilot\"  group by programe.idAngajat,angajati.tip_angajat,angajati.nume, angajati.prenume");
+    return view('graficpiloti')->with(['results'=>$results]);
+}
+
+public function gfstewards(Request $req){
+
+    $results = DB::select("select programe.idAngajat,angajati.nume, angajati.prenume, angajati.tip_angajat , count(*) as nrzboruri, (count(*)*100/(SELECT count(*)
+    from zboruri)) as procentaj from programe
+   inner join angajati on (angajati.idAngajat=programe.idAngajat) where programe.tip_activitate=\"ZBOR\" and angajati.tip_angajat=\"Steward\"  group by programe.idAngajat,angajati.tip_angajat,angajati.nume, angajati.prenume");
+    return view('graficstewards')->with(['results'=>$results]);
+}
 
 }

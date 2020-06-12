@@ -90,14 +90,20 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/orar','Controller@orar')->name('orar');
     
    
-
-
     //Documente
-
     Route::get('/documents','Controller@arataDocumente')->name('documents');
     Route::get('/downloadDoc','Controller@descarcaDocument');
     Route::post('/uploadDoc','Controller@uploadeazaDocument');
     Route::post('/changeDoc','Controller@schimbaDocument');
     Route::get('/deleteDoc','Controller@stergeDocument');
+
+    //Grafice
+    Route::get('/graficpiloti','Controller@gfpiloti')->name('gfpl');
+    Route::get('/graficzboruri','Controller@gfzboruri')->name('gfzb');
+    Route::get('/graficstewardzi','Controller@gfstewards')->name('gfst');
+    Route::get('/graficrute','Controller@gfrute')->name('gfrt');
+    Route::get('/graficavioane','Controller@gfavioane')->name('gfav');
+
+
     
    
