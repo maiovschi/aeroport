@@ -87,10 +87,9 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/profil','Controller@profil')->name('profil');
 
     //orar 
-    Route::get('/orarpilot','Controller@orarpilot')->name('orarpilot');
-    Route::get('/programpilot','Controller@programpilot')->name('programpilot');
-    Route::get('/orarsteward','Controller@orarsteward')->name('orarsteward');
-    Route::get('/programsteward','Controller@programsteward')->name('programsteward');
+    Route::get('/orar','Controller@orar')->name('orar');
+    
+   
 
 
     //Documente

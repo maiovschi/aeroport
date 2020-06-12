@@ -66,8 +66,8 @@
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('documents')}}" class="blocks"> Documente </a>
-            <a href="{{route('orarpilot')}}" class="blocks"> Program - Lista </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
+            <a href="{{route('orar')}}" class="blocks"> Program - Lista </a>
+           <!-- // <a href="{{route('angajati')}}" class="blocks"> Grafice </a> -->
         </div>
           @endif
          
@@ -75,8 +75,8 @@
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
             <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Program - Lista </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice </a>
+            <a href="{{route('orar')}}" class="blocks"> Program - Lista </a>
+         <!-- //   <a href="{{route('angajati')}}" class="blocks"> Grafice </a> -->
         </div>
           @endif
           

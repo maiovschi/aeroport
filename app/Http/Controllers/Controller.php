@@ -912,7 +912,7 @@ return view('profil')->with(['profil'=>$angajat]);
 
 // orar
 
-public function orarpilot(Request $req)
+public function orar(Request $req)
 {
     $delta = $req->delta;
     //Tip Activitat Interval
@@ -954,14 +954,10 @@ public function orarpilot(Request $req)
 
     
  
-    return view('orarpilot')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
+    return view('orar')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
 }
 
-public function orarsteward(Request $req)
-{
-    return view('orarsteward');
 
-}
 
 
 
