@@ -912,7 +912,7 @@ return view('profil')->with(['profil'=>$angajat]);
 
 // orar
 
-public function orarpilot(Request $req)
+public function orar(Request $req)
 {
     $delta = $req->delta;
     //Tip Activitat Interval
@@ -954,14 +954,9 @@ public function orarpilot(Request $req)
 
     
  
-    return view('orarpilot')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
+    return view('orar')->with(['zilele_lunii'=>$zilele_lunii,'luna_curenta'=>$luna_curenta,'ref'=>$delta]);
 }
 
-public function orarsteward(Request $req)
-{
-    return view('orarsteward');
-
-}
 
 
 
@@ -1299,4 +1294,9 @@ public function gfstewards(Request $req){
     return view('graficstewards')->with(['results'=>$results]);
 }
 
+public function gfavioane(Request $req){
+
+    $results = DB::select("select zboruri.idAvion,avioane.model,avioane.nume,count(*) as numarzboruri,(count(*)/(SELECT COUNT(*) FROM zboruri))*100 as procentaj from zboruri join avioane on(zboruri.idAvion = avioane.idAvion) group by zboruri.idAvion,avioane.model,avioane.nume ORDER by COUNT(*) desc;");
+    return view('graficavioane')->with(['results'=>$results]);
+}
 }

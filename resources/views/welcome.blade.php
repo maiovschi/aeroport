@@ -74,7 +74,7 @@
         @if($nivel_acc ==='Steward')
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('orar')}}" class="blocks"> Program - Lista </a>
          <!-- //   <a href="{{route('angajati')}}" class="blocks"> Grafice </a> -->
         </div>
@@ -83,9 +83,9 @@
         @if($nivel_acc ==='Serviciul suport tehnic zboruri')
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
-            <a href="{{route('angajati')}}" class="blocks"> Avioane </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Avioane </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
+            <a href="{{route('avioane')}}" class="blocks"> Avioane </a>
+            <a href="{{route('gfav')}}" class="blocks"> Grafice Avioane </a>
         
         </div>
           @endif
@@ -93,23 +93,23 @@
         @if($nivel_acc ==='Serviciul planificari')
         <div class="grid">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri </a>
+            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program piloti </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program steward </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice steward </a>
+            <a href="{{route('gfpl')}}" class="blocks"> Grafice piloti </a>
+            <a href="{{route('gfst')}}" class="blocks"> Grafice steward </a>
         </div>
           @endif
          
         @if($nivel_acc ==='Serviciul gestiune si analiza operatiuni zboruri')
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('ruta')}}" class="blocks"> Rute </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
+            <a href="{{route('gfrt')}}" class="blocks"> Grafice Rute </a>
         </div>
           @endif
          
@@ -119,33 +119,33 @@
             <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti  </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
+            <a href="{{route('gfpl')}}" class="blocks"> Grafice Piloti </a>
         </div>
           @endif
         
         @if($nivel_acc ==='Director stewarzi')
         <div class="grid2">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program Stewarzi </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Stewarzi</a>
+            <a href="{{route('gfst')}}" class="blocks"> Grafice Stewarzi</a>
         </div>
           @endif
         
         @if($nivel_acc ==='Director servicii')
         <div class="grid">
             <a href="{{route('profil')}}" class="blocks"> Profil </a>
-            <a href="{{route('ruta')}}" class="blocks"> Documente </a>
+            <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('angajati')}}" class="blocks"> Angajati </a>
             <a href="{{route('ruta')}}" class="blocks"> Rute </a>
             <a href="{{route('avioane')}}" class="blocks"> Avioane </a>
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Rute </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Avion </a>  
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Zboruri</a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Piloti </a>
-            <a href="{{route('angajati')}}" class="blocks"> Grafice Steward </a>
+            <a href="{{route('gfrt')}}" class="blocks"> Grafice Rute </a>
+            <a href="{{route('gfav')}}" class="blocks"> Grafice Avion </a>  
+            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri</a>
+            <a href="{{route('gfpl')}}" class="blocks"> Grafice Piloti </a>
+            <a href="{{route('gfst')}}" class="blocks"> Grafice Steward </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program Steward </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
