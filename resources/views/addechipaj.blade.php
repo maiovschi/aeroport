@@ -153,7 +153,8 @@
             </div>
          
 
-                <div class='d-flex justify-content-end'>
+           <div class='d-flex justify-content-end'>
+             <a href="/zboruriedit/{{$zbor->idZbor}}"> Inapoi </a>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Adauga Echipaj</button>
             </div>
 
@@ -161,7 +162,7 @@
         </form>
     </div>
 
-
+    
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>

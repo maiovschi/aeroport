@@ -178,6 +178,7 @@
          
 
                 <div class='d-flex justify-content-end'>
+                <a href="/zboruriedit/{{$zbor->idZbor}}"> Inapoi </a>
                 <button type='submit' id="submit_button" class='btn btn-lg btn-success my-3 title'>Editeaza Echipaj</button>
             </div>
 

@@ -64,6 +64,7 @@
       <h4 class='text'>Toate campurile cu steluta (*) sunt obligatorii!</h4>
         <form class='text-left' id="edit-form" action="{{route('zboruriadd')}}" method='post' enctype="multipart/form-data">
         @csrf
+    <div class="tur">
             <div class="group">
             <div class="form-group">
                 <label class='title'>Ruta</label>
@@ -99,7 +100,7 @@
            
             <div class="form-group">
                 <label class='title'>Numar zbor</label>
-                <input type="text"  class="form-control nume" name='nrZbor' >
+                <input type="text"  class="form-control nume nrzb" name='nrZbor' >
             </div>
                
 
@@ -135,14 +136,14 @@
 
             <div class="form-group">
                 <label class='title'>Observatii</label>
-                <input type="text"  class="form-control nume" name='Observatii' >
+                <input type="text"  class="form-control nume obs"  name='Observatii' >
             </div>
 
             <div class="form-group">
                 <label class="title"> Retur? </label>
                 <input type="checkbox" class="retur-check" />
            </div>
-
+</div>
       <div class="retur hidden">   
           
            <div class="form-group">
@@ -193,6 +194,38 @@
               var value = $(clock).val();
               $(clock).closest('.form-group').find('.form-control').val(value);
             })
+
+          
+
+            var selecturi = $('.tur select,.tur input').toArray();
+            var ok = true;
+            selecturi.forEach(em=>{
+                ok = (em.value != -1) && ok;
+                if((!$(em).val()||em.value == -1) && !$(em).hasClass('obs') && !$(em).hasClass('retur-check') ){
+                  $(em).addClass('wrong');
+                }else{
+                  $(em).removeClass('wrong');
+                }
+            })
+
+            if($('.retur-check').is(':checked')){
+              var selecturi = $('.retur input').toArray();
+            
+              selecturi.forEach(em=>{
+                  ok = (em.value != -1) && ok;
+                  if(!$(em).val()||em.value == -1 ){
+                    $(em).addClass('wrong');
+                  }else{
+                    $(em).removeClass('wrong');
+                  }
+              })
+            }else{
+              var selecturi = $('.retur input').toArray();
+            
+              selecturi.forEach(em=>{    $(em).removeClass('wrong'); });
+
+            }
+
             if($('.wrong').length == 0){
               var form = document.getElementById('edit-form');
               form.submit();
@@ -200,6 +233,9 @@
                 alert("Nu toate campurile sunt ok!");
             }
       })
+
+ 
+
       $(document).ready(function(ev){
             $('.clock').clockTimePicker();
       })
@@ -207,10 +243,33 @@
           $('.retur').toggleClass('hidden');
       });
    
+   $('.nrzb').on('change',function(ev){
+        $.ajax({
+          url:'/nrcheck',
+          type:'post',
+          data:{attempt:$(ev.target).val()},
+          success:function(data){
+              if(!data.scs){
+                  $(ev.target).addClass("wrong");
+              }else{
+                $(ev.target).removeClass("wrong");
+              }
+          },error:function(err){
+
+          }
+        })
+   })
+
+    
    
     </script> 
 
     <style>
+      input{
+        outline:none;
+        
+      }
+      input:focus {outline:0;}
       .wrong{
         border-color:red;
         border:1px solid red;
@@ -220,7 +279,7 @@
       }
 </style>
       <script>
-      $('#submit_button').on('click',function(ev){
+     /* $('#submit_button').on('click',function(ev){
             ev.preventDefault();
 
             var selecturi = $('select').toArray();
@@ -236,7 +295,7 @@
                 alert("Nu toate campurile sunt ok!");
             }
             
-      })
+      })*/
     </script>
  
   </body>

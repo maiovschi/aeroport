@@ -374,7 +374,14 @@ class Controller extends BaseController
         $Observatii=$request->Observatii;
         $stareZbor=$request->stareZbor;
 
-        $zbor_retur = DB::table('zboruri')->where('nrZbor',$nrZbor.'R')->first();
+        $zbor = DB::table('zboruri')->where('idZbor',$idzbor)->first();
+
+        $zbor_retur = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first();;
+        if(!$zbor_retur)
+          $zbor_retur = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)-1))->first();
+
+        
+
         $ruta = DB::table('rute')->where('idRuta',$idRuta)->first();
         if($zbor_retur){
             $ruta_retur = DB::table('rute')->where(['aeroport_plecare'=>$ruta->aeroport_sosire, 'aeroport_sosire'=>$ruta->aeroport_plecare])->first();
@@ -401,6 +408,20 @@ class Controller extends BaseController
                 $update_vector['stareZbor']='ATENTIE';
             }
 
+            if($nrZbor){
+
+                error_log("NRZBOR>> ".$nrZbor);
+                error_log(substr($nrZbor,strlen($nrZbor)-1));
+                error_log("---------------");
+                if(substr($nrZbor,strlen($nrZbor)-1) == "R"){
+                    $update_vector['nrZbor']=substr($nrZbor,0,strlen($nrZbor)-1);
+                }else
+                    $update_vector['nrZbor']=$nrZbor."R";
+
+                    error_log($update_vector['nrZbor']);
+            }
+
+            error_log("izbor_retur >> ".$zbor_retur->idZbor);
             DB::table('zboruri')->where('idZbor',$zbor_retur->idZbor)->update($update_vector);
 
         }
@@ -456,7 +477,9 @@ class Controller extends BaseController
         'Observatii'=>$Observatii,
         'stareZbor'=>'ATENTIE']);
 
-        if($retur){
+        $idZbor_retur = false;
+
+        if($retur && $request->data_plecare2&& $request->ora_plecare2 &&$request->data_sosire2 && $request->ora_sosire2 ){
             $idZbor_retur =  DB::table('zboruri')->insertGetId(['idRuta'=>$retur->idRuta,
             'idAvion'=> $idAvion,
             'nrZbor'=>$nrZbor.'R',
@@ -526,7 +549,7 @@ class Controller extends BaseController
       
             $zborR = DB::table('zboruri')->where('nrZbor',$zbor->nrZbor."R")->first();;
             if(!$zborR)
-              $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)))->first();
+              $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)-1))->first();
 
             if($idZbor){
 
@@ -564,7 +587,7 @@ class Controller extends BaseController
             if(!$zborR)
                 $zborR = DB::table('zboruri')->where('nrZbor',substr($zbor->nrZbor,0,strlen($zbor->nrZbor)-1))->first();
             
-                error_log(substr($zbor->nrZbor,0,strlen($zbor->nrZbor)));
+               
       
         
             $pilot1 = $req->pilot;
@@ -637,7 +660,7 @@ class Controller extends BaseController
            //     $ok = !! DB::table('programe')->where(['idAngajat'=>$steward2,'date'=>explode(' ',$zborR->data_ora_plecare)[0]])->whereNull('idZbor')->update(['tip_activitate'=>"ZBOR","idZbor"=>$zborR->idZbor])  && $ok;
               error_log($ok);
             }
-            if($ok){
+            if($ok && $zborR){
                 error_log("intra pe penultimul ifok");
                 $ok = DB::table('zboruri')->where('idZbor',$zborR->idZbor)->update(['stareZbor'=>'ACTIV']);
                }
@@ -837,7 +860,8 @@ public function loginform(Request $req){
 
     $username = $req->user;
     $parola = $req->password;
-
+if($parola){
+    $parola = hash("md5",$parola);
    $user = DB::table('angajati')->where(['username'=>$username,'parola'=>$parola])->first();
     if($user){
         Session::put('user',$user);
@@ -846,6 +870,9 @@ public function loginform(Request $req){
     }else{
         return redirect()->intended('/login?err=true');
     }
+}else{
+    return redirect()->intended('/login?err=true');
+}
 }
 
 public function resetpass(Request $req){
@@ -853,7 +880,7 @@ public function resetpass(Request $req){
     $user = DB::table('angajati')->where('email',$email)->first();
     $ok=false;
     if($user){
-      $ok = DB::table('angajati')->where('email',$email)->update(['parola'=>$user->cnp]);
+      $ok = DB::table('angajati')->where('email',$email)->update(['parola'=>hash("md5",$user->cnp)]);
     }
 
     return response()->json(['scs'=>$ok]);
@@ -903,13 +930,111 @@ public function programavioane(Request $req){
 
 public function profil(Request $request)
 {
-   $angajat = Session::get('user');
+    $angajat = Session::get('user');
 //$profil=DB::table('angajati')->where(['idAngajat'=>$idAngajat])->first();
+   $nume_poza = "PozaProfil".$angajat->idAngajat;
+   $docs = DB::table('documente')->where(['idAngajat'=>$angajat->idAngajat])->get();
+   $file = null;
+   foreach($docs as $doc){
+       if(strpos($doc->nume,$nume_poza) !== false){
+           $file = Storage::get($doc->cale);
+           $file = 'data:image/' . explode('.',$doc->nume)[1] . ';base64,' . base64_encode($file);
+       }
+   }
 
-return view('profil')->with(['profil'=>$angajat]);
+   if($file == null){
+        $file = Storage::get("/documente/default.png");
+        $file = 'data:image/' . "png" . ';base64,' . base64_encode($file);
+
+   }
+    return view('profil')->with(['profil'=>$angajat,'profilepic'=>$file]);
 }
 
 
+
+public function saveprofil(Request $request){
+
+    $username_nou = $request->username_nou;
+    $parola_veche = $request->parola_veche;
+    $parola_noua = $request->parola_noua;
+    $poza_noua = $request->file('poza_noua');
+
+    $email_nou = $request->email_nou;
+
+    $angajat = Session::get("user");
+
+    if($email_nou){
+
+        DB::table('angajati')->where('idAngajat',$angajat->idAngajat)->update(['email'=>$email_nou]);
+   
+    }
+
+    if($username_nou){
+        error_log($username_nou);
+        DB::table('angajati')->where('idAngajat',$angajat->idAngajat)->update(['username'=>$username_nou]);
+    }
+
+    if($parola_veche && $parola_noua){
+        $parola_veche_db = DB::table('angajati')->where('idAngajat',$angajat->idAngajat)->first()->parola;
+        $parola_veche = hash('md5',$parola_veche);
+        if($parola_veche == $parola_veche_db){
+            DB::table('angajati')->where('idAngajat',$angajat->idAngajat)->update(['parola'=>hash("md5",$parola_noua)]);
+        }
+    }
+
+    $nume_poza = "PozaProfil".$angajat->idAngajat;
+   $docs = DB::table('documente')->where(['idAngajat'=>$angajat->idAngajat])->get();
+   $file = null;
+   $fob = null;
+   foreach($docs as $doc){
+       if(strpos($doc->nume,$nume_poza) !== false){
+           $file = Storage::get($doc->cale);
+           $fob = $doc;
+        }
+   }
+
+   
+
+    if($poza_noua){
+        if(strpos($poza_noua->getClientOriginalName(),'.')>0){
+            $arr = explode('.',$poza_noua->getClientOriginalName());
+          $ext =   '.'.$arr[count($arr)-1];
+         }
+         $doc_name  = "PozaProfil".$angajat->idAngajat.$ext;
+      
+       if($file == null){
+         $res =  Storage::disk('local')->putFileAs(
+             '/documente/',
+             $poza_noua,
+             $doc_name);
+
+    
+             DB::table('documente')->insert(['nume'=>$doc_name,'idAngajat'=>Session::get("user")->idAngajat,
+                                                 'cale'=>'/documente/'.$doc_name
+                                             ]);
+         
+        }else{
+            Storage::delete($fob->cale);
+            if(strpos($poza_noua->getClientOriginalName(),'.')>0){
+                $arr = explode('.',$poza_noua->getClientOriginalName());
+              $ext =   '.'.$arr[count($arr)-1];
+             }
+             $doc_name  = "PozaProfil".$angajat->idAngajat.$ext;
+          
+          
+             Storage::disk('local')->putFileAs(
+                 '/documente/',
+                 $poza_noua,
+                 $doc_name);
+            
+        }
+    }
+    $update_user = DB::table('angajati')->where('idAngajat',$angajat->idAngajat)->first();
+    Session::put('user',$update_user);
+    
+
+    return redirect()->intended('/profil');
+}
 // orar
 
 public function orar(Request $req)
@@ -1013,7 +1138,7 @@ public function saveProgramPiloti(Request $req){
     foreach($piloti as $pilot){
      
         $entry =  DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->first();
-        print_r($entry->tip_activitate);
+     
         if($entry->tip_activitate == "ZBOR"){
           $flag = !!DB::table('zboruri')->where('idZbor',$entry->idZbor)->update(['stareZbor'=>'ATENTIE']) && $flag;
         }
@@ -1021,7 +1146,9 @@ public function saveProgramPiloti(Request $req){
         if($pilot['tip_activitate'] == "2"){
             $flag =  !!DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->delete() && $flag ;
         }else{
-            $flag =  !!DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->update(['tip_activitate'=>"DUTY",'idZbor'=>NULL]) && $flag;
+            DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->delete(); 
+            $flag =  !!DB::table('programe')->where(['idAngajat'=>$pilot['idAngajat'],'date'=>$data])->insert(['idAngajat'=>$pilot["idAngajat"],'tip_activitate'=>"DUTY",'idZbor'=>NULL,'date'=>$data]) && $flag;
+
         }
      
     }
@@ -1094,7 +1221,7 @@ if($stewarzi && count($stewarzi)>0){
 foreach($stewarzi as $steward){
  
     $entry =  DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->first();
-    print_r($entry->tip_activitate);
+  
     if($entry->tip_activitate == "ZBOR"){
       $flag = !!DB::table('zboruri')->where('idZbor',$entry->idZbor)->update(['stareZbor'=>'ATENTIE']) && $flag;
     }
@@ -1102,7 +1229,8 @@ foreach($stewarzi as $steward){
     if($steward['tip_activitate'] == "2"){
         $flag =  !!DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->delete() && $flag ;
     }else{
-        $flag =  !!DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->update(['tip_activitate'=>"DUTY",'idZbor'=>NULL]) && $flag;
+        DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->delete();
+        $flag =  !!DB::table('programe')->where(['idAngajat'=>$steward['idAngajat'],'date'=>$data])->insert(['idAngajat'=>$steward["idAngajat"],'tip_activitate'=>"DUTY",'idZbor'=>NULL,'date'=>$data]) && $flag;
     }
  
 }
@@ -1298,5 +1426,13 @@ public function gfavioane(Request $req){
 
     $results = DB::select("select zboruri.idAvion,avioane.model,avioane.nume,count(*) as numarzboruri,(count(*)/(SELECT COUNT(*) FROM zboruri))*100 as procentaj from zboruri join avioane on(zboruri.idAvion = avioane.idAvion) group by zboruri.idAvion,avioane.model,avioane.nume ORDER by COUNT(*) desc;");
     return view('graficavioane')->with(['results'=>$results]);
+}
+
+public function nrcheck(Request $req){
+    $attmpt = $req->attempt;
+
+    $ok = !DB::table('zboruri')->where('nrZbor',$attmpt)->first();
+
+    return response()->json(['scs'=>$ok]);
 }
 }

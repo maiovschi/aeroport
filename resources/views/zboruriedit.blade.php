@@ -105,7 +105,7 @@
             </div>
             <div class="form-group">
                 <label class='title'>Numar zbor</label>
-                <input type="text"  class="form-control nume" name='nrZbor'  value="{{$zbor->nrZbor}}" >
+                <input type="text"  class="form-control nume nrzb" name='nrZbor'  value="{{$zbor->nrZbor}}" >
             </div>
                
             </div>
@@ -143,7 +143,7 @@
             </div>
             <div class="form-group container">
                 <label class='title'>Observatii</label>
-                <input type="text"  class="form-control nume" name='Observatii' placeholder="{{$zbor->Observatii}}" >
+                <input type="text"  class="form-control nume obs" name='Observatii' placeholder="{{$zbor->Observatii}}" >
             </div>
 
                 <div class='d-flex justify-content-end' style="margin-right:150px;">
@@ -161,13 +161,45 @@
     <script src="/jquery-clock-timepicker.min.js"></script>
     <script>
      $('.clockk').clockTimePicker();
-     $('#submit_button').on('click',function(ev){
-            ev.preventDefault();
 
+
+      $('#submit_button').on('click',function(ev){
+            ev.preventDefault();
             $('.clockk').toArray().forEach(clock=>{
-              var value =   $(clock).val();
+              var value = $(clock).val();
               $(clock).closest('.form-group').find('.form-control').val(value);
             })
+
+          
+
+            var selecturi = $('input').toArray();
+            var ok = true;
+            selecturi.forEach(em=>{
+                ok = (em.value != -1) && ok;
+                if((!$(em).val()||em.value == -1) && !$(em).hasClass('obs') && !$(em).hasClass('retur-check') && !$(em).hasClass('hidden') ){
+                  $(em).addClass('wrong');
+                }else{
+                  $(em).removeClass('wrong');
+                }
+            })
+
+            if($('.retur-check').is(':checked')){
+              var selecturi = $('.retur input').toArray();
+            
+              selecturi.forEach(em=>{
+                  ok = (em.value != -1) && ok;
+                  if(!$(em).val()||em.value == -1 ){
+                    $(em).addClass('wrong');
+                  }else{
+                    $(em).removeClass('wrong');
+                  }
+              })
+            }else{
+              var selecturi = $('.retur input').toArray();
+            
+              selecturi.forEach(em=>{    $(em).removeClass('wrong'); });
+
+            }
 
             if($('.wrong').length == 0){
               var form = document.getElementById('edit-form');
@@ -175,15 +207,24 @@
             } else{
                 alert("Nu toate campurile sunt ok!");
             }
-            
       })
-      $(document).ready(function(ev){
-           
-          /*  setTimeout(function(){
-                $('.clock').first().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_plecare)[1]}}'.substring(0,5));
-                $('.clock').last().clockTimePicker('value', '{{explode(' ',$zbor->data_ora_sosire)[1]}}'.substring(0,5));
-            },600); */
-      })
+
+      $('.nrzb').on('change',function(ev){
+        $.ajax({
+          url:'/nrcheck',
+          type:'post',
+          data:{attempt:$(ev.target).val()},
+          success:function(data){
+              if(!data.scs){
+                  $(ev.target).addClass("wrong");
+              }else{
+                $(ev.target).removeClass("wrong");
+              }
+          },error:function(err){
+
+          }
+        })
+   })
 
       /*  $('.clock').toArray().forEach(clock=>{
               var value =   $(clock).val();

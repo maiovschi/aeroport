@@ -312,11 +312,11 @@
         type:"POST",
         data:payload,
         success:function(data){
-          
+          console.log("SCS!!!!");
             ascundeModal();
-          
-        }
+        },error:function(err){
 
+        }
       })
    
 

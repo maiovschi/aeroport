@@ -85,6 +85,7 @@ Route::get('/', 'Controller@index')->name('home');
     //profil
 
     Route::get('/profil','Controller@profil')->name('profil');
+    Route::post('/profil','Controller@saveprofil')->name('saveprofil');
 
     //orar 
     Route::get('/orar','Controller@orar')->name('orar');
@@ -104,6 +105,7 @@ Route::get('/', 'Controller@index')->name('home');
     Route::get('/graficrute','Controller@gfrute')->name('gfrt');
     Route::get('/graficavioane','Controller@gfavioane')->name('gfav');
 
+    Route::post('/nrcheck','Controller@nrcheck');
 
     
    

@@ -101,9 +101,12 @@
 
 
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
+ <div class="wrapper">
  
-      <img src="/images/zoican.jpeg" style="width:300px;" class="centru" />
+      <img src="{{$profilepic}}" style="width:300px;" class="centru" />
       
+      <div class="wrapper2">
+        <form enctype="multipart/form-data" action="{{route('saveprofil')}}" method="POST" id="profileForm">
       <table class="center">
      
                  
@@ -117,7 +120,7 @@
                   </tr>
                   <tr>
                   <td >E-mail</td>
-                  <td><input type="email" value="{{$profil-> email}}"></td>
+                  <td><input required type="email" name="email_nou" value="{{$profil-> email}}"></td>
                   </tr>
                   <tr>
                   <td >CNP</td>
@@ -146,36 +149,42 @@
                   </tr>
                   <tr>
                   <td >Parola </td>
-                  <td><input type="text" class="form-control" name='parola_vehce' ></td>
-                  <td><input type="text" class="form-control" name='parola_noua' ></td>
+                  <td><input type="password" class="form-control" name='parola_veche' ></td>
+                  <td><input type="password" class="form-control" name='parola_noua' ></td>
                   </tr>
                   <tr>
                   <td >Poza profil noua </td>
-                  <td><input type="file" name="poza_noua" accept="image/x-png,image/gif,image/jpeg" /></td>
+                  <td><input type="file" name="poza_noua" accept="image/x-png,image/jpeg,image/jpg" /></td>
                   </tr>
                  </table> 
+              
                  <div class='d-flex justify-content-end'>
-                <button type='submit' class='btn btn-lg btn-success my-3 title'>Salveaza modificarile</button>
-                 </div>
+                <button type='submit' class='btn save btn-lg btn-success my-3 title'>Salveaza modificarile</button>
+</form>
+ </div>
 
-                  
-                  
-                  
-                  
-                 
-                  
-                 
-                  
-                 
-               
-                  
-                  
-               
-       
-          
-          
+</div>  
    
     </div> 
+
+    <style>
+      .wrapper{
+        width: max-content;
+    margin: 0 auto;
+    /* padding: 20px; */
+    border: 1px solid;
+    background: white;
+    max-width: 400px;
+      }
+
+      .wrapper2{
+        padding: 10px;
+      }
+
+      img{
+        width:100%!important;
+      }
+      </style>
 
     <script>
  
@@ -192,6 +201,18 @@
                 fixedHeader: true
             });
         });
+
+        $('.save').on('click',function(ev){
+          ev.preventDefault();
+
+          if($('input[name="parola_noua"]').val() && $('input[name="parola_veche"]').val()){
+             $('#profileForm')[0].submit();
+          }else if(!$('input[name="parola_noua"]').val()){
+            $('#profileForm')[0].submit();
+          }
+
+
+        })
     </script>
   
 
