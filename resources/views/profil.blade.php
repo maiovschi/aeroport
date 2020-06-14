@@ -103,7 +103,7 @@
         <a href="{{route('home')}}" class='btn btn-lg btn-info my-4'>Acasa</a>
  <div class="wrapper">
  
-      <img src="{{$profilepic}}" style="width:300px;" class="centru" />
+      <img src="{{$profilepic}}" style="width:600px;" class="centru" />
       
       <div class="wrapper2">
         <form enctype="multipart/form-data" action="{{route('saveprofil')}}" method="POST" id="profileForm">
@@ -143,13 +143,20 @@
                   <td>{{$profil-> calificari}}</td>
                  </tr>
                  <tr>
-                  <td >Username </td>
+                  <td >Username actual</td>
                   <td>{{$profil-> username}}</td>
+                  </tr>
+                  <tr>
+                  <td> Username nou</td>
                   <td><input type="text" class="form-control" name='username_nou' ></td>
                   </tr>
                   <tr>
-                  <td >Parola </td>
+                  <td >Parola veche </td>
                   <td><input type="password" class="form-control" name='parola_veche' ></td>
+                  </tr>
+                  <tr>
+                  
+                  <td >Parola noua </td>
                   <td><input type="password" class="form-control" name='parola_noua' ></td>
                   </tr>
                   <tr>
@@ -169,12 +176,12 @@
 
     <style>
       .wrapper{
-        width: max-content;
+    width: max-content;
     margin: 0 auto;
     /* padding: 20px; */
     border: 1px solid;
     background: white;
-    max-width: 400px;
+    max-width: 600px;
       }
 
       .wrapper2{

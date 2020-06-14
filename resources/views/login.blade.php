@@ -1,4 +1,3 @@
-
 <html>
 
 <head>
@@ -57,7 +56,6 @@
             }
         })
     })
-
     $('.userreset').on('click',function(ev){
         ev.preventDefault();
        var email = prompt("Introduceti mail-ul pentru care doriti sa resetati usernameul","");

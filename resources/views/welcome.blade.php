@@ -53,7 +53,7 @@
 
             <a href="{{route('gfrt')}}" class="blocks"> Grafice Rute </a>
             <a href="{{route('gfav')}}" class="blocks"> Grafice Avion </a>  
-            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri</a>
+            <a href="{{route('gfzb')}}" class="blocks"> Ierarhie Zboruri</a>
             <a href="{{route('gfpl')}}" class="blocks"> Grafice Piloti </a>
             <a href="{{route('gfst')}}" class="blocks"> Grafice Steward </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
@@ -96,7 +96,7 @@
             <a href="{{route('documents')}}" class="blocks"> Documente </a>
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
             <a href="{{route('programzboruri')}}" class="blocks"> Program Zboruri </a> 
-            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri </a>
+            <a href="{{route('gfzb')}}" class="blocks"> Ierarhie Zboruri </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program piloti </a>
             <a href="{{route('programstewarzi')}}" class="blocks"> Program steward </a>
             <a href="{{route('gfpl')}}" class="blocks"> Grafice piloti </a>
@@ -143,7 +143,7 @@
             <a href="{{route('zboruri')}}" class="blocks"> Zboruri </a>
             <a href="{{route('gfrt')}}" class="blocks"> Grafice Rute </a>
             <a href="{{route('gfav')}}" class="blocks"> Grafice Avion </a>  
-            <a href="{{route('gfzb')}}" class="blocks"> Grafice Zboruri</a>
+            <a href="{{route('gfzb')}}" class="blocks"> Ierarhie Zboruri</a>
             <a href="{{route('gfpl')}}" class="blocks"> Grafice Piloti </a>
             <a href="{{route('gfst')}}" class="blocks"> Grafice Steward </a>
             <a href="{{route('programpiloti')}}" class="blocks"> Program Piloti </a>
